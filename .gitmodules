@@ -1,0 +1,3 @@
+[submodule "lib/SteamAuth"]
+	path = lib/SteamAuth
+	url = git://github.com/geel9/SteamAuth
