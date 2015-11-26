@@ -1,0 +1,80 @@
+﻿namespace Steam_Desktop_Authenticator
+{
+    using MetroFramework;
+    using MetroFramework.Forms;
+
+    partial class MainForm
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.btnLoadAccount = new System.Windows.Forms.Button();
+            this.btnSteamLogin = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+            // 
+            // btnLoadAccount
+            // 
+            this.btnLoadAccount.Location = new System.Drawing.Point(180, 63);
+            this.btnLoadAccount.Name = "btnLoadAccount";
+            this.btnLoadAccount.Size = new System.Drawing.Size(148, 31);
+            this.btnLoadAccount.TabIndex = 0;
+            this.btnLoadAccount.Text = "Load Account";
+            this.btnLoadAccount.UseVisualStyleBackColor = true;
+            // 
+            // btnSteamLogin
+            // 
+            this.btnSteamLogin.Location = new System.Drawing.Point(23, 63);
+            this.btnSteamLogin.Name = "btnSteamLogin";
+            this.btnSteamLogin.Size = new System.Drawing.Size(151, 31);
+            this.btnSteamLogin.TabIndex = 1;
+            this.btnSteamLogin.Text = "Login to Steam";
+            this.btnSteamLogin.UseVisualStyleBackColor = true;
+            this.btnSteamLogin.Click += new System.EventHandler(this.btnSteamLogin_Click);
+            // 
+            // MainForm
+            // 
+            this.AcceptButton = this.btnSteamLogin;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(351, 499);
+            this.Controls.Add(this.btnSteamLogin);
+            this.Controls.Add(this.btnLoadAccount);
+            this.MaximizeBox = false;
+            this.Name = "MainForm";
+            this.Resizable = false;
+            this.Text = "Steam Desktop Authenticator";
+            this.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.ResumeLayout(false);
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Button btnLoadAccount;
+        private System.Windows.Forms.Button btnSteamLogin;
+    }
+}
+
