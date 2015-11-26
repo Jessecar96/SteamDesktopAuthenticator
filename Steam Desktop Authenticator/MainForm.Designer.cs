@@ -41,7 +41,7 @@
             this.btnLoadAccount.Name = "btnLoadAccount";
             this.btnLoadAccount.Size = new System.Drawing.Size(148, 31);
             this.btnLoadAccount.TabIndex = 0;
-            this.btnLoadAccount.Text = "Load Account";
+            this.btnLoadAccount.Text = "Load account";
             this.btnLoadAccount.UseVisualStyleBackColor = true;
             // 
             // btnSteamLogin
@@ -50,7 +50,7 @@
             this.btnSteamLogin.Name = "btnSteamLogin";
             this.btnSteamLogin.Size = new System.Drawing.Size(151, 31);
             this.btnSteamLogin.TabIndex = 1;
-            this.btnSteamLogin.Text = "Login to Steam";
+            this.btnSteamLogin.Text = "Setup new account";
             this.btnSteamLogin.UseVisualStyleBackColor = true;
             this.btnSteamLogin.Click += new System.EventHandler(this.btnSteamLogin_Click);
             // 
@@ -65,8 +65,8 @@
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Resizable = false;
+            this.ShadowType = MetroFramework.Forms.MetroForm.MetroFormShadowType.SystemShadow;
             this.Text = "Steam Desktop Authenticator";
-            this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.ResumeLayout(false);
 
         }

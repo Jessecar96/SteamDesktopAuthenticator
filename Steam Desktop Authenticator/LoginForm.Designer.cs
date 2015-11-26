@@ -33,12 +33,13 @@
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.btnSteamLogin = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label1.Location = new System.Drawing.Point(11, 85);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(86, 25);
@@ -65,7 +66,7 @@
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label2.Location = new System.Drawing.Point(14, 116);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(83, 25);
@@ -76,7 +77,7 @@
             // btnSteamLogin
             // 
             this.btnSteamLogin.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSteamLogin.Location = new System.Drawing.Point(196, 160);
+            this.btnSteamLogin.Location = new System.Drawing.Point(196, 201);
             this.btnSteamLogin.Name = "btnSteamLogin";
             this.btnSteamLogin.Size = new System.Drawing.Size(127, 38);
             this.btnSteamLogin.TabIndex = 4;
@@ -84,12 +85,23 @@
             this.btnSteamLogin.UseVisualStyleBackColor = true;
             this.btnSteamLogin.Click += new System.EventHandler(this.btnSteamLogin_Click);
             // 
+            // label3
+            // 
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(23, 152);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(300, 46);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "This will activate Steam mobile authenticator on your Steam account. This require" +
+    "s a phone number that can recieve SMS.";
+            // 
             // LoginForm
             // 
             this.AcceptButton = this.btnSteamLogin;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(346, 221);
+            this.ClientSize = new System.Drawing.Size(346, 262);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.btnSteamLogin);
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.label2);
@@ -99,10 +111,10 @@
             this.MaximizeBox = false;
             this.Name = "LoginForm";
             this.Resizable = false;
+            this.ShadowType = MetroFramework.Forms.MetroForm.MetroFormShadowType.SystemShadow;
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Steam Login";
-            this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.Load += new System.EventHandler(this.LoginForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -116,5 +128,6 @@
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnSteamLogin;
+        private System.Windows.Forms.Label label3;
     }
 }

@@ -34,24 +34,36 @@ namespace Steam_Desktop_Authenticator
 
             mUserLogin = new UserLogin(username, password);
             LoginResult response = LoginResult.BadCredentials;
+
             while ((response = mUserLogin.DoLogin()) != LoginResult.LoginOkay)
             {
                 switch (response)
                 {
                     case LoginResult.NeedEmail:
-                        //mUserLogin.EmailCode = code;
+                        InputForm emailForm = new InputForm("Enter the code sent to your email:");
+                        emailForm.ShowDialog();
+                        mUserLogin.EmailCode = emailForm.txtBox.Text;
                         break;
 
                     case LoginResult.NeedCaptcha:
-                        //APIEndpoints.COMMUNITY_BASE + "/public/captcha.php?gid=" + mUserLogin.CaptchaGID;
-                        //mUserLogin.CaptchaText = captchaText;
+                        System.Diagnostics.Process.Start(String.Format("{0}/public/captcha.php?gid={1}", APIEndpoints.COMMUNITY_BASE, mUserLogin.CaptchaGID));
+
+                        InputForm captchaForm = new InputForm("Enter the captcha that opened in your browser:");
+                        captchaForm.ShowDialog();
+                        mUserLogin.CaptchaText = captchaForm.txtBox.Text;
                         break;
 
                     case LoginResult.Need2FA:
-                        //mUserLogin.TwoFactorCode = code;
+                        InputForm authForm = new InputForm("Enter the code from your authenticator:");
+                        authForm.ShowDialog();
+                        mUserLogin.TwoFactorCode = authForm.txtBox.Text;
                         break;
                 }
+
             }
+
+            // start auth setup process (with another form)
+
         }
     }
 }
