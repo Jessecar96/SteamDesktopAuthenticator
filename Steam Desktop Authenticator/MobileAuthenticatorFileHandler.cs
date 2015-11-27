@@ -45,5 +45,29 @@ namespace Steam_Desktop_Authenticator
             File.Delete(filename);
         }
 
+        public static SteamGuardAccount[] GetAllAccounts()
+        {
+            if (!Directory.Exists("./maFiles")) return new SteamGuardAccount[0];
+
+            DirectoryInfo info = new DirectoryInfo("./maFiles");
+            var files = info.GetFiles("*.maFile");
+
+            List<SteamGuardAccount> accounts = new List<SteamGuardAccount>();
+            foreach (var file in files)
+            {
+                try
+                {
+                    string text = File.ReadAllText(file.FullName);
+                    SteamGuardAccount account = JsonConvert.DeserializeObject<SteamGuardAccount>(text);
+                    accounts.Add(account);
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+
+            return accounts.ToArray();
+        }
     }
 }
