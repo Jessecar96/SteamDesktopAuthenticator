@@ -34,10 +34,12 @@
             this.components = new System.ComponentModel.Container();
             this.btnSteamLogin = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.txtLoginToken = new System.Windows.Forms.TextBox();
             this.pbTimeout = new System.Windows.Forms.ProgressBar();
+            this.txtLoginToken = new System.Windows.Forms.TextBox();
             this.listAccounts = new System.Windows.Forms.ListBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.btnTradeConfirmations = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -62,6 +64,13 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Login Token";
             // 
+            // pbTimeout
+            // 
+            this.pbTimeout.Location = new System.Drawing.Point(6, 60);
+            this.pbTimeout.Name = "pbTimeout";
+            this.pbTimeout.Size = new System.Drawing.Size(293, 19);
+            this.pbTimeout.TabIndex = 1;
+            // 
             // txtLoginToken
             // 
             this.txtLoginToken.BackColor = System.Drawing.SystemColors.Window;
@@ -73,22 +82,15 @@
             this.txtLoginToken.TabIndex = 0;
             this.txtLoginToken.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // pbTimeout
-            // 
-            this.pbTimeout.Location = new System.Drawing.Point(6, 60);
-            this.pbTimeout.Name = "pbTimeout";
-            this.pbTimeout.Size = new System.Drawing.Size(293, 19);
-            this.pbTimeout.TabIndex = 1;
-            // 
             // listAccounts
             // 
             this.listAccounts.FormattingEnabled = true;
             this.listAccounts.Items.AddRange(new object[] {
             "test",
             "test"});
-            this.listAccounts.Location = new System.Drawing.Point(23, 195);
+            this.listAccounts.Location = new System.Drawing.Point(23, 221);
             this.listAccounts.Name = "listAccounts";
-            this.listAccounts.Size = new System.Drawing.Size(305, 160);
+            this.listAccounts.Size = new System.Drawing.Size(305, 134);
             this.listAccounts.TabIndex = 3;
             this.listAccounts.SelectedValueChanged += new System.EventHandler(this.listAccounts_SelectedValueChanged);
             // 
@@ -98,12 +100,35 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // btnTradeConfirmations
+            // 
+            this.btnTradeConfirmations.Enabled = false;
+            this.btnTradeConfirmations.Location = new System.Drawing.Point(23, 185);
+            this.btnTradeConfirmations.Name = "btnTradeConfirmations";
+            this.btnTradeConfirmations.Size = new System.Drawing.Size(138, 31);
+            this.btnTradeConfirmations.TabIndex = 4;
+            this.btnTradeConfirmations.Text = "Trade Confirmations";
+            this.btnTradeConfirmations.UseVisualStyleBackColor = true;
+            this.btnTradeConfirmations.Click += new System.EventHandler(this.btnTradeConfirmations_Click);
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(190, 185);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(138, 31);
+            this.btnDelete.TabIndex = 5;
+            this.btnDelete.Text = "Remove Authenticator";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
             // MainForm
             // 
             this.AcceptButton = this.btnSteamLogin;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(351, 378);
+            this.Controls.Add(this.btnDelete);
+            this.Controls.Add(this.btnTradeConfirmations);
             this.Controls.Add(this.listAccounts);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnSteamLogin);
@@ -125,6 +150,8 @@
         private System.Windows.Forms.TextBox txtLoginToken;
         private System.Windows.Forms.ListBox listAccounts;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button btnTradeConfirmations;
+        private System.Windows.Forms.Button btnDelete;
     }
 }
 

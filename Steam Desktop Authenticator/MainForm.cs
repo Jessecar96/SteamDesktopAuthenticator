@@ -18,7 +18,7 @@ namespace Steam_Desktop_Authenticator
         private SteamGuardAccount[] allAccounts;
 
         private long steamTime = 0;
-        private int steamTimeLeft = 30;
+        private long currentSteamChunk = 0;
 
         public MainForm()
         {
@@ -34,6 +34,7 @@ namespace Steam_Desktop_Authenticator
         {
             LoginForm mLoginForm = new LoginForm();
             mLoginForm.ShowDialog();
+            this.loadAccountsList();
         }
 
         private void listAccounts_SelectedValueChanged(object sender, EventArgs e)
@@ -42,7 +43,7 @@ namespace Steam_Desktop_Authenticator
             for (int i = 0; i < allAccounts.Length; i++)
             {
                 SteamGuardAccount account = allAccounts[i];
-                if (account.AccountName == (string) listAccounts.Items[listAccounts.SelectedIndex])
+                if (account.AccountName == (string)listAccounts.Items[listAccounts.SelectedIndex])
                 {
                     mCurrentAccount = account;
                     loadAccountInfo();
@@ -52,7 +53,9 @@ namespace Steam_Desktop_Authenticator
 
         private void loadAccountsList()
         {
+            mCurrentAccount = null;
             listAccounts.Items.Clear();
+            listAccounts.SelectedIndex = -1;
 
             allAccounts = MobileAuthenticatorFileHandler.GetAllAccounts();
             if (allAccounts.Length > 0)
@@ -65,6 +68,7 @@ namespace Steam_Desktop_Authenticator
 
                 listAccounts.SelectedIndex = 0;
             }
+            btnDelete.Enabled = btnTradeConfirmations.Enabled = allAccounts.Length > 0;
         }
 
         private void loadAccountInfo()
@@ -77,14 +81,50 @@ namespace Steam_Desktop_Authenticator
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if(steamTime == 0 || steamTimeLeft <= 0)
+            steamTime = TimeAligner.GetSteamTime();
+            currentSteamChunk = steamTime / 30L;
+
+            int secondsUntilChange = (int)(steamTime - (currentSteamChunk * 30L));
+
+            loadAccountInfo();
+            if (mCurrentAccount != null)
+                pbTimeout.Value = secondsUntilChange;
+        }
+
+        private void btnTradeConfirmations_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (mCurrentAccount == null) return;
+            string confCode = mCurrentAccount.GenerateSteamGuardCode();
+            InputForm confirmationDialog = new InputForm("Removing the authenticator from " + mCurrentAccount.AccountName + ". Enter confirmation code " + confCode);
+            confirmationDialog.ShowDialog();
+
+            if (confirmationDialog.Canceled)
+                return;
+
+            string enteredCode = confirmationDialog.txtBox.Text.ToUpper();
+
+            if (enteredCode != confCode)
             {
-                steamTime = TimeAligner.GetSteamTime();
-                steamTimeLeft = 30;
-                loadAccountInfo();
+                MessageBox.Show("Confirmation codes do not match. Authenticator has not been unlinked.");
+                return;
             }
-            steamTimeLeft--;
-            pbTimeout.Value = steamTimeLeft;
+
+            bool success = mCurrentAccount.DeactivateAuthenticator();
+            if (success)
+            {
+                MessageBox.Show("Authenticator unlinked. maFile will be deleted after hitting okay. If you need to make a backup, now's the time.");
+                MobileAuthenticatorFileHandler.DeleteMaFile(mCurrentAccount);
+                this.loadAccountsList();
+            }
+            else
+            {
+                MessageBox.Show("Authenticator unable to be removed.");
+            }
         }
     }
 }
