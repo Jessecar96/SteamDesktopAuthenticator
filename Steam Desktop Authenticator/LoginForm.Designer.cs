@@ -92,8 +92,8 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(300, 46);
             this.label3.TabIndex = 5;
-            this.label3.Text = "This will activate Steam mobile authenticator on your Steam account. This require" +
-    "s a phone number that can recieve SMS.";
+            this.label3.Text = "This will activate Steam Desktop Authenticator on your Steam account. This requir" +
+    "es a phone number that can receive SMS.";
             // 
             // LoginForm
             // 

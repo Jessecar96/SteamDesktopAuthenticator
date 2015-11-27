@@ -24,7 +24,7 @@ namespace Steam_Desktop_Authenticator
 
         private void LoginForm_Load(object sender, EventArgs e)
         {
-            
+
         }
 
         private void btnSteamLogin_Click(object sender, EventArgs e)
@@ -42,6 +42,12 @@ namespace Steam_Desktop_Authenticator
                     case LoginResult.NeedEmail:
                         InputForm emailForm = new InputForm("Enter the code sent to your email:");
                         emailForm.ShowDialog();
+                        if (emailForm.Canceled)
+                        {
+                            this.Close();
+                            return;
+                        }
+
                         mUserLogin.EmailCode = emailForm.txtBox.Text;
                         break;
 
@@ -50,19 +56,31 @@ namespace Steam_Desktop_Authenticator
 
                         InputForm captchaForm = new InputForm("Enter the captcha that opened in your browser:");
                         captchaForm.ShowDialog();
+                        if (captchaForm.Canceled)
+                        {
+                            this.Close();
+                            return;
+                        }
+
                         mUserLogin.CaptchaText = captchaForm.txtBox.Text;
                         break;
 
                     case LoginResult.Need2FA:
                         InputForm authForm = new InputForm("Enter the code from your authenticator:");
                         authForm.ShowDialog();
+                        if (authForm.Canceled)
+                        {
+                            this.Close();
+                            return;
+                        }
+
                         mUserLogin.TwoFactorCode = authForm.txtBox.Text;
                         break;
                 }
-
             }
 
             // start auth setup process (with another form)
+
 
         }
     }
