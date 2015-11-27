@@ -29,7 +29,9 @@ namespace Steam_Desktop_Authenticator
             try
             {
                 string contents = JsonConvert.SerializeObject(account, Formatting.Indented);
-                File.WriteAllText(filename, contents);
+                // Encrypt the JSON
+                byte[] encrypted = EncryptionHandler.EncryptString(contents);
+                File.WriteAllBytes(filename, encrypted);
             }
             catch (Exception ex)
             {
@@ -57,7 +59,7 @@ namespace Steam_Desktop_Authenticator
             {
                 try
                 {
-                    string text = File.ReadAllText(file.FullName);
+                    string text = EncryptionHandler.DecryptString(File.ReadAllBytes(file.FullName));
                     SteamGuardAccount account = JsonConvert.DeserializeObject<SteamGuardAccount>(text);
                     accounts.Add(account);
                 }
