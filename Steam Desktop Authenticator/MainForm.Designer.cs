@@ -31,24 +31,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnLoadAccount = new System.Windows.Forms.Button();
             this.btnSteamLogin = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // btnLoadAccount
-            // 
-            this.btnLoadAccount.Location = new System.Drawing.Point(180, 63);
-            this.btnLoadAccount.Name = "btnLoadAccount";
-            this.btnLoadAccount.Size = new System.Drawing.Size(148, 31);
-            this.btnLoadAccount.TabIndex = 0;
-            this.btnLoadAccount.Text = "Load account";
-            this.btnLoadAccount.UseVisualStyleBackColor = true;
             // 
             // btnSteamLogin
             // 
             this.btnSteamLogin.Location = new System.Drawing.Point(23, 63);
             this.btnSteamLogin.Name = "btnSteamLogin";
-            this.btnSteamLogin.Size = new System.Drawing.Size(151, 31);
+            this.btnSteamLogin.Size = new System.Drawing.Size(305, 31);
             this.btnSteamLogin.TabIndex = 1;
             this.btnSteamLogin.Text = "Setup new account";
             this.btnSteamLogin.UseVisualStyleBackColor = true;
@@ -61,7 +51,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(351, 499);
             this.Controls.Add(this.btnSteamLogin);
-            this.Controls.Add(this.btnLoadAccount);
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Resizable = false;
@@ -72,8 +61,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btnLoadAccount;
         private System.Windows.Forms.Button btnSteamLogin;
     }
 }
