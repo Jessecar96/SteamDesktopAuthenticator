@@ -154,6 +154,16 @@ namespace Steam_Desktop_Authenticator
                     return;
                 }
 
+                InputForm confirmRevocationCode = new InputForm("Please enter your revocation code to ensure you've saved it.");
+                confirmRevocationCode.ShowDialog();
+                if(confirmRevocationCode.txtBox.Text.ToUpper() != linker.LinkedAccount.RevocationCode)
+                {
+                    MessageBox.Show("Revocation code incorrect; the authenticator has not been linked.");
+                    MobileAuthenticatorFileHandler.DeleteMaFile(linker.LinkedAccount);
+                    this.Close();
+                    return;
+                }
+
                 string smsCode = smsCodeForm.txtBox.Text;
                 finalizeResponse = linker.FinalizeAddAuthenticator(smsCode);
 
