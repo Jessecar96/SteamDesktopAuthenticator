@@ -79,15 +79,9 @@ namespace Steam_Desktop_Authenticator
                         break;
 
                     case LoginResult.Need2FA:
-                        InputForm authForm = new InputForm("Enter the code from your authenticator:");
-                        authForm.ShowDialog();
-                        if (authForm.Canceled)
-                        {
-                            this.Close();
-                            return;
-                        }
-
-                        mUserLogin.TwoFactorCode = authForm.txtBox.Text;
+                        MessageBox.Show("This account already has a mobile authenticator linked to it. Please remove that first.");
+                        this.Close();
+                        return;
                         break;
                 }
             }
