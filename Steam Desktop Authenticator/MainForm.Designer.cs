@@ -82,7 +82,7 @@
             this.txtLoginToken.TabIndex = 0;
             this.txtLoginToken.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // listAccounts
+            // listConfirmations
             // 
             this.listAccounts.FormattingEnabled = true;
             this.listAccounts.Items.AddRange(new object[] {
@@ -100,7 +100,7 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // btnTradeConfirmations
+            // btnAcceptConfirmation
             // 
             this.btnTradeConfirmations.Enabled = false;
             this.btnTradeConfirmations.Location = new System.Drawing.Point(23, 185);
@@ -111,7 +111,7 @@
             this.btnTradeConfirmations.UseVisualStyleBackColor = true;
             this.btnTradeConfirmations.Click += new System.EventHandler(this.btnTradeConfirmations_Click);
             // 
-            // btnDelete
+            // btnDenyConfirmation
             // 
             this.btnDelete.Location = new System.Drawing.Point(190, 185);
             this.btnDelete.Name = "btnDelete";

@@ -88,12 +88,15 @@ namespace Steam_Desktop_Authenticator
 
             loadAccountInfo();
             if (mCurrentAccount != null)
-                pbTimeout.Value = secondsUntilChange;
+                pbTimeout.Value = 30 - secondsUntilChange;
         }
 
         private void btnTradeConfirmations_Click(object sender, EventArgs e)
         {
+            if (mCurrentAccount == null) return;
 
+            ConfirmationForm confirmations = new ConfirmationForm(mCurrentAccount);
+            confirmations.ShowDialog();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
