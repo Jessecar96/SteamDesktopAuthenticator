@@ -63,6 +63,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileEncryptor.cs" />
+    <Compile Include="CaptchaForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CaptchaForm.Designer.cs">
+      <DependentUpon>CaptchaForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="InputForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,6 +96,9 @@
     <Compile Include="Manifest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="CaptchaForm.resx">
+      <DependentUpon>CaptchaForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="InputForm.resx">
       <DependentUpon>InputForm.cs</DependentUpon>
     </EmbeddedResource>

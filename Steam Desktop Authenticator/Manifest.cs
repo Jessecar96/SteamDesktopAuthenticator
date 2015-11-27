@@ -105,7 +105,7 @@ namespace Steam_Desktop_Authenticator
                     {
                         newManifest.Save();
 
-                        InputForm askForPasskey = new InputForm("This version of SDA enables encryption. Please enter a passkey below, or hit cancel to remain unencrypted");
+                        InputForm askForPasskey = new InputForm("This version of SDA has encryption. Please enter a passkey below, or hit cancel to remain unencrypted");
                         askForPasskey.ShowDialog();
                         if (askForPasskey.Canceled || askForPasskey.txtBox.Text.Length == 0)
                         {

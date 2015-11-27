@@ -65,9 +65,7 @@ namespace Steam_Desktop_Authenticator
                         break;
 
                     case LoginResult.NeedCaptcha:
-                        System.Diagnostics.Process.Start(String.Format("{0}/public/captcha.php?gid={1}", APIEndpoints.COMMUNITY_BASE, mUserLogin.CaptchaGID));
-
-                        InputForm captchaForm = new InputForm("Enter the captcha that opened in your browser:");
+                        CaptchaForm captchaForm = new CaptchaForm(mUserLogin.CaptchaGID);
                         captchaForm.ShowDialog();
                         if (captchaForm.Canceled)
                         {
@@ -75,7 +73,7 @@ namespace Steam_Desktop_Authenticator
                             return;
                         }
 
-                        mUserLogin.CaptchaText = captchaForm.txtBox.Text;
+                        mUserLogin.CaptchaText = captchaForm.CaptchaCode;
                         break;
 
                     case LoginResult.Need2FA:
