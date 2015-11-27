@@ -8,5 +8,6 @@ A desktop implementation of Steam's mobile authenticator app.
 - Enable Steam's mobile auth on new accounts.
 
 ## Coming soon:
+- Encryption. Enter your password to decrypt your data and generate codes / perform confirmations. Protects against files being stolen. Does not protect against keyloggers.
 - Notifications when you have a trade waiting to be confirmed.
 - Import config file from a rooted Android device so you don't have to remove and re-add the desktop authenticator.
