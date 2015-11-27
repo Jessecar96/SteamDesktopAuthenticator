@@ -126,9 +126,49 @@ namespace Steam_Desktop_Authenticator
                 }
             }
 
-            //Save the file immediately; losing this would be bad.
-            if (!MobileAuthenticatorFileHandler.SaveMaFile(linker.LinkedAccount))
+            Manifest manifest = Manifest.GetManifest();
+            string passKey = null;
+            if (manifest.Entries.Count == 0)
             {
+                InputForm newEncryptionForm = new InputForm("Please enter an encryption passkey. Leave blank or hit cancel to not encrypt (VERY INSECURE).");
+                newEncryptionForm.ShowDialog();
+                if (!newEncryptionForm.Canceled && newEncryptionForm.txtBox.Text.Length > 0)
+                {
+                    passKey = newEncryptionForm.txtBox.Text;
+                }
+                else
+                {
+                    MessageBox.Show("WARNING: You chose to not encrypt your files. Doing so imposes a security risk for yourself. If an attacker were to gain access to your computer, they could completely lock you out of your account and steal all your items.");
+                }
+            }
+            else if (manifest.Entries.Count > 0 && manifest.Encrypted)
+            {
+                bool passKeyValid = false;
+                while (!passKeyValid)
+                {
+                    InputForm passKeyForm = new InputForm("Please enter your current encryption passkey.");
+                    passKeyForm.ShowDialog();
+                    if (!passKeyForm.Canceled)
+                    {
+                        passKey = passKeyForm.txtBox.Text;
+                        passKeyValid = manifest.VerifyPasskey(passKey);
+                        if (!passKeyValid)
+                        {
+                            MessageBox.Show("That passkey is invalid. Please enter the same passkey you used for your other accounts.");
+                        }
+                    }
+                    else
+                    {
+                        this.Close();
+                        return;
+                    }
+                }
+            }
+
+            //Save the file immediately; losing this would be bad.
+            if (!manifest.SaveAccount(linker.LinkedAccount, passKey != null, passKey))
+            {
+                manifest.RemoveAccount(linker.LinkedAccount);
                 MessageBox.Show("Unable to save mobile authenticator file. The mobile authenticator has not been linked.");
                 this.Close();
                 return;
@@ -143,17 +183,17 @@ namespace Steam_Desktop_Authenticator
                 smsCodeForm.ShowDialog();
                 if (smsCodeForm.Canceled)
                 {
-                    MobileAuthenticatorFileHandler.DeleteMaFile(linker.LinkedAccount);
+                    manifest.RemoveAccount(linker.LinkedAccount);
                     this.Close();
                     return;
                 }
 
                 InputForm confirmRevocationCode = new InputForm("Please enter your revocation code to ensure you've saved it.");
                 confirmRevocationCode.ShowDialog();
-                if(confirmRevocationCode.txtBox.Text.ToUpper() != linker.LinkedAccount.RevocationCode)
+                if (confirmRevocationCode.txtBox.Text.ToUpper() != linker.LinkedAccount.RevocationCode)
                 {
                     MessageBox.Show("Revocation code incorrect; the authenticator has not been linked.");
-                    MobileAuthenticatorFileHandler.DeleteMaFile(linker.LinkedAccount);
+                    manifest.RemoveAccount(linker.LinkedAccount);
                     this.Close();
                     return;
                 }
@@ -169,21 +209,21 @@ namespace Steam_Desktop_Authenticator
 
                     case AuthenticatorLinker.FinalizeResult.UnableToGenerateCorrectCodes:
                         MessageBox.Show("Unable to generate the proper codes to finalize this authenticator. The authenticator should not have been linked. In the off-chance it was, please write down your revocation code, as this is the last chance to see it: " + linker.LinkedAccount.RevocationCode);
-                        MobileAuthenticatorFileHandler.DeleteMaFile(linker.LinkedAccount);
+                        manifest.RemoveAccount(linker.LinkedAccount);
                         this.Close();
                         return;
                         break;
 
                     case AuthenticatorLinker.FinalizeResult.GeneralFailure:
                         MessageBox.Show("Unable to finalize this authenticator. The authenticator should not have been linked. In the off-chance it was, please write down your revocation code, as this is the last chance to see it: " + linker.LinkedAccount.RevocationCode);
-                        MobileAuthenticatorFileHandler.DeleteMaFile(linker.LinkedAccount);
+                        manifest.RemoveAccount(linker.LinkedAccount);
                         this.Close();
                         return;
                 }
             }
 
             //Linked, finally. Re-save with FullyEnrolled property.
-            MobileAuthenticatorFileHandler.SaveMaFile(linker.LinkedAccount);
+            manifest.SaveAccount(linker.LinkedAccount, passKey != null, passKey);
             MessageBox.Show("Mobile authenticator successfully linked. Please write down your revocation code: " + linker.LinkedAccount.RevocationCode);
             this.Close();
         }

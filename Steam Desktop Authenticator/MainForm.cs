@@ -16,6 +16,7 @@ namespace Steam_Desktop_Authenticator
     {
         private SteamGuardAccount mCurrentAccount = null;
         private SteamGuardAccount[] allAccounts;
+        private Manifest mManifest;
 
         private long steamTime = 0;
         private long currentSteamChunk = 0;
@@ -23,6 +24,7 @@ namespace Steam_Desktop_Authenticator
         public MainForm()
         {
             InitializeComponent();
+            this.mManifest = Manifest.GetManifest();
             loadAccountsList();
 
             pbTimeout.Maximum = 30;
@@ -57,7 +59,33 @@ namespace Steam_Desktop_Authenticator
             listAccounts.Items.Clear();
             listAccounts.SelectedIndex = -1;
 
-            allAccounts = MobileAuthenticatorFileHandler.GetAllAccounts();
+            string passKey = null;
+            if (mManifest.Encrypted)
+            {
+                bool passKeyValid = false;
+                while (!passKeyValid)
+                {
+                    InputForm passKeyForm = new InputForm("Please enter your encryption passkey.", true);
+                    passKeyForm.ShowDialog();
+                    if (!passKeyForm.Canceled)
+                    {
+                        passKey = passKeyForm.txtBox.Text;
+                        passKeyValid = this.mManifest.VerifyPasskey(passKey);
+                        if (!passKeyValid)
+                        {
+                            MessageBox.Show("That passkey is invalid.");
+                        }
+                    }
+                    else
+                    {
+                        this.Close();
+                        return;
+                    }
+                }
+            }
+
+            allAccounts = mManifest.GetAllAccounts(passKey);
+
             if (allAccounts.Length > 0)
             {
                 for (int i = 0; i < allAccounts.Length; i++)
@@ -121,7 +149,7 @@ namespace Steam_Desktop_Authenticator
             if (success)
             {
                 MessageBox.Show("Authenticator unlinked. maFile will be deleted after hitting okay. If you need to make a backup, now's the time.");
-                MobileAuthenticatorFileHandler.DeleteMaFile(mCurrentAccount);
+                this.mManifest.RemoveAccount(mCurrentAccount);
                 this.loadAccountsList();
             }
             else
