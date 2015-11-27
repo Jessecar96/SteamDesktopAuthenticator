@@ -62,6 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileEncryptor.cs" />
     <Compile Include="InputForm.cs">
       <SubType>Form</SubType>
     </Compile>
