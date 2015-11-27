@@ -14,10 +14,13 @@ namespace Steam_Desktop_Authenticator
     {
         public bool Canceled = false;
 
-        public InputForm(string label)
+        public InputForm(string label, bool password = false)
         {
             InitializeComponent();
             this.labelText.Text = label;
+
+            if (password)
+                this.txtBox.PasswordChar = '*';
         }
 
         private void InputForm_Load(object sender, EventArgs e)
