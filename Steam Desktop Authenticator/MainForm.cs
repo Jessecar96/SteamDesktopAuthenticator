@@ -55,16 +55,21 @@ namespace Steam_Desktop_Authenticator
             listAccounts.Items.Clear();
 
             allAccounts = MobileAuthenticatorFileHandler.GetAllAccounts();
-            for (int i = 0; i < allAccounts.Length; i++)
+            if (allAccounts.Length > 0)
             {
-                SteamGuardAccount account = allAccounts[i];
-                listAccounts.Items.Add(account.AccountName);
+                for (int i = 0; i < allAccounts.Length; i++)
+                {
+                    SteamGuardAccount account = allAccounts[i];
+                    listAccounts.Items.Add(account.AccountName);
+                }
+
+                listAccounts.SelectedIndex = 0;
             }
         }
 
         private void loadAccountInfo()
         {
-            if (mCurrentAccount != null)
+            if (mCurrentAccount != null && steamTime != 0)
             {
                 txtLoginToken.Text = mCurrentAccount.GenerateSteamGuardCodeForTime(steamTime);
             }
