@@ -82,7 +82,15 @@ namespace Steam_Desktop_Authenticator
                         return;
                     }
                 }
+
+                btnManageEncryption.Text = "Manage Encryption";
             }
+            else
+            {
+                btnManageEncryption.Text = "Setup Encryption";
+            }
+
+            btnManageEncryption.Enabled = mManifest.Entries.Count > 0;
 
             allAccounts = mManifest.GetAllAccounts(passKey);
 
@@ -155,6 +163,57 @@ namespace Steam_Desktop_Authenticator
             else
             {
                 MessageBox.Show("Authenticator unable to be removed.");
+            }
+        }
+
+        private void btnManageEncryption_Click(object sender, EventArgs e)
+        {
+            if (mManifest.Encrypted)
+            {
+                InputForm currentPassKeyForm = new InputForm("Enter current passkey", true);
+                currentPassKeyForm.ShowDialog();
+
+                if (currentPassKeyForm.Canceled)
+                    return;
+
+                string curPassKey = currentPassKeyForm.txtBox.Text;
+
+                InputForm changePassKeyForm = new InputForm("Enter new passkey, or leave blank to remove encryption.");
+                changePassKeyForm.ShowDialog();
+
+                if (changePassKeyForm.Canceled)
+                    return;
+
+                InputForm changePassKeyForm2 = new InputForm("Confirm new passkey, or leave blank to remove encryption.");
+                changePassKeyForm2.ShowDialog();
+                if (changePassKeyForm2.Canceled)
+                    return;
+
+                string newPassKey = changePassKeyForm.txtBox.Text;
+                string confirmPassKey = changePassKeyForm2.txtBox.Text;
+
+                if (newPassKey != confirmPassKey)
+                {
+                    MessageBox.Show("Passkeys do not match.");
+                    return;
+                }
+
+                if (newPassKey.Length == 0)
+                    newPassKey = null;
+
+                string action = newPassKey == null ? "remove" : "change";
+                if (!mManifest.ChangeEncryptionKey(curPassKey, newPassKey))
+                    MessageBox.Show("Unable to " + action + " passkey.");
+                else
+                {
+                    MessageBox.Show("Passkey successfully " + action + "d.");
+                    this.loadAccountsList();
+                }
+            }
+            else
+            {
+                mManifest.PromptSetupPassKey();
+                this.loadAccountsList();
             }
         }
     }

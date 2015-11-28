@@ -81,6 +81,12 @@ namespace Steam_Desktop_Authenticator
                         this.Close();
                         return;
                         break;
+
+                    case LoginResult.BadRSA:
+                    case LoginResult.GeneralFailure:
+                        this.Close();
+                        return;
+                        break;
                 }
             }
 
@@ -128,16 +134,7 @@ namespace Steam_Desktop_Authenticator
             string passKey = null;
             if (manifest.Entries.Count == 0)
             {
-                InputForm newEncryptionForm = new InputForm("Please enter an encryption passkey. Leave blank or hit cancel to not encrypt (VERY INSECURE).");
-                newEncryptionForm.ShowDialog();
-                if (!newEncryptionForm.Canceled && newEncryptionForm.txtBox.Text.Length > 0)
-                {
-                    passKey = newEncryptionForm.txtBox.Text;
-                }
-                else
-                {
-                    MessageBox.Show("WARNING: You chose to not encrypt your files. Doing so imposes a security risk for yourself. If an attacker were to gain access to your computer, they could completely lock you out of your account and steal all your items.");
-                }
+                passKey = manifest.PromptSetupPassKey("Please enter an encryption passkey. Leave blank or hit cancel to not encrypt (VERY INSECURE).");
             }
             else if (manifest.Entries.Count > 0 && manifest.Encrypted)
             {

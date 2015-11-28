@@ -104,26 +104,52 @@ namespace Steam_Desktop_Authenticator
                     if (newManifest.Entries.Count > 0)
                     {
                         newManifest.Save();
-
-                        InputForm askForPasskey = new InputForm("This version of SDA has encryption. Please enter a passkey below, or hit cancel to remain unencrypted");
-                        askForPasskey.ShowDialog();
-                        if (askForPasskey.Canceled || askForPasskey.txtBox.Text.Length == 0)
-                        {
-                            MessageBox.Show("WARNING: You chose to not encrypt your files. Doing so imposes a security risk for yourself. If an attacker were to gain access to your computer, they could completely lock you out of your account and steal all your items.");
-                        }
-                        else
-                        {
-                            string passKey = askForPasskey.txtBox.Text;
-                            newManifest.ChangeEncryptionKey(null, passKey);
-                        }
+                        newManifest.PromptSetupPassKey("This version of SDA has encryption. Please enter a passkey below, or hit cancel to remain unencrypted");
                     }
-
                 }
             }
 
             if (newManifest.Save())
                 return newManifest;
             return null;
+        }
+
+        public string PromptSetupPassKey(string initialPrompt = "Enter passkey, or hit cancel to remain unencrypted.")
+        {
+            InputForm newPassKeyForm = new InputForm(initialPrompt);
+            newPassKeyForm.ShowDialog();
+            if (newPassKeyForm.Canceled || newPassKeyForm.txtBox.Text.Length == 0)
+            {
+                MessageBox.Show("WARNING: You chose to not encrypt your files. Doing so imposes a security risk for yourself. If an attacker were to gain access to your computer, they could completely lock you out of your account and steal all your items.");
+                return null;
+            }
+
+            InputForm newPassKeyForm2 = new InputForm("Confirm new passkey.");
+            newPassKeyForm2.ShowDialog();
+            if (newPassKeyForm2.Canceled)
+            {
+                MessageBox.Show("WARNING: You chose to not encrypt your files. Doing so imposes a security risk for yourself. If an attacker were to gain access to your computer, they could completely lock you out of your account and steal all your items.");
+                return null;
+            }
+
+            string newPassKey = newPassKeyForm.txtBox.Text;
+            string confirmPassKey = newPassKeyForm2.txtBox.Text;
+
+            if (newPassKey != confirmPassKey)
+            {
+                MessageBox.Show("Passkeys do not match.");
+                return null;
+            }
+
+            if (!this.ChangeEncryptionKey(null, newPassKey))
+            {
+                MessageBox.Show("Unable to set passkey.");
+                return null;
+            }
+            else
+                MessageBox.Show("Passkey successfully set.");
+
+            return newPassKey;
         }
 
         public SteamAuth.SteamGuardAccount[] GetAllAccounts(string passKey = null)

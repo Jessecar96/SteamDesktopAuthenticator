@@ -40,6 +40,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.btnTradeConfirmations = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
+            this.btnManageEncryption = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -82,15 +83,15 @@
             this.txtLoginToken.TabIndex = 0;
             this.txtLoginToken.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // listConfirmations
+            // listAccounts
             // 
             this.listAccounts.FormattingEnabled = true;
             this.listAccounts.Items.AddRange(new object[] {
             "test",
             "test"});
-            this.listAccounts.Location = new System.Drawing.Point(23, 221);
+            this.listAccounts.Location = new System.Drawing.Point(23, 260);
             this.listAccounts.Name = "listAccounts";
-            this.listAccounts.Size = new System.Drawing.Size(305, 134);
+            this.listAccounts.Size = new System.Drawing.Size(305, 95);
             this.listAccounts.TabIndex = 3;
             this.listAccounts.SelectedValueChanged += new System.EventHandler(this.listAccounts_SelectedValueChanged);
             // 
@@ -100,10 +101,10 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // btnAcceptConfirmation
+            // btnTradeConfirmations
             // 
             this.btnTradeConfirmations.Enabled = false;
-            this.btnTradeConfirmations.Location = new System.Drawing.Point(23, 185);
+            this.btnTradeConfirmations.Location = new System.Drawing.Point(23, 223);
             this.btnTradeConfirmations.Name = "btnTradeConfirmations";
             this.btnTradeConfirmations.Size = new System.Drawing.Size(138, 31);
             this.btnTradeConfirmations.TabIndex = 4;
@@ -111,9 +112,9 @@
             this.btnTradeConfirmations.UseVisualStyleBackColor = true;
             this.btnTradeConfirmations.Click += new System.EventHandler(this.btnTradeConfirmations_Click);
             // 
-            // btnDenyConfirmation
+            // btnDelete
             // 
-            this.btnDelete.Location = new System.Drawing.Point(190, 185);
+            this.btnDelete.Location = new System.Drawing.Point(190, 223);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(138, 31);
             this.btnDelete.TabIndex = 5;
@@ -121,12 +122,23 @@
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
+            // btnManageEncryption
+            // 
+            this.btnManageEncryption.Location = new System.Drawing.Point(23, 188);
+            this.btnManageEncryption.Name = "btnManageEncryption";
+            this.btnManageEncryption.Size = new System.Drawing.Size(305, 31);
+            this.btnManageEncryption.TabIndex = 6;
+            this.btnManageEncryption.Text = "Manage Encryption";
+            this.btnManageEncryption.UseVisualStyleBackColor = true;
+            this.btnManageEncryption.Click += new System.EventHandler(this.btnManageEncryption_Click);
+            // 
             // MainForm
             // 
             this.AcceptButton = this.btnSteamLogin;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(351, 378);
+            this.Controls.Add(this.btnManageEncryption);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnTradeConfirmations);
             this.Controls.Add(this.listAccounts);
@@ -152,6 +164,7 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button btnTradeConfirmations;
         private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.Button btnManageEncryption;
     }
 }
 
