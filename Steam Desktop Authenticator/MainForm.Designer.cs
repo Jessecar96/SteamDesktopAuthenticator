@@ -42,6 +42,7 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnManageEncryption = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.labelVersion = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -145,12 +146,26 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Account";
             // 
+            // labelVersion
+            // 
+            this.labelVersion.BackColor = System.Drawing.Color.Transparent;
+            this.labelVersion.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelVersion.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.labelVersion.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.labelVersion.Location = new System.Drawing.Point(244, 351);
+            this.labelVersion.Name = "labelVersion";
+            this.labelVersion.Size = new System.Drawing.Size(100, 15);
+            this.labelVersion.TabIndex = 8;
+            this.labelVersion.Text = "v0.0.0";
+            this.labelVersion.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            // 
             // MainForm
             // 
             this.AcceptButton = this.btnSteamLogin;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(351, 373);
+            this.Controls.Add(this.labelVersion);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.btnManageEncryption);
             this.Controls.Add(this.listAccounts);
@@ -179,6 +194,7 @@
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnManageEncryption;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label labelVersion;
     }
 }
 

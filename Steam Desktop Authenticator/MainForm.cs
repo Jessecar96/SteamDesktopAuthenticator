@@ -24,6 +24,7 @@ namespace Steam_Desktop_Authenticator
         public MainForm()
         {
             InitializeComponent();
+            this.labelVersion.Text = String.Format("v{0}", Application.ProductVersion);
             this.mManifest = Manifest.GetManifest();
             loadAccountsList();
 
