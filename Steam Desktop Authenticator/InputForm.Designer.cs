@@ -82,8 +82,11 @@
             this.Controls.Add(this.btnAccept);
             this.Controls.Add(this.txtBox);
             this.Controls.Add(this.labelText);
+            this.MaximizeBox = false;
             this.Name = "InputForm";
+            this.Resizable = false;
             this.ShadowType = MetroFramework.Forms.MetroForm.MetroFormShadowType.SystemShadow;
+            this.ShowInTaskbar = false;
             this.Load += new System.EventHandler(this.InputForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

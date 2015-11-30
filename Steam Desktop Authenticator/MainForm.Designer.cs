@@ -41,14 +41,16 @@
             this.btnTradeConfirmations = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnManageEncryption = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnSteamLogin
             // 
             this.btnSteamLogin.Location = new System.Drawing.Point(23, 63);
             this.btnSteamLogin.Name = "btnSteamLogin";
-            this.btnSteamLogin.Size = new System.Drawing.Size(305, 31);
+            this.btnSteamLogin.Size = new System.Drawing.Size(144, 31);
             this.btnSteamLogin.TabIndex = 1;
             this.btnSteamLogin.Text = "Setup new account";
             this.btnSteamLogin.UseVisualStyleBackColor = true;
@@ -89,7 +91,7 @@
             this.listAccounts.Items.AddRange(new object[] {
             "test",
             "test"});
-            this.listAccounts.Location = new System.Drawing.Point(23, 260);
+            this.listAccounts.Location = new System.Drawing.Point(23, 253);
             this.listAccounts.Name = "listAccounts";
             this.listAccounts.Size = new System.Drawing.Size(305, 95);
             this.listAccounts.TabIndex = 3;
@@ -104,7 +106,7 @@
             // btnTradeConfirmations
             // 
             this.btnTradeConfirmations.Enabled = false;
-            this.btnTradeConfirmations.Location = new System.Drawing.Point(23, 223);
+            this.btnTradeConfirmations.Location = new System.Drawing.Point(6, 19);
             this.btnTradeConfirmations.Name = "btnTradeConfirmations";
             this.btnTradeConfirmations.Size = new System.Drawing.Size(138, 31);
             this.btnTradeConfirmations.TabIndex = 4;
@@ -114,9 +116,9 @@
             // 
             // btnDelete
             // 
-            this.btnDelete.Location = new System.Drawing.Point(190, 223);
+            this.btnDelete.Location = new System.Drawing.Point(150, 19);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(138, 31);
+            this.btnDelete.Size = new System.Drawing.Size(149, 31);
             this.btnDelete.TabIndex = 5;
             this.btnDelete.Text = "Remove Authenticator";
             this.btnDelete.UseVisualStyleBackColor = true;
@@ -124,23 +126,33 @@
             // 
             // btnManageEncryption
             // 
-            this.btnManageEncryption.Location = new System.Drawing.Point(23, 188);
+            this.btnManageEncryption.Location = new System.Drawing.Point(173, 63);
             this.btnManageEncryption.Name = "btnManageEncryption";
-            this.btnManageEncryption.Size = new System.Drawing.Size(305, 31);
+            this.btnManageEncryption.Size = new System.Drawing.Size(155, 31);
             this.btnManageEncryption.TabIndex = 6;
             this.btnManageEncryption.Text = "Manage Encryption";
             this.btnManageEncryption.UseVisualStyleBackColor = true;
             this.btnManageEncryption.Click += new System.EventHandler(this.btnManageEncryption_Click);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.btnTradeConfirmations);
+            this.groupBox2.Controls.Add(this.btnDelete);
+            this.groupBox2.Location = new System.Drawing.Point(23, 191);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(305, 56);
+            this.groupBox2.TabIndex = 7;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Account";
             // 
             // MainForm
             // 
             this.AcceptButton = this.btnSteamLogin;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(351, 378);
+            this.ClientSize = new System.Drawing.Size(351, 373);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.btnManageEncryption);
-            this.Controls.Add(this.btnDelete);
-            this.Controls.Add(this.btnTradeConfirmations);
             this.Controls.Add(this.listAccounts);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnSteamLogin);
@@ -151,6 +163,7 @@
             this.Text = "Steam Desktop Authenticator";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -165,6 +178,7 @@
         private System.Windows.Forms.Button btnTradeConfirmations;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnManageEncryption;
+        private System.Windows.Forms.GroupBox groupBox2;
     }
 }
 
