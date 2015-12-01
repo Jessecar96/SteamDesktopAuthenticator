@@ -43,6 +43,7 @@
             this.btnManageEncryption = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.labelVersion = new System.Windows.Forms.Label();
+            this.labelUpdate = new System.Windows.Forms.LinkLabel();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -159,12 +160,28 @@
             this.labelVersion.Text = "v0.0.0";
             this.labelVersion.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             // 
+            // labelUpdate
+            // 
+            this.labelUpdate.BackColor = System.Drawing.Color.Transparent;
+            this.labelUpdate.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelUpdate.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.labelUpdate.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.labelUpdate.Location = new System.Drawing.Point(5, 351);
+            this.labelUpdate.Name = "labelUpdate";
+            this.labelUpdate.Size = new System.Drawing.Size(100, 15);
+            this.labelUpdate.TabIndex = 9;
+            this.labelUpdate.TabStop = true;
+            this.labelUpdate.Text = "Check for updates";
+            this.labelUpdate.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.labelUpdate.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.labelUpdate_LinkClicked);
+            // 
             // MainForm
             // 
             this.AcceptButton = this.btnSteamLogin;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(351, 373);
+            this.Controls.Add(this.labelUpdate);
             this.Controls.Add(this.labelVersion);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.btnManageEncryption);
@@ -195,6 +212,7 @@
         private System.Windows.Forms.Button btnManageEncryption;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label labelVersion;
+        private System.Windows.Forms.LinkLabel labelUpdate;
     }
 }
 

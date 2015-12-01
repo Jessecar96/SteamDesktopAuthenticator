@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using SteamAuth;
 using System.Diagnostics;
+using System.Net;
+using Newtonsoft.Json;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -31,6 +33,8 @@ namespace Steam_Desktop_Authenticator
             pbTimeout.Maximum = 30;
             pbTimeout.Minimum = 0;
             pbTimeout.Value = 30;
+
+            checkForUpdates();
         }
 
         private void btnSteamLogin_Click(object sender, EventArgs e)
@@ -215,6 +219,76 @@ namespace Steam_Desktop_Authenticator
             {
                 mManifest.PromptSetupPassKey();
                 this.loadAccountsList();
+            }
+        }
+
+
+        // Logic for version checking
+        private Version newVersion = null;
+        private Version currentVersion = null;
+        private WebClient updateClient = null;
+        private string updateUrl = null;
+        private bool startupUpdateCheck = true;
+
+        private void labelUpdate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (newVersion == null || currentVersion == null)
+            {
+                checkForUpdates();
+            }
+            else
+            {
+                compareVersions();
+            }
+        }
+
+        private void checkForUpdates()
+        {
+            if (updateClient != null) return;
+            updateClient = new WebClient();
+            updateClient.DownloadStringCompleted += UpdateClient_DownloadStringCompleted;
+            updateClient.Headers.Add("Content-Type", "application/json");
+            updateClient.Headers.Add("User-Agent", "Steam Desktop Authenticator");
+            updateClient.DownloadStringAsync(new Uri("https://api.github.com/repos/Jessecar96/SteamDesktopAuthenticator/releases/latest"));
+        }
+
+        private void compareVersions()
+        {
+            if (newVersion > currentVersion)
+            {
+                labelUpdate.Text = "Download new version"; // Show the user a new version is available if they press no
+                DialogResult updateDialog = MessageBox.Show("A new version is available! Would you like to download it now?", "New Version", MessageBoxButtons.YesNo);
+                if (updateDialog == DialogResult.Yes)
+                {
+                    Process.Start(updateUrl);
+                }
+            }
+            else
+            {
+                if (!startupUpdateCheck)
+                {
+                    MessageBox.Show("You are using the latest version.");
+                }
+            }
+
+            newVersion = null; // Check the api again next time they check for updates
+            updateClient = null; // Set to null to indicate it's done checking
+            startupUpdateCheck = false; // Set when it's done checking on startup
+        }
+
+        private void UpdateClient_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            try
+            {
+                dynamic resultObject = JsonConvert.DeserializeObject(e.Result);
+                newVersion = new Version(resultObject.tag_name.Value);
+                currentVersion = new Version(Application.ProductVersion);
+                updateUrl = resultObject.assets.First.browser_download_url.Value;
+                compareVersions();
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show("Failed to check for updates.");
             }
         }
     }
