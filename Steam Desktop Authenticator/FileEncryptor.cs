@@ -14,26 +14,6 @@ namespace Steam_Desktop_Authenticator
     /// Passwords entered will be passed into 100k rounds of PBKDF2 (RFC2898) with a cryptographically random salt.
     /// The generated key will then be passed into AES-256 (RijndalManaged) which will encrypt the data
     /// in cypher block chaining (CBC) mode, and then write both the PBKDF2 salt and encrypted data onto the disk.
-    /// 
-    /// Example usage code:
-    /// 
-    /// public void testEncrypt()
-    ///{
-    ///    string password = "testing1"; //would be user supplied in actual implementation
-    ///    string salt = FileEncryptor.GetRandomSalt();
-    ///    string IV = FileEncryptor.GetInitializationVector();
-    ///    Console.WriteLine("Salt: " + salt);
-    ///    Console.WriteLine("Initialization Vector: " + IV);
-    ///    string plaintext = "I'm going to get encrypted! WOoooooo! Super exciting.";
-    ///    Console.WriteLine(plaintext);
-    ///    string encrypted = FileEncryptor.EncryptData(password, salt, IV, plaintext);
-    ///    Console.WriteLine(encrypted);
-    ///    Console.WriteLine("try to decrypt...");
-    ///    Console.WriteLine(FileEncryptor.DecryptData(password, salt, IV, encrypted));
-    ///    Console.Read();
-    ///}
-    /// 
-    /// 
     /// </summary>
     public static class FileEncryptor
     {
