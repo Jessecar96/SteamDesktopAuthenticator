@@ -13,6 +13,8 @@ A desktop implementation of Steam's mobile authenticator app.
 
 **All data is stored in the `maFiles` folder where you extracted the program to. This contains your sensitive Steam account details. You should back this up, and NEVER share it with someone else.**
 
+**When updating, make sure to save your `maFiles` folder. You can just replace all the exe and dll files over the old ones and you'll be fine.**
+
 ## Features:
 - Generate login codes and confirm trades on multiple Steam accounts with ease.
 - Enable Steam's mobile auth on new accounts.
