@@ -162,7 +162,9 @@ namespace Steam_Desktop_Authenticator
                 currentPassKeyForm.ShowDialog();
 
                 if (currentPassKeyForm.Canceled)
+                {
                     return;
+                }
 
                 string curPassKey = currentPassKeyForm.txtBox.Text;
 

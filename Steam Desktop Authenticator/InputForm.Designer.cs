@@ -88,7 +88,7 @@
             this.Resizable = false;
             this.ShadowType = MetroFramework.Forms.MetroForm.MetroFormShadowType.SystemShadow;
             this.ShowInTaskbar = false;
-            this.Load += new System.EventHandler(this.InputForm_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.InputForm_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

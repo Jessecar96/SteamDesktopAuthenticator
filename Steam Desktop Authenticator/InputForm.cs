@@ -13,6 +13,7 @@ namespace Steam_Desktop_Authenticator
     public partial class InputForm : MetroFramework.Forms.MetroForm
     {
         public bool Canceled = false;
+        private bool userClosed = true;
 
         public InputForm(string label, bool password = false)
         {
@@ -20,24 +21,41 @@ namespace Steam_Desktop_Authenticator
             this.labelText.Text = label;
 
             if (password)
+            {
                 this.txtBox.PasswordChar = '*';
-        }
-
-        private void InputForm_Load(object sender, EventArgs e)
-        {
-
+            }
         }
 
         private void btnAccept_Click(object sender, EventArgs e)
         {
-            this.Canceled = false;
-            this.Close();
+            if (string.IsNullOrEmpty(this.txtBox.Text))
+            {
+                this.Canceled = true;
+                this.userClosed = false;
+                this.Close();
+            }
+            else
+            {
+                this.Canceled = false;
+                this.userClosed = false;
+                this.Close();
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Canceled = true;
+            this.userClosed = false;
             this.Close();
+        }
+
+        private void InputForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (this.userClosed)
+            {
+                // Set Canceled = true when the user hits the X button.
+                this.Canceled = true;
+            }
         }
     }
 }
