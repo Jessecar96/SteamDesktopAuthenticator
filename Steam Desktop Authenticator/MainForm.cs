@@ -73,10 +73,13 @@ namespace Steam_Desktop_Authenticator
             }
 
             if (mManifest.Encrypted)
+            {
                 btnManageEncryption.Text = "Manage Encryption";
-
+            }
             else
+            {
                 btnManageEncryption.Text = "Setup Encryption";
+            }
 
             btnManageEncryption.Enabled = mManifest.Entries.Count > 0;
 
@@ -112,7 +115,9 @@ namespace Steam_Desktop_Authenticator
 
             loadAccountInfo();
             if (mCurrentAccount != null)
+            {
                 pbTimeout.Value = 30 - secondsUntilChange;
+            }
         }
 
         private void btnTradeConfirmations_Click(object sender, EventArgs e)
@@ -131,10 +136,11 @@ namespace Steam_Desktop_Authenticator
             confirmationDialog.ShowDialog();
 
             if (confirmationDialog.Canceled)
+            {
                 return;
+            }
 
             string enteredCode = confirmationDialog.txtBox.Text.ToUpper();
-
             if (enteredCode != confCode)
             {
                 MessageBox.Show("Confirmation codes do not match. Authenticator has not been unlinked.");
@@ -172,7 +178,9 @@ namespace Steam_Desktop_Authenticator
                 changePassKeyForm.ShowDialog();
 
                 if (changePassKeyForm.Canceled)
+                {
                     return;
+                }
 
                 InputForm changePassKeyForm2 = new InputForm("Confirm new passkey, or leave blank to remove encryption.");
                 changePassKeyForm2.ShowDialog();
@@ -189,11 +197,15 @@ namespace Steam_Desktop_Authenticator
                 }
 
                 if (newPassKey.Length == 0)
+                {
                     newPassKey = null;
+                }
 
                 string action = newPassKey == null ? "remove" : "change";
                 if (!mManifest.ChangeEncryptionKey(curPassKey, newPassKey))
+                {
                     MessageBox.Show("Unable to " + action + " passkey.");
+                }
                 else
                 {
                     MessageBox.Show("Passkey successfully " + action + "d.");
@@ -275,7 +287,7 @@ namespace Steam_Desktop_Authenticator
                 updateUrl = resultObject.assets.First.browser_download_url.Value;
                 compareVersions();
             }
-            catch (Exception error)
+            catch (Exception)
             {
                 MessageBox.Show("Failed to check for updates.");
             }
