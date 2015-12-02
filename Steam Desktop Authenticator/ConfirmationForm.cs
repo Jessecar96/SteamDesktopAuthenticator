@@ -45,12 +45,39 @@ namespace Steam_Desktop_Authenticator
 
         }
 
-        private void loadConfirmations()
+        private void loadConfirmations(bool retry = false)
         {
             listConfirmations.Items.Clear();
             listConfirmations.SelectedIndex = -1;
 
-            Confirmations = mCurrentAccount.FetchConfirmations();
+            try
+            {
+                Confirmations = mCurrentAccount.FetchConfirmations();
+            }
+            catch (SteamGuardAccount.WGTokenInvalidException e)
+            {
+                if (retry)
+                {
+                    this.Close();
+                    return;
+                }
+                //TODO: catch only the relevant exceptions
+                if (mCurrentAccount.RefreshSession())
+                {
+                    Manifest manifest = Manifest.GetManifest();
+
+                    bool success;
+                    string passKey = manifest.PromptForPassKey(out success);
+
+                    if (!success)
+                        MessageBox.Show("Unable to fetch confirmations without your passkey.");
+
+                    manifest.SaveAccount(mCurrentAccount, manifest.Encrypted, passKey);
+
+                    loadConfirmations(true);
+                }
+            }
+
             if (Confirmations.Length > 0)
             {
                 for (int i = 0; i < Confirmations.Length; i++)

@@ -114,6 +114,39 @@ namespace Steam_Desktop_Authenticator
             return null;
         }
 
+        public string PromptForPassKey(out bool success)
+        {
+            success = false;
+            if (!this.Encrypted)
+            {
+                success = true;
+                return null;
+            }
+
+            bool passKeyValid = false;
+            string passKey = null;
+            while (!passKeyValid)
+            {
+                InputForm passKeyForm = new InputForm("Please enter your encryption passkey.", true);
+                passKeyForm.ShowDialog();
+                if (!passKeyForm.Canceled)
+                {
+                    passKey = passKeyForm.txtBox.Text;
+                    passKeyValid = this.VerifyPasskey(passKey);
+                    if (!passKeyValid)
+                    {
+                        MessageBox.Show("That passkey is invalid.");
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            success = passKeyValid;
+            return passKey;
+        }
+
         public string PromptSetupPassKey(string initialPrompt = "Enter passkey, or hit cancel to remain unencrypted.")
         {
             InputForm newPassKeyForm = new InputForm(initialPrompt);
@@ -152,7 +185,7 @@ namespace Steam_Desktop_Authenticator
             return newPassKey;
         }
 
-        public SteamAuth.SteamGuardAccount[] GetAllAccounts(string passKey = null)
+        public SteamAuth.SteamGuardAccount[] GetAllAccounts(string passKey = null, int limit = -1)
         {
             if (passKey == null && this.Encrypted) return new SteamGuardAccount[0];
             string maDir = Manifest.GetExecutableDir() + "/maFiles/";
@@ -171,6 +204,9 @@ namespace Steam_Desktop_Authenticator
                 var account = JsonConvert.DeserializeObject<SteamAuth.SteamGuardAccount>(fileText);
                 if (account == null) continue;
                 accounts.Add(account);
+
+                if (limit != -1 && limit >= accounts.Count)
+                    break;
             }
 
             return accounts.ToArray();
@@ -226,8 +262,8 @@ namespace Steam_Desktop_Authenticator
         {
             if (!this.Encrypted || this.Entries.Count == 0) return true;
 
-            var accounts = this.GetAllAccounts(passkey);
-            return accounts != null && accounts.Length == this.Entries.Count;
+            var accounts = this.GetAllAccounts(passkey, 1);
+            return accounts != null && accounts.Length == 1;
         }
 
         public bool RemoveAccount(SteamGuardAccount account)

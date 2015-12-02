@@ -26,9 +26,9 @@ namespace Steam_Desktop_Authenticator
         public MainForm()
         {
             InitializeComponent();
+
             this.labelVersion.Text = String.Format("v{0}", Application.ProductVersion);
             this.mManifest = Manifest.GetManifest();
-            loadAccountsList();
 
             pbTimeout.Maximum = 30;
             pbTimeout.Minimum = 0;
@@ -64,36 +64,19 @@ namespace Steam_Desktop_Authenticator
             listAccounts.Items.Clear();
             listAccounts.SelectedIndex = -1;
 
-            string passKey = null;
-            if (mManifest.Encrypted)
+            bool success;
+            string passKey = mManifest.PromptForPassKey(out success);
+            if (!success)
             {
-                bool passKeyValid = false;
-                while (!passKeyValid)
-                {
-                    InputForm passKeyForm = new InputForm("Please enter your encryption passkey.", true);
-                    passKeyForm.ShowDialog();
-                    if (!passKeyForm.Canceled)
-                    {
-                        passKey = passKeyForm.txtBox.Text;
-                        passKeyValid = this.mManifest.VerifyPasskey(passKey);
-                        if (!passKeyValid)
-                        {
-                            MessageBox.Show("That passkey is invalid.");
-                        }
-                    }
-                    else
-                    {
-                        this.Close();
-                        return;
-                    }
-                }
+                this.Close();
+                return;
+            }
 
+            if (mManifest.Encrypted)
                 btnManageEncryption.Text = "Manage Encryption";
-            }
+
             else
-            {
                 btnManageEncryption.Text = "Setup Encryption";
-            }
 
             btnManageEncryption.Enabled = mManifest.Entries.Count > 0;
 
@@ -222,6 +205,10 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+            loadAccountsList();
+        }
 
         // Logic for version checking
         private Version newVersion = null;
