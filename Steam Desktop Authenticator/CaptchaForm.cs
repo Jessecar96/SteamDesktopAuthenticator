@@ -31,11 +31,6 @@ namespace Steam_Desktop_Authenticator
             this.pictureBoxCaptcha.Load(CaptchaURL);
         }
 
-        private void CaptchaForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnAccept_Click(object sender, EventArgs e)
         {
             this.Canceled = false;

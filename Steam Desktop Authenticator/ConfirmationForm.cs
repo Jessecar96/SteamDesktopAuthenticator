@@ -116,10 +116,5 @@ namespace Steam_Desktop_Authenticator
             }
             this.loadConfirmations();
         }
-
-        private void ConfirmationForm_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

@@ -95,7 +95,6 @@
             this.Controls.Add(this.labelText);
             this.Name = "CaptchaForm";
             this.ShadowType = MetroFramework.Forms.MetroForm.MetroFormShadowType.SystemShadow;
-            this.Load += new System.EventHandler(this.CaptchaForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCaptcha)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

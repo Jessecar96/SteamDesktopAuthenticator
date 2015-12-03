@@ -84,7 +84,6 @@
             this.Resizable = false;
             this.ShadowType = MetroFramework.Forms.MetroForm.MetroFormShadowType.SystemShadow;
             this.Text = "Trade Confirmations";
-            this.Load += new System.EventHandler(this.ConfirmationForm_Load);
             this.ResumeLayout(false);
 
         }

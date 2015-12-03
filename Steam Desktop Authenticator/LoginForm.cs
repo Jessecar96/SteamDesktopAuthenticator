@@ -35,11 +35,6 @@ namespace Steam_Desktop_Authenticator
             return true;
         }
 
-        private void LoginForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnSteamLogin_Click(object sender, EventArgs e)
         {
             string username = txtUsername.Text;
@@ -80,13 +75,11 @@ namespace Steam_Desktop_Authenticator
                         MessageBox.Show("This account already has a mobile authenticator linked to it. Please remove that first.");
                         this.Close();
                         return;
-                        break;
 
                     case LoginResult.BadRSA:
                     case LoginResult.GeneralFailure:
                         this.Close();
                         return;
-                        break;
                 }
             }
 
@@ -126,7 +119,6 @@ namespace Steam_Desktop_Authenticator
                     case AuthenticatorLinker.LinkResult.GeneralFailure:
                         this.Close();
                         return;
-                        break;
                 }
             }
 
@@ -200,14 +192,12 @@ namespace Steam_Desktop_Authenticator
                 {
                     case AuthenticatorLinker.FinalizeResult.BadSMSCode:
                         continue;
-                        break;
 
                     case AuthenticatorLinker.FinalizeResult.UnableToGenerateCorrectCodes:
                         MessageBox.Show("Unable to generate the proper codes to finalize this authenticator. The authenticator should not have been linked. In the off-chance it was, please write down your revocation code, as this is the last chance to see it: " + linker.LinkedAccount.RevocationCode);
                         manifest.RemoveAccount(linker.LinkedAccount);
                         this.Close();
                         return;
-                        break;
 
                     case AuthenticatorLinker.FinalizeResult.GeneralFailure:
                         MessageBox.Show("Unable to finalize this authenticator. The authenticator should not have been linked. In the off-chance it was, please write down your revocation code, as this is the last chance to see it: " + linker.LinkedAccount.RevocationCode);

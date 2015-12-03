@@ -116,7 +116,6 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Steam Login";
-            this.Load += new System.EventHandler(this.LoginForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
