@@ -18,7 +18,7 @@ A desktop implementation of Steam's mobile authenticator app.
 ## Features:
 - Generate login codes and confirm trades on multiple Steam accounts with ease.
 - Enable Steam's mobile auth on new accounts.
-- Encryption of sensitive accoutn details.
+- Encryption of sensitive account details.
 
 ## Coming soon:
 - Notifications when you have a trade waiting to be confirmed.
