@@ -177,15 +177,18 @@ namespace Steam_Desktop_Authenticator
                 InputForm changePassKeyForm = new InputForm("Enter new passkey, or leave blank to remove encryption.");
                 changePassKeyForm.ShowDialog();
 
-                if (changePassKeyForm.Canceled)
+                if (changePassKeyForm.Canceled && !string.IsNullOrEmpty(changePassKeyForm.txtBox.Text))
                 {
                     return;
                 }
 
                 InputForm changePassKeyForm2 = new InputForm("Confirm new passkey, or leave blank to remove encryption.");
                 changePassKeyForm2.ShowDialog();
-                if (changePassKeyForm2.Canceled)
+
+                if (changePassKeyForm2.Canceled && !string.IsNullOrEmpty(changePassKeyForm.txtBox.Text))
+                {
                     return;
+                }
 
                 string newPassKey = changePassKeyForm.txtBox.Text;
                 string confirmPassKey = changePassKeyForm2.txtBox.Text;
