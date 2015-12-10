@@ -11,6 +11,11 @@ A desktop implementation of Steam's mobile authenticator app.
 - You may be asked to setup encryption, this is to make sure if someone gains access to your computer they can't steal your Steam account from this program. This is optional but heavily reccomended.
 - Select your account from the list to view the current login code, and click `Trade Confirmations` to see pending trade confirmations.
 
+[How to update SDA](https://github.com/Jessecar96/SteamDesktopAuthenticator/wiki/Updating)
+
+[How to use SDA on multiple computers](https://github.com/Jessecar96/SteamDesktopAuthenticator/wiki/Using-SDA-on-multiple-computers)
+
+
 **All data is stored in the `maFiles` folder where you extracted the program to. This contains your sensitive Steam account details. You should back this up, and NEVER share it with someone else.**
 
 **When updating, make sure to save your `maFiles` folder. You can just replace all the exe and dll files over the old ones and you'll be fine.**
