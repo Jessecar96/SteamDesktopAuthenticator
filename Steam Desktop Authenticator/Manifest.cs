@@ -22,7 +22,7 @@ namespace Steam_Desktop_Authenticator
 
         public static string GetExecutableDir()
         {
-            return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+            return Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
         }
 
         public static Manifest GetManifest()

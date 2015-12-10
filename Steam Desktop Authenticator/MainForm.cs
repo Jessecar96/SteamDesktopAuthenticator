@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,7 +15,7 @@ using Newtonsoft.Json;
 
 namespace Steam_Desktop_Authenticator
 {
-    public partial class MainForm : MetroFramework.Forms.MetroForm
+    public partial class MainForm : Form
     {
         private SteamGuardAccount mCurrentAccount = null;
         private SteamGuardAccount[] allAccounts;
@@ -297,6 +298,57 @@ namespace Steam_Desktop_Authenticator
             {
                 MessageBox.Show("Failed to check for updates.");
             }
+        }
+
+        private void menuImportMaFile_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+
+            // Set filter options and filter index.
+            openFileDialog1.Filter = "maFiles (.maFile)|*.maFile|All Files (*.*)|*.*";
+            openFileDialog1.FilterIndex = 1;
+            openFileDialog1.Multiselect = false;
+
+            // Call the ShowDialog method to show the dialog box.
+            DialogResult userClickedOK = openFileDialog1.ShowDialog();
+
+            // Process input if the user clicked OK.
+            if (userClickedOK == DialogResult.OK)
+            {
+                // Open the selected file to read.
+                System.IO.Stream fileStream = openFileDialog1.OpenFile();
+                string fileContents = null;
+
+                using (System.IO.StreamReader reader = new System.IO.StreamReader(fileStream))
+                {
+                    fileContents = reader.ReadToEnd();
+                }
+                fileStream.Close();
+
+                try
+                {
+                    SteamGuardAccount maFile = JsonConvert.DeserializeObject<SteamGuardAccount>(fileContents);
+                    if(maFile.Session.SteamID != 0)
+                    {
+                        mManifest.SaveAccount(maFile, false);
+                        MessageBox.Show("Account Imported!");
+                        loadAccountsList();
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid SteamID");
+                    }
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("This file is not a valid SteamAuth maFile. Import Failed.");
+                }
+            }
+        }
+
+        private void menuQuit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }
