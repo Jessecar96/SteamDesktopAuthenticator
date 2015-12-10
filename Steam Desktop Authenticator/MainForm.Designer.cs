@@ -50,6 +50,7 @@
             // 
             // btnSteamLogin
             // 
+            this.btnSteamLogin.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.btnSteamLogin.Location = new System.Drawing.Point(23, 63);
             this.btnSteamLogin.Name = "btnSteamLogin";
             this.btnSteamLogin.Size = new System.Drawing.Size(144, 31);
@@ -60,6 +61,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.pbTimeout);
             this.groupBox1.Controls.Add(this.txtLoginToken);
             this.groupBox1.Location = new System.Drawing.Point(23, 100);
@@ -71,6 +74,8 @@
             // 
             // pbTimeout
             // 
+            this.pbTimeout.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pbTimeout.Location = new System.Drawing.Point(6, 60);
             this.pbTimeout.Name = "pbTimeout";
             this.pbTimeout.Size = new System.Drawing.Size(293, 19);
@@ -78,6 +83,8 @@
             // 
             // txtLoginToken
             // 
+            this.txtLoginToken.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtLoginToken.BackColor = System.Drawing.SystemColors.Window;
             this.txtLoginToken.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtLoginToken.Location = new System.Drawing.Point(6, 19);
@@ -89,13 +96,16 @@
             // 
             // listAccounts
             // 
+            this.listAccounts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listAccounts.FormattingEnabled = true;
             this.listAccounts.Items.AddRange(new object[] {
             "test",
             "test"});
             this.listAccounts.Location = new System.Drawing.Point(23, 253);
             this.listAccounts.Name = "listAccounts";
-            this.listAccounts.Size = new System.Drawing.Size(305, 95);
+            this.listAccounts.Size = new System.Drawing.Size(305, 147);
             this.listAccounts.TabIndex = 3;
             this.listAccounts.SelectedValueChanged += new System.EventHandler(this.listAccounts_SelectedValueChanged);
             // 
@@ -107,6 +117,7 @@
             // 
             // btnTradeConfirmations
             // 
+            this.btnTradeConfirmations.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnTradeConfirmations.Enabled = false;
             this.btnTradeConfirmations.Location = new System.Drawing.Point(6, 19);
             this.btnTradeConfirmations.Name = "btnTradeConfirmations";
@@ -118,6 +129,7 @@
             // 
             // btnDelete
             // 
+            this.btnDelete.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnDelete.Location = new System.Drawing.Point(150, 19);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(149, 31);
@@ -128,6 +140,7 @@
             // 
             // btnManageEncryption
             // 
+            this.btnManageEncryption.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.btnManageEncryption.Location = new System.Drawing.Point(173, 63);
             this.btnManageEncryption.Name = "btnManageEncryption";
             this.btnManageEncryption.Size = new System.Drawing.Size(155, 31);
@@ -138,6 +151,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.btnTradeConfirmations);
             this.groupBox2.Controls.Add(this.btnDelete);
             this.groupBox2.Location = new System.Drawing.Point(23, 191);
@@ -149,11 +164,12 @@
             // 
             // labelVersion
             // 
+            this.labelVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.labelVersion.BackColor = System.Drawing.Color.Transparent;
             this.labelVersion.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelVersion.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.labelVersion.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.labelVersion.Location = new System.Drawing.Point(244, 351);
+            this.labelVersion.Location = new System.Drawing.Point(228, 404);
             this.labelVersion.Name = "labelVersion";
             this.labelVersion.Size = new System.Drawing.Size(100, 15);
             this.labelVersion.TabIndex = 8;
@@ -162,11 +178,12 @@
             // 
             // labelUpdate
             // 
+            this.labelUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelUpdate.BackColor = System.Drawing.Color.Transparent;
             this.labelUpdate.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelUpdate.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.labelUpdate.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.labelUpdate.Location = new System.Drawing.Point(5, 351);
+            this.labelUpdate.Location = new System.Drawing.Point(21, 404);
             this.labelUpdate.Name = "labelUpdate";
             this.labelUpdate.Size = new System.Drawing.Size(100, 15);
             this.labelUpdate.TabIndex = 9;
@@ -180,7 +197,7 @@
             this.AcceptButton = this.btnSteamLogin;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(351, 373);
+            this.ClientSize = new System.Drawing.Size(351, 432);
             this.Controls.Add(this.labelUpdate);
             this.Controls.Add(this.labelVersion);
             this.Controls.Add(this.groupBox2);
@@ -190,7 +207,6 @@
             this.Controls.Add(this.btnSteamLogin);
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Resizable = false;
             this.ShadowType = MetroFramework.Forms.MetroForm.MetroFormShadowType.SystemShadow;
             this.Text = "Steam Desktop Authenticator";
             this.Shown += new System.EventHandler(this.MainForm_Shown);
