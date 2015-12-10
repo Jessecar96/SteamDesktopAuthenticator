@@ -265,7 +265,7 @@ namespace Steam_Desktop_Authenticator
             if (newVersion > currentVersion)
             {
                 labelUpdate.Text = "Download new version"; // Show the user a new version is available if they press no
-                DialogResult updateDialog = MessageBox.Show("A new version is available! Would you like to download it now?", "New Version", MessageBoxButtons.YesNo);
+                DialogResult updateDialog = MessageBox.Show(String.Format("A new version is available! Would you like to download it now?\nYou will update from version {0} to {1}", Application.ProductVersion, newVersion.ToString()), "New Version", MessageBoxButtons.YesNo);
                 if (updateDialog == DialogResult.Yes)
                 {
                     Process.Start(updateUrl);
@@ -275,7 +275,7 @@ namespace Steam_Desktop_Authenticator
             {
                 if (!startupUpdateCheck)
                 {
-                    MessageBox.Show("You are using the latest version.");
+                    MessageBox.Show(String.Format("You are using the latest version: {0}", Application.ProductVersion));
                 }
             }
 
