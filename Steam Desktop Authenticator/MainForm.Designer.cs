@@ -1,7 +1,5 @@
 ﻿namespace Steam_Desktop_Authenticator
 {
-    using MetroFramework;
-    using MetroFramework.Forms;
 
     partial class MainForm
     {
