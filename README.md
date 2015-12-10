@@ -10,6 +10,8 @@ A desktop implementation of Steam's mobile authenticator app.
 - Login to Steam and follow the instructions to set it up. **Note: you still need a phone that can receive SMS, you can get a free SMS enabled phone number from [Google Voice](https://www.google.com/voice) in the US**
 - You may be asked to setup encryption, this is to make sure if someone gains access to your computer they can't steal your Steam account from this program. This is optional but heavily reccomended.
 - Select your account from the list to view the current login code, and click `Trade Confirmations` to see pending trade confirmations.
+- For your saftey, remember to get Steam Guard backup codes! Go to https://store.steampowered.com/twofactor/manage and click "
+Get Backup Codes", then print out that page and save it in a safe place. You can use these codes if you lose access to your auenticator.
 
 [How to update SDA](https://github.com/Jessecar96/SteamDesktopAuthenticator/wiki/Updating)
 
