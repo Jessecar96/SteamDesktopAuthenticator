@@ -124,8 +124,11 @@ namespace Steam_Desktop_Authenticator
         {
             if (mCurrentAccount == null) return;
 
-            ConfirmationForm confirmations = new ConfirmationForm(mCurrentAccount);
-            confirmations.ShowDialog();
+            // Get new cookies every time (sadly)
+            mCurrentAccount.RefreshSession();
+
+            ConfirmationFormWeb confirms = new ConfirmationFormWeb(mCurrentAccount);
+            confirms.Show();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
