@@ -92,6 +92,19 @@ namespace Steam_Desktop_Authenticator
         {
             browser.Load(steamAccount.GenerateConfirmationURL());
         }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            bool bHandled = false;
+            switch (keyData)
+            {
+                case Keys.F5:
+                    browser.Load(steamAccount.GenerateConfirmationURL());
+                    bHandled = true;
+                    break;
+            }
+            return bHandled;
+        }
     }
     
 }
