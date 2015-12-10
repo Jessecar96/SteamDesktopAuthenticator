@@ -42,7 +42,7 @@ namespace Steam_Desktop_Authenticator
             {
                 Dock = DockStyle.Fill,
             };
-            this.Controls.Add(browser);
+            this.splitContainer1.Panel2.Controls.Add(browser);
 
             BrowserRequestHandler handler = new BrowserRequestHandler();
             handler.Cookies = steamCookies;
@@ -86,6 +86,11 @@ namespace Steam_Desktop_Authenticator
             {
                 tradeID = urlparts[1].Replace("conf_", "");
             }
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            browser.Load(steamAccount.GenerateConfirmationURL());
         }
     }
     
