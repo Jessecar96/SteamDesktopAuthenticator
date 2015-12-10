@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 
 namespace Steam_Desktop_Authenticator
 {
-    public partial class LoginForm : MetroFramework.Forms.MetroForm
+    public partial class LoginForm : Form
     {
 
         public UserLogin mUserLogin;

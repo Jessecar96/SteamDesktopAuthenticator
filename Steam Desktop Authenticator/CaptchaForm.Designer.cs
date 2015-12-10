@@ -41,7 +41,7 @@
             this.labelText.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.labelText.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelText.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelText.Location = new System.Drawing.Point(23, 22);
+            this.labelText.Location = new System.Drawing.Point(9, 16);
             this.labelText.Name = "labelText";
             this.labelText.Size = new System.Drawing.Size(284, 18);
             this.labelText.TabIndex = 0;
@@ -50,14 +50,14 @@
             // txtBox
             // 
             this.txtBox.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBox.Location = new System.Drawing.Point(23, 91);
+            this.txtBox.Location = new System.Drawing.Point(12, 84);
             this.txtBox.Name = "txtBox";
             this.txtBox.Size = new System.Drawing.Size(206, 33);
             this.txtBox.TabIndex = 1;
             // 
             // btnAccept
             // 
-            this.btnAccept.Location = new System.Drawing.Point(22, 130);
+            this.btnAccept.Location = new System.Drawing.Point(11, 123);
             this.btnAccept.Name = "btnAccept";
             this.btnAccept.Size = new System.Drawing.Size(98, 28);
             this.btnAccept.TabIndex = 2;
@@ -67,7 +67,8 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(132, 130);
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Location = new System.Drawing.Point(120, 123);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(98, 28);
             this.btnCancel.TabIndex = 3;
@@ -75,26 +76,29 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // pictureBox1
+            // pictureBoxCaptcha
             // 
-            this.pictureBoxCaptcha.Location = new System.Drawing.Point(23, 44);
-            this.pictureBoxCaptcha.Name = "pictureBox1";
+            this.pictureBoxCaptcha.Location = new System.Drawing.Point(12, 37);
+            this.pictureBoxCaptcha.Name = "pictureBoxCaptcha";
             this.pictureBoxCaptcha.Size = new System.Drawing.Size(206, 40);
+            this.pictureBoxCaptcha.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxCaptcha.TabIndex = 4;
             this.pictureBoxCaptcha.TabStop = false;
             // 
             // CaptchaForm
             // 
+            this.AcceptButton = this.btnAccept;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(245, 166);
+            this.CancelButton = this.btnCancel;
+            this.ClientSize = new System.Drawing.Size(232, 164);
             this.Controls.Add(this.pictureBoxCaptcha);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnAccept);
             this.Controls.Add(this.txtBox);
             this.Controls.Add(this.labelText);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "CaptchaForm";
-            this.ShadowType = MetroFramework.Forms.MetroForm.MetroFormShadowType.SystemShadow;
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCaptcha)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
