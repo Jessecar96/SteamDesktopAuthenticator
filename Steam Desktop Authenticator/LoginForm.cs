@@ -117,6 +117,7 @@ namespace Steam_Desktop_Authenticator
                         break;
 
                     case AuthenticatorLinker.LinkResult.GeneralFailure:
+                        MessageBox.Show("Error adding your phone number. Steam returned \"GeneralFailure\".");
                         this.Close();
                         return;
                 }
