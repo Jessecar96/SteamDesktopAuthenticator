@@ -42,12 +42,6 @@ namespace Steam_Desktop_Authenticator
             string username = txtUsername.Text;
             string password = txtPassword.Text;
 
-            if (waitLogin)
-            {
-                FinishExtract(username, password);
-                return;
-            }
-
             mUserLogin = new UserLogin(username, password);
             LoginResult response = LoginResult.BadCredentials;
 
@@ -80,6 +74,7 @@ namespace Steam_Desktop_Authenticator
                         break;
 
                     case LoginResult.Need2FA:
+                        if (waitLogin) continue;
                         MessageBox.Show("This account already has a mobile authenticator linked to it. Please remove that first.");
                         this.Close();
                         return;
@@ -160,6 +155,12 @@ namespace Steam_Desktop_Authenticator
                 }
             }
 
+            if (waitLogin)
+            {
+                FinishExtract(linker, session);
+                return;
+            }
+
             //Save the file immediately; losing this would be bad.
             if (!manifest.SaveAccount(linker.LinkedAccount, passKey != null, passKey))
             {
@@ -238,15 +239,13 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
-        private void FinishExtract(string username, string password)
+        private void FinishExtract(AuthenticatorLinker linker, SessionData session)
         {
-            UserLogin login = new UserLogin(username, password);
-            SessionData session = login.Session;
-            AuthenticatorLinker linker = new AuthenticatorLinker(session);
             Manifest man = new Manifest();
 
             acc.Session = session;
             acc.DeviceID = linker.DeviceID;
+            acc.FullyEnrolled = true;
 
             string passKey;
             passKey = man.PromptSetupPassKey();
