@@ -4,6 +4,7 @@ A desktop implementation of Steam's mobile authenticator app.
 **Be warned! Using this desktop app in place of Steam's mobile app defeats the entire purpose of another device acting as your authenticator. You assume all responsiblity for keeping your computer secure. If a 3rd party gains access to your  authenticator data they will gain full instant access to your Steam account and all its items!**
 
 ## Setup Instructions:
+- Download & Install [Visual C++ Redistributable 2012](https://www.microsoft.com/en-us/download/details.aspx?id=30679) from the Microsoft website if you don't have it already.
 - Visit [the releases page](https://github.com/Jessecar96/SteamDesktopAuthenticator/releases) and download the latest zip (not the source code one).
 - Extract the files somewhere very safe on your computer. If you lose the files you can lose access to your Steam account.
 - Run `Steam Desktop Authenticator.exe` and click the button to setup a new account.
