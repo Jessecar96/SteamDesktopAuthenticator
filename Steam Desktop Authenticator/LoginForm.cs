@@ -77,7 +77,12 @@ namespace Steam_Desktop_Authenticator
                         return;
 
                     case LoginResult.BadRSA:
+                        MessageBox.Show("Error logging in. Steam returned \"BadRSA\".");
+                        this.Close();
+                        return;
+
                     case LoginResult.GeneralFailure:
+                        MessageBox.Show("Error logging in. Steam returned \"GeneralFailure\".");
                         this.Close();
                         return;
                 }
