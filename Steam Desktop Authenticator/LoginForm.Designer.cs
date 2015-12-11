@@ -34,6 +34,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnSteamLogin = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
+            this.btnExtractPhone = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -96,6 +97,17 @@
             this.label3.Text = "This will activate Steam Desktop Authenticator on your Steam account. This requir" +
     "es a phone number that can receive SMS.";
             // 
+            // btnExtractPhone
+            // 
+            this.btnExtractPhone.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExtractPhone.Location = new System.Drawing.Point(26, 201);
+            this.btnExtractPhone.Name = "btnExtractPhone";
+            this.btnExtractPhone.Size = new System.Drawing.Size(127, 38);
+            this.btnExtractPhone.TabIndex = 4;
+            this.btnExtractPhone.Text = "Get from phone";
+            this.btnExtractPhone.UseVisualStyleBackColor = true;
+            this.btnExtractPhone.Click += new System.EventHandler(this.btnExtractPhone_Click);
+            // 
             // LoginForm
             // 
             this.AcceptButton = this.btnSteamLogin;
@@ -103,6 +115,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(346, 262);
             this.Controls.Add(this.label3);
+            this.Controls.Add(this.btnExtractPhone);
             this.Controls.Add(this.btnSteamLogin);
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.label2);
@@ -129,5 +142,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnSteamLogin;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button btnExtractPhone;
     }
 }

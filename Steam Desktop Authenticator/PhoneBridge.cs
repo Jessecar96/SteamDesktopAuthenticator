@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SteamAuth;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SteamAuth
+namespace Steam_Desktop_Authenticator
 {
     public class PhoneBridge
     {
@@ -16,12 +17,18 @@ namespace SteamAuth
         private Process console;
         private ManualResetEvent mreOutput = new ManualResetEvent(false);
 
-        public delegate void BridgeError(string msg);
-        public event BridgeError PhoneBridgeError;
+        public delegate void BridgeOutput(string msg);
+        public event BridgeOutput PhoneBridgeError;
+        public event BridgeOutput OutputLog;
         private void OnPhoneBridgeError(string msg)
         {
             if (PhoneBridgeError != null)
                 PhoneBridgeError(msg);
+        }
+        private void OnOutputLog(string msg)
+        {
+            if (OutputLog != null)
+                OutputLog(msg);
         }
 
         private string Error = "";
@@ -53,6 +60,7 @@ namespace SteamAuth
         {
             InitConsole(); // Init the console
 
+            OnOutputLog("Checking requirements...");
             // Check required states
             Error = ErrorsFound();
             if (Error != "")
@@ -61,11 +69,17 @@ namespace SteamAuth
                 return null;
             }
 
+            OnOutputLog("Checking for root");
+            bool root = IsRooted();
+
             SteamGuardAccount acc;
 
-            if (IsRooted()){
+            if (root)
+            {
+                OnOutputLog("Using root method");
                 acc = JsonConvert.DeserializeObject<SteamGuardAccount>(PullJson());
             } else {
+                OnOutputLog("Using no-root method");
                 acc = JsonConvert.DeserializeObject<SteamGuardAccount>(PullJsonNoRoot());
             }
 
@@ -107,14 +121,21 @@ namespace SteamAuth
 
             console.OutputDataReceived += f1;
 
+            OnOutputLog("Extracting (1/2)");
             ExecuteCommand("adb shell \"su -c ls /data/data/com.valvesoftware.android.steam.community/files\"");
             mre.Wait();
 
             mre.Reset();
+            OnOutputLog("Extracting (2/2)");
             ExecuteCommand("adb shell su -c \"cat /data/data/com.valvesoftware.android.steam.community/files/Steamguard-" + steamid + "\"");
             mre.Wait();
 
             console.OutputDataReceived -= f1;
+
+            if (json == null)
+            {
+                OnOutputLog("An error occured while extracting files");
+            }
 
             return json;
         }
@@ -133,25 +154,31 @@ namespace SteamAuth
 
             console.OutputDataReceived += f1;
 
+            OnOutputLog("Extracting (1/5)");
             ExecuteCommand("adb backup --noapk com.valvesoftware.android.steam.community & echo Done");
             mre.Wait();
 
             mre.Reset();
+            OnOutputLog("Extracting (2/5)");
             ExecuteCommand("adb push backup.ab /sdcard/steamauth/backup.ab & echo Done");
             mre.Wait();
 
             mre.Reset();
+            OnOutputLog("Extracting (3/5)");
             ExecuteCommand("adb shell \" cd /sdcard/steamauth ; ( printf " + @" '\x1f\x8b\x08\x00\x00\x00\x00\x00'" + " ; tail -c +25 backup.ab ) |  tar xfvz - \" & echo Done");
             mre.Wait();
 
             mre.Reset();
+            OnOutputLog("Extracting (4/5)");
             ExecuteCommand("adb shell \"cat /sdcard/steamauth/apps/*/f/Steamguard-*\" & echo: & echo Done");
             mre.Wait();
 
             mre.Reset();
+            OnOutputLog("Extracting (5/5)");
             ExecuteCommand("adb shell \"rm -dR /sdcard/steamauth\" & echo Done");
             mre.Wait();
 
+            OnOutputLog("Finishing extracting");
             System.IO.File.Delete("backup.ab");
 
             console.OutputDataReceived -= f1;
@@ -162,6 +189,8 @@ namespace SteamAuth
         {
             bool exists = true;
             Process p = new Process();
+
+            OnOutputLog("Checking for ADB");
 
             p.StartInfo.FileName = "adb.exe";
             p.StartInfo.CreateNoWindow = true;
@@ -180,6 +209,7 @@ namespace SteamAuth
         }
         private bool DeviceUp()
         {
+            OnOutputLog("Checking for device");
             bool up = false;
             ManualResetEventSlim mre = new ManualResetEventSlim();
             DataReceivedEventHandler f1 = (sender, e) =>
@@ -201,6 +231,7 @@ namespace SteamAuth
         }
         private bool SteamAppInstalled()
         {
+            OnOutputLog("Checking for Steam app");
             bool ins = false;
             ManualResetEventSlim mre = new ManualResetEventSlim();
             DataReceivedEventHandler f1 = (sender, e) =>
@@ -222,6 +253,7 @@ namespace SteamAuth
         }
         private bool IsRooted()
         {
+            OnOutputLog("Checking root");
             bool root = false;
             ManualResetEventSlim mre = new ManualResetEventSlim();
             DataReceivedEventHandler f1 = (sender, e) =>
@@ -242,10 +274,70 @@ namespace SteamAuth
             return root;
         }
 
+
+        public event EventHandler DeviceWaited;
+        protected void OnDeviceWaited()
+        {
+            if (DeviceWaited != null)
+            {
+                DeviceWaited(this, EventArgs.Empty);
+            }
+        }
+
+        public void WaitForDeviceAsync()
+        {
+            InitConsole();
+            console.OutputDataReceived += WaitForDeviceCallback;
+
+            ExecuteCommand("adb wait-for-device & echo Done");
+        }
+
+        private void WaitForDeviceCallback(object sender, DataReceivedEventArgs e)
+        {
+            if (e.Data.Contains(">@") || e.Data == "") return;
+            if (e.Data == "Done")
+                OnDeviceWaited();
+        }
+
+        public string GetState()
+        {
+            InitConsole();
+
+            string state = "Error";
+            ManualResetEventSlim mre = new ManualResetEventSlim();
+            DataReceivedEventHandler f1 = (sender, e) =>
+            {
+                if (e.Data.Contains(">@") || e.Data == "") return;
+                state = e.Data;
+                mre.Set();
+            };
+
+            console.OutputDataReceived += f1;
+
+            ExecuteCommand("adb get-state");
+            mre.Wait();
+
+            console.OutputDataReceived -= f1;
+
+            return state;
+        }
+
+        public void ConnectWiFi(string ip)
+        {
+            InitConsole();
+            ExecuteCommand("adb connect " + ip);
+        }
+
         private void ExecuteCommand(string cmd)
         {
             console.StandardInput.WriteLine("@" + cmd);
             console.StandardInput.Flush();
+        }
+
+        public void Close()
+        {
+            console.Close();
+            console.WaitForExit();
         }
     }
 }

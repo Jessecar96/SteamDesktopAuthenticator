@@ -212,5 +212,20 @@ namespace Steam_Desktop_Authenticator
             MessageBox.Show("Mobile authenticator successfully linked. Please write down your revocation code: " + linker.LinkedAccount.RevocationCode);
             this.Close();
         }
+
+        private void btnExtractPhone_Click(object sender, EventArgs e)
+        {
+            PhoneExtractForm pForm = new PhoneExtractForm();
+            pForm.ShowDialog();
+            if (pForm.acc == null)
+            {
+                MessageBox.Show("An error occured while extracting the account.");
+            } else {
+                Manifest man = new Manifest();
+                string passKey;
+                passKey = man.PromptSetupPassKey();
+                man.SaveAccount(pForm.acc, passKey != null, passKey);
+            }
+        }
     }
 }
