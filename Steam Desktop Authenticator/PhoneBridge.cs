@@ -69,7 +69,6 @@ namespace Steam_Desktop_Authenticator
                 return null;
             }
 
-            OnOutputLog("Checking for root");
             bool root = IsRooted();
 
             SteamGuardAccount acc;
@@ -156,6 +155,7 @@ namespace Steam_Desktop_Authenticator
 
             OnOutputLog("Extracting (1/5)");
             ExecuteCommand("adb backup --noapk com.valvesoftware.android.steam.community & echo Done");
+            OnOutputLog("Now unlock your phone and confirm operation");
             mre.Wait();
 
             mre.Reset();
@@ -211,21 +211,8 @@ namespace Steam_Desktop_Authenticator
         {
             OnOutputLog("Checking for device");
             bool up = false;
-            ManualResetEventSlim mre = new ManualResetEventSlim();
-            DataReceivedEventHandler f1 = (sender, e) =>
-            {
-                if (e.Data.Contains(">@")) return;
-                if (e.Data.Contains("device"))
-                    up = true;
-                mre.Set();
-            };
 
-            console.OutputDataReceived += f1;
-
-            ExecuteCommand("adb get-state");
-            mre.Wait();
-
-            console.OutputDataReceived -= f1;
+            up = GetState() == "device";
 
             return up;
         }

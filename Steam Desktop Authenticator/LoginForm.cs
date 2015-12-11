@@ -18,6 +18,8 @@ namespace Steam_Desktop_Authenticator
 
         public UserLogin mUserLogin;
 
+        private bool waitLogin = false;
+
         public LoginForm()
         {
             InitializeComponent();
@@ -39,6 +41,12 @@ namespace Steam_Desktop_Authenticator
         {
             string username = txtUsername.Text;
             string password = txtPassword.Text;
+
+            if (waitLogin)
+            {
+                FinishExtract(username, password);
+                return;
+            }
 
             mUserLogin = new UserLogin(username, password);
             LoginResult response = LoginResult.BadCredentials;
@@ -213,19 +221,36 @@ namespace Steam_Desktop_Authenticator
             this.Close();
         }
 
+        private SteamGuardAccount acc;
         private void btnExtractPhone_Click(object sender, EventArgs e)
         {
+            
             PhoneExtractForm pForm = new PhoneExtractForm();
             pForm.ShowDialog();
-            if (pForm.acc == null)
+            acc = pForm.acc;
+            if (acc == null)
             {
                 MessageBox.Show("An error occured while extracting the account.");
             } else {
-                Manifest man = new Manifest();
-                string passKey;
-                passKey = man.PromptSetupPassKey();
-                man.SaveAccount(pForm.acc, passKey != null, passKey);
+                MessageBox.Show("Account extracted succesfully. Please login.");
+                btnExtractPhone.Enabled = false;
+                waitLogin = true;
             }
+        }
+
+        private void FinishExtract(string username, string password)
+        {
+            UserLogin login = new UserLogin(username, password);
+            SessionData session = login.Session;
+            AuthenticatorLinker linker = new AuthenticatorLinker(session);
+            Manifest man = new Manifest();
+
+            acc.Session = session;
+            acc.DeviceID = linker.DeviceID;
+
+            string passKey;
+            passKey = man.PromptSetupPassKey();
+            man.SaveAccount(acc, passKey != null, passKey);
         }
     }
 }

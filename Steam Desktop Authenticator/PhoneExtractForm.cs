@@ -25,12 +25,14 @@ namespace Steam_Desktop_Authenticator
         private void PhoneExtractForm_Load(object sender, EventArgs e)
         {
             Init();
+            CheckDevice();
         }
 
         private void Bridge_PhoneBridgeError(string msg)
         {
             Log(msg);
-            ResetAll();
+            if (msg != "Device not detected")
+                ResetAll();
         }
 
         private void Bridge_DeviceWaited(object sender, EventArgs e)
