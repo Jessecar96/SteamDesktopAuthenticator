@@ -81,6 +81,7 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Extract from phone";
             this.Load += new System.EventHandler(this.PhoneExtractForm_Load);
+            this.Shown += new System.EventHandler(this.PhoneExtractForm_Shown);
             this.ResumeLayout(false);
 
         }

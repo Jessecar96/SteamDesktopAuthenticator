@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -56,20 +57,25 @@ namespace Steam_Desktop_Authenticator
             };
         }
 
-        public SteamGuardAccount ExtractSteamGuardAccount(string id = "*")
+        public SteamGuardAccount ExtractSteamGuardAccount(string id = "*", bool skipChecks = false)
         {
             InitConsole(); // Init the console
 
-            OnOutputLog("Checking requirements...");
-            // Check required states
-            Error = ErrorsFound();
-            if (Error != "")
+            if (!skipChecks)
             {
-                OnPhoneBridgeError(Error);
-                return null;
+                OnOutputLog("Checking requirements...");
+                // Check required states
+                Error = ErrorsFound();
+                if (Error != "")
+                {
+                    OnPhoneBridgeError(Error);
+                    return null;
+                }
             }
 
             bool root = IsRooted();
+
+            root = false; // Debug
 
             SteamGuardAccount acc;
             string json;
@@ -83,7 +89,9 @@ namespace Steam_Desktop_Authenticator
                 acc = JsonConvert.DeserializeObject<SteamGuardAccount>(json);
             } else {
                 OnOutputLog("Using no-root method");
-                json = PullJsonNoRoot();
+                json = PullJsonNoRoot(id);
+                if (json == null)
+                    return null;
                 acc = JsonConvert.DeserializeObject<SteamGuardAccount>(json);
             }
 
@@ -161,9 +169,10 @@ namespace Steam_Desktop_Authenticator
             return json;
         }
 
-        private string PullJsonNoRoot()
+        private string PullJsonNoRoot(string id = "*")
         {
             string json = "Error";
+            string sid = id;
             ManualResetEventSlim mre = new ManualResetEventSlim();
             DataReceivedEventHandler f1 = (sender, e) =>
             {
@@ -176,33 +185,51 @@ namespace Steam_Desktop_Authenticator
 
             console.OutputDataReceived += f1;
 
-            OnOutputLog("Extracting (1/5)");
-            ExecuteCommand("adb backup --noapk com.valvesoftware.android.steam.community & echo Done");
-            OnOutputLog("Now unlock your phone and confirm operation");
-            mre.Wait();
+            if (!Directory.Exists("steamguard"))
+            {
+                OnOutputLog("Extracting (1/5)");
+                ExecuteCommand("adb backup --noapk com.valvesoftware.android.steam.community & echo Done");
+                OnOutputLog("Now unlock your phone and confirm operation");
+                mre.Wait();
 
-            mre.Reset();
-            OnOutputLog("Extracting (2/5)");
-            ExecuteCommand("adb push backup.ab /sdcard/steamauth/backup.ab & echo Done");
-            mre.Wait();
+                mre.Reset();
+                OnOutputLog("Extracting (2/5)");
+                ExecuteCommand("adb push backup.ab /sdcard/steamauth/backup.ab & echo Done");
+                mre.Wait();
 
-            mre.Reset();
-            OnOutputLog("Extracting (3/5)");
-            ExecuteCommand("adb shell \" cd /sdcard/steamauth ; ( printf " + @" '\x1f\x8b\x08\x00\x00\x00\x00\x00'" + " ; tail -c +25 backup.ab ) |  tar xfvz - \" & echo Done");
-            mre.Wait();
+                mre.Reset();
+                OnOutputLog("Extracting (3/5)");
+                ExecuteCommand("adb shell \" cd /sdcard/steamauth ; ( printf " + @" '\x1f\x8b\x08\x00\x00\x00\x00\x00'" + " ; tail -c +25 backup.ab ) |  tar xfvz - \" & echo Done");
+                mre.Wait();
+            }
 
             mre.Reset();
             OnOutputLog("Extracting (4/5)");
-            ExecuteCommand("adb shell \"cat /sdcard/steamauth/apps/*/f/Steamguard-*\" & echo: & echo Done");
+            ExecuteCommand("adb pull /sdcard/steamauth/apps/$STEAMAPP/f steamguard/ & echo Done");
             mre.Wait();
 
             mre.Reset();
             OnOutputLog("Extracting (5/5)");
             ExecuteCommand("adb shell \"rm -dR /sdcard/steamauth\" & echo Done");
             mre.Wait();
+            File.Delete("backup.ab");
+            
+            string[] files = Directory.EnumerateFiles("steamguard").ToArray<string>();
+            for (int i = 0; i < files.Length; i++)
+            {
+                files[i] = files[i].Split('-')[1];
+            }
+
+            if (files.Length > 1 && sid == "*")
+            {
+                OnMoreThanOneAccount(new List<string>(files));
+                return null;
+            } else {
+                json = File.ReadAllText("steamguard/Steamguard-" + sid);
+            }
 
             OnOutputLog("Finishing extracting");
-            System.IO.File.Delete("backup.ab");
+            Directory.Delete("steamguard", true);
 
             console.OutputDataReceived -= f1;
 
@@ -353,7 +380,7 @@ namespace Steam_Desktop_Authenticator
 
         private void ExecuteCommand(string cmd)
         {
-            console.StandardInput.WriteLine("@" + cmd);
+            console.StandardInput.WriteLine("@" + cmd.Replace("$STEAMAPP", "com.valvesoftware.android.steam.community"));
             console.StandardInput.Flush();
         }
 

@@ -228,7 +228,7 @@ namespace Steam_Desktop_Authenticator
             
             PhoneExtractForm pForm = new PhoneExtractForm();
             pForm.ShowDialog();
-            acc = pForm.acc;
+            acc = pForm.Result;
             if (acc == null)
             {
                 MessageBox.Show("An error occured while extracting the account.");
@@ -236,6 +236,7 @@ namespace Steam_Desktop_Authenticator
                 MessageBox.Show("Account extracted succesfully. Please login.");
                 btnExtractPhone.Enabled = false;
                 waitLogin = true;
+                txtUsername.Text = acc.AccountName;
             }
         }
 

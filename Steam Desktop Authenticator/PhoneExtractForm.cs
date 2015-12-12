@@ -22,6 +22,8 @@ namespace Steam_Desktop_Authenticator
         ManualResetEventSlim mreWait = new ManualResetEventSlim(false);
         string SelectedSteamID = "*";
 
+        public SteamAuth.SteamGuardAccount Result;
+
         private void PhoneExtractForm_Load(object sender, EventArgs e)
         {
             Init();
@@ -54,6 +56,7 @@ namespace Steam_Desktop_Authenticator
             else
             {
                 lblLog.Items.Add(l);
+                lblLog.TopIndex = lblLog.Items.Count - 1;
             }
         }
 
@@ -67,13 +70,14 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
-        public SteamAuth.SteamGuardAccount acc;
+        private SteamAuth.SteamGuardAccount acc;
         private void Extract()
         {
-            acc = bridge.ExtractSteamGuardAccount(SelectedSteamID);
+            acc = bridge.ExtractSteamGuardAccount(SelectedSteamID, SelectedSteamID != "*");
 
             if (acc != null)
             {
+                Result = acc;
                 Log("Account extracted succesfully!");
                 this.Close();
             }
@@ -128,12 +132,17 @@ namespace Steam_Desktop_Authenticator
             ListInputForm frm = new ListInputForm(accounts);
             frm.ShowDialog();
             this.SelectedSteamID = accounts[frm.SelectedIndex];
-            tCheckDevice.Start();
+            CheckDevice();
         }
 
         private void Bridge_OutputLog(string msg)
         {
             Log(msg);
+        }
+
+        private void PhoneExtractForm_Shown(object sender, EventArgs e)
+        {
+            CheckDevice();
         }
     }
 }
