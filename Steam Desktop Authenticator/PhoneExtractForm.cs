@@ -19,13 +19,12 @@ namespace Steam_Desktop_Authenticator
         }
 
         PhoneBridge bridge;
-
         ManualResetEventSlim mreWait = new ManualResetEventSlim(false);
+        string SelectedSteamID = "*";
 
         private void PhoneExtractForm_Load(object sender, EventArgs e)
         {
             Init();
-            CheckDevice();
         }
 
         private void Bridge_PhoneBridgeError(string msg)
@@ -71,7 +70,7 @@ namespace Steam_Desktop_Authenticator
         public SteamAuth.SteamGuardAccount acc;
         private void Extract()
         {
-            acc = bridge.ExtractSteamGuardAccount();
+            acc = bridge.ExtractSteamGuardAccount(SelectedSteamID);
 
             if (acc != null)
             {
@@ -118,6 +117,18 @@ namespace Steam_Desktop_Authenticator
             bridge.DeviceWaited += Bridge_DeviceWaited;
             bridge.PhoneBridgeError += Bridge_PhoneBridgeError;
             bridge.OutputLog += Bridge_OutputLog;
+            bridge.MoreThanOneAccount += Bridge_MoreThanOneAccount;
+        }
+
+        private void Bridge_MoreThanOneAccount(List<string> accounts)
+        {
+            Log("More than one account found");
+            tCheckDevice.Stop();
+
+            ListInputForm frm = new ListInputForm(accounts);
+            frm.ShowDialog();
+            this.SelectedSteamID = accounts[frm.SelectedIndex];
+            tCheckDevice.Start();
         }
 
         private void Bridge_OutputLog(string msg)

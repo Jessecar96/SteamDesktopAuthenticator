@@ -56,7 +56,7 @@ namespace Steam_Desktop_Authenticator
             };
         }
 
-        public SteamGuardAccount ExtractSteamGuardAccount()
+        public SteamGuardAccount ExtractSteamGuardAccount(string id = "*")
         {
             InitConsole(); // Init the console
 
@@ -72,14 +72,19 @@ namespace Steam_Desktop_Authenticator
             bool root = IsRooted();
 
             SteamGuardAccount acc;
+            string json;
 
             if (root)
             {
                 OnOutputLog("Using root method");
-                acc = JsonConvert.DeserializeObject<SteamGuardAccount>(PullJson());
+                json = PullJson(id);
+                if (json == null)
+                    return null;
+                acc = JsonConvert.DeserializeObject<SteamGuardAccount>(json);
             } else {
                 OnOutputLog("Using no-root method");
-                acc = JsonConvert.DeserializeObject<SteamGuardAccount>(PullJsonNoRoot());
+                json = PullJsonNoRoot();
+                acc = JsonConvert.DeserializeObject<SteamGuardAccount>(json);
             }
 
             return acc;
@@ -93,11 +98,14 @@ namespace Steam_Desktop_Authenticator
             return "";
         }
 
-        private string PullJson()
+        private string PullJson(string id = "*")
         {
-            string steamid = null;
+            string steamid = id;
             string json = null;
+            int count = 0;
+            List<string> accs = new List<string>();
             ManualResetEventSlim mre = new ManualResetEventSlim();
+
             DataReceivedEventHandler f1 = (sender, e) =>
             {
                 if (e.Data.Contains(">@") || e.Data == "") return;
@@ -106,11 +114,17 @@ namespace Steam_Desktop_Authenticator
                     mre.Set();
                     return;
                 }
+
                 if (e.Data.Contains("Steamguard-"))
                 {
                     steamid = e.Data.Split('-')[1];
-                    mre.Set();
+                    accs.Add(steamid);
+                    count++;
                 }
+
+                if (e.Data == "Done")
+                    mre.Set();
+
                 if (e.Data.StartsWith("{"))
                 {
                     json = e.Data;
@@ -120,12 +134,20 @@ namespace Steam_Desktop_Authenticator
 
             console.OutputDataReceived += f1;
 
-            OnOutputLog("Extracting (1/2)");
-            ExecuteCommand("adb shell \"su -c ls /data/data/com.valvesoftware.android.steam.community/files\"");
-            mre.Wait();
+            if (steamid == "*")
+            {
+                OnOutputLog("Extracting (1/2)");
+                ExecuteCommand("adb shell \"su -c ls /data/data/com.valvesoftware.android.steam.community/files\" & echo Done");
+                mre.Wait();
+                if (count > 1)
+                {
+                    OnMoreThanOneAccount(accs);
+                    return null;
+                }
+            }
 
             mre.Reset();
-            OnOutputLog("Extracting (2/2)");
+            OnOutputLog("Extracting " + steamid + " (2/2)");
             ExecuteCommand("adb shell su -c \"cat /data/data/com.valvesoftware.android.steam.community/files/Steamguard-" + steamid + "\"");
             mre.Wait();
 
@@ -138,6 +160,7 @@ namespace Steam_Desktop_Authenticator
 
             return json;
         }
+
         private string PullJsonNoRoot()
         {
             string json = "Error";
@@ -185,6 +208,7 @@ namespace Steam_Desktop_Authenticator
 
             return json;
         }
+
         private bool CheckAdb()
         {
             bool exists = true;
@@ -207,6 +231,7 @@ namespace Steam_Desktop_Authenticator
 
             return exists;
         }
+
         private bool DeviceUp()
         {
             OnOutputLog("Checking for device");
@@ -216,6 +241,7 @@ namespace Steam_Desktop_Authenticator
 
             return up;
         }
+
         private bool SteamAppInstalled()
         {
             OnOutputLog("Checking for Steam app");
@@ -238,6 +264,7 @@ namespace Steam_Desktop_Authenticator
 
             return ins;
         }
+
         private bool IsRooted()
         {
             OnOutputLog("Checking root");
@@ -259,6 +286,15 @@ namespace Steam_Desktop_Authenticator
             console.OutputDataReceived -= f1;
 
             return root;
+        }
+
+
+        public delegate void AccountsDelegate(List<string> accounts);
+        public event AccountsDelegate MoreThanOneAccount;
+        private void OnMoreThanOneAccount(List<string> accounts)
+        {
+            if (MoreThanOneAccount != null)
+                MoreThanOneAccount(accounts);
         }
 
 
