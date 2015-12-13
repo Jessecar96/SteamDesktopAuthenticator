@@ -3,6 +3,14 @@ A desktop implementation of Steam's mobile authenticator app.
 
 **Be warned! Using this desktop app in place of Steam's mobile app defeats the entire purpose of another device acting as your authenticator. You assume all responsiblity for keeping your computer secure. If a 3rd party gains access to your  authenticator data they will gain full instant access to your Steam account and all its items!**
 
+# DO NOT UNDER ANY CIRCUMSTANCES EVER DELETE THE maFiles FOLDER OR ANYTHING INSIDE IT!
+
+**Doing this will completely lock you out of your Steam account!** If you need to remove your authenticator click the "remove authenticator" button before doing anything!
+
+The only way to recover your account if you deleted the files already is to go [here](https://store.steampowered.com/twofactor/manage) and click "remove authenticator" and enter your recocation code that you wrote down when you first added your account to SDA.
+
+If you did not follow directions and did not write this down, you're well out of luck. The only option is to contact steam support and say you lost your mobile authenticator and the revocation code.
+
 ## Setup Instructions:
 - Download & Install [Visual C++ Redistributable 2013](https://www.microsoft.com/en-us/download/details.aspx?id=40784) from the Microsoft website if you don't have it already.
 - Download & Install [.NET Framework 4.5.2](http://go.microsoft.com/fwlink/?LinkId=397707) from the Microsoft website if you're using Windows 7. Windows 8 and above should do this automatically for you.
