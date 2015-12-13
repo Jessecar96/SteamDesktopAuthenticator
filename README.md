@@ -12,7 +12,8 @@ The only way to recover your account if you deleted the files already is to go [
 If you did not follow directions and did not write this down, you're well out of luck. The only option is to contact steam support and say you lost your mobile authenticator and the revocation code.
 
 ## Setup Instructions:
-- Download & Install [Visual C++ Redistributable 2013](https://www.microsoft.com/en-us/download/details.aspx?id=40784) from the Microsoft website if you don't have it already.
+- Download & Install [DirectX](https://support.microsoft.com/en-us/kb/179113) if u don't have it installed.
+- Download & Install [Visual C++ Redistributable 2013 (vcredist_x86.exe)](https://www.microsoft.com/en-us/download/details.aspx?id=40784) from the Microsoft website if you don't have it already.
 - Download & Install [.NET Framework 4.5.2](http://go.microsoft.com/fwlink/?LinkId=397707) from the Microsoft website if you're using Windows 7. Windows 8 and above should do this automatically for you.
 - Visit [the releases page](https://github.com/Jessecar96/SteamDesktopAuthenticator/releases) and download the latest zip (not the source code one).
 - Extract the files somewhere very safe on your computer. If you lose the files you can lose access to your Steam account.
