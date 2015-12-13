@@ -229,18 +229,20 @@ namespace Steam_Desktop_Authenticator
         }
 
         private SteamGuardAccount acc;
-        private void btnExtractPhone_Click(object sender, EventArgs e)
+        private void btnFromPhone_Click(object sender, EventArgs e)
         {
-            
+
             PhoneExtractForm pForm = new PhoneExtractForm();
             pForm.ShowDialog();
             acc = pForm.Result;
             if (acc == null)
             {
                 MessageBox.Show("An error occured while extracting the account.");
-            } else {
+            }
+            else
+            {
                 MessageBox.Show("Account extracted succesfully. Please login.");
-                btnExtractPhone.Enabled = false;
+                btnFromPhone.Enabled = false;
                 waitLogin = true;
                 txtUsername.Text = acc.AccountName;
             }

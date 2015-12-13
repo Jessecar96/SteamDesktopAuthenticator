@@ -75,8 +75,6 @@ namespace Steam_Desktop_Authenticator
 
             bool root = IsRooted();
 
-            root = false; // Debug
-
             SteamGuardAccount acc;
             string json;
 
