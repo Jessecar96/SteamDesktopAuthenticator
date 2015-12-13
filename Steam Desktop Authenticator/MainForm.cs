@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,7 +15,7 @@ using Newtonsoft.Json;
 
 namespace Steam_Desktop_Authenticator
 {
-    public partial class MainForm : MetroFramework.Forms.MetroForm
+    public partial class MainForm : Form
     {
         private SteamGuardAccount mCurrentAccount = null;
         private SteamGuardAccount[] allAccounts;
@@ -124,8 +125,11 @@ namespace Steam_Desktop_Authenticator
         {
             if (mCurrentAccount == null) return;
 
-            ConfirmationForm confirmations = new ConfirmationForm(mCurrentAccount);
-            confirmations.ShowDialog();
+            // Get new cookies every time (sadly)
+            mCurrentAccount.RefreshSession();
+
+            ConfirmationFormWeb confirms = new ConfirmationFormWeb(mCurrentAccount);
+            confirms.Show();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -177,15 +181,18 @@ namespace Steam_Desktop_Authenticator
                 InputForm changePassKeyForm = new InputForm("Enter new passkey, or leave blank to remove encryption.");
                 changePassKeyForm.ShowDialog();
 
-                if (changePassKeyForm.Canceled)
+                if (changePassKeyForm.Canceled && !string.IsNullOrEmpty(changePassKeyForm.txtBox.Text))
                 {
                     return;
                 }
 
                 InputForm changePassKeyForm2 = new InputForm("Confirm new passkey, or leave blank to remove encryption.");
                 changePassKeyForm2.ShowDialog();
-                if (changePassKeyForm2.Canceled)
+
+                if (changePassKeyForm2.Canceled && !string.IsNullOrEmpty(changePassKeyForm.txtBox.Text))
+                {
                     return;
+                }
 
                 string newPassKey = changePassKeyForm.txtBox.Text;
                 string confirmPassKey = changePassKeyForm2.txtBox.Text;
@@ -258,7 +265,7 @@ namespace Steam_Desktop_Authenticator
             if (newVersion > currentVersion)
             {
                 labelUpdate.Text = "Download new version"; // Show the user a new version is available if they press no
-                DialogResult updateDialog = MessageBox.Show("A new version is available! Would you like to download it now?", "New Version", MessageBoxButtons.YesNo);
+                DialogResult updateDialog = MessageBox.Show(String.Format("A new version is available! Would you like to download it now?\nYou will update from version {0} to {1}", Application.ProductVersion, newVersion.ToString()), "New Version", MessageBoxButtons.YesNo);
                 if (updateDialog == DialogResult.Yes)
                 {
                     Process.Start(updateUrl);
@@ -268,7 +275,7 @@ namespace Steam_Desktop_Authenticator
             {
                 if (!startupUpdateCheck)
                 {
-                    MessageBox.Show("You are using the latest version.");
+                    MessageBox.Show(String.Format("You are using the latest version: {0}", Application.ProductVersion));
                 }
             }
 
@@ -291,6 +298,57 @@ namespace Steam_Desktop_Authenticator
             {
                 MessageBox.Show("Failed to check for updates.");
             }
+        }
+
+        private void menuImportMaFile_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+
+            // Set filter options and filter index.
+            openFileDialog1.Filter = "maFiles (.maFile)|*.maFile|All Files (*.*)|*.*";
+            openFileDialog1.FilterIndex = 1;
+            openFileDialog1.Multiselect = false;
+
+            // Call the ShowDialog method to show the dialog box.
+            DialogResult userClickedOK = openFileDialog1.ShowDialog();
+
+            // Process input if the user clicked OK.
+            if (userClickedOK == DialogResult.OK)
+            {
+                // Open the selected file to read.
+                System.IO.Stream fileStream = openFileDialog1.OpenFile();
+                string fileContents = null;
+
+                using (System.IO.StreamReader reader = new System.IO.StreamReader(fileStream))
+                {
+                    fileContents = reader.ReadToEnd();
+                }
+                fileStream.Close();
+
+                try
+                {
+                    SteamGuardAccount maFile = JsonConvert.DeserializeObject<SteamGuardAccount>(fileContents);
+                    if(maFile.Session.SteamID != 0)
+                    {
+                        mManifest.SaveAccount(maFile, false);
+                        MessageBox.Show("Account Imported!");
+                        loadAccountsList();
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid SteamID");
+                    }
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("This file is not a valid SteamAuth maFile. Import Failed.");
+                }
+            }
+        }
+
+        private void menuQuit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

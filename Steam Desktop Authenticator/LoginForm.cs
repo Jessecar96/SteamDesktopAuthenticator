@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 
 namespace Steam_Desktop_Authenticator
 {
-    public partial class LoginForm : MetroFramework.Forms.MetroForm
+    public partial class LoginForm : Form
     {
 
         public UserLogin mUserLogin;
@@ -80,7 +80,12 @@ namespace Steam_Desktop_Authenticator
                         return;
 
                     case LoginResult.BadRSA:
+                        MessageBox.Show("Error logging in. Steam returned \"BadRSA\".");
+                        this.Close();
+                        return;
+
                     case LoginResult.GeneralFailure:
+                        MessageBox.Show("Error logging in. Steam returned \"GeneralFailure\".");
                         this.Close();
                         return;
                 }
@@ -120,6 +125,7 @@ namespace Steam_Desktop_Authenticator
                         break;
 
                     case AuthenticatorLinker.LinkResult.GeneralFailure:
+                        MessageBox.Show("Error adding your phone number. Steam returned \"GeneralFailure\".");
                         this.Close();
                         return;
                 }

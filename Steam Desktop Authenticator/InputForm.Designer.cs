@@ -39,7 +39,7 @@
             this.labelText.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.labelText.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelText.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelText.Location = new System.Drawing.Point(23, 22);
+            this.labelText.Location = new System.Drawing.Point(12, 9);
             this.labelText.Name = "labelText";
             this.labelText.Size = new System.Drawing.Size(284, 38);
             this.labelText.TabIndex = 0;
@@ -48,14 +48,14 @@
             // txtBox
             // 
             this.txtBox.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBox.Location = new System.Drawing.Point(23, 63);
+            this.txtBox.Location = new System.Drawing.Point(15, 50);
             this.txtBox.Name = "txtBox";
-            this.txtBox.Size = new System.Drawing.Size(284, 33);
+            this.txtBox.Size = new System.Drawing.Size(281, 33);
             this.txtBox.TabIndex = 1;
             // 
             // btnAccept
             // 
-            this.btnAccept.Location = new System.Drawing.Point(23, 102);
+            this.btnAccept.Location = new System.Drawing.Point(15, 89);
             this.btnAccept.Name = "btnAccept";
             this.btnAccept.Size = new System.Drawing.Size(98, 28);
             this.btnAccept.TabIndex = 2;
@@ -65,7 +65,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(127, 102);
+            this.btnCancel.Location = new System.Drawing.Point(119, 89);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(98, 28);
             this.btnCancel.TabIndex = 3;
@@ -78,15 +78,15 @@
             this.AcceptButton = this.btnAccept;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(330, 153);
+            this.CancelButton = this.btnCancel;
+            this.ClientSize = new System.Drawing.Size(311, 131);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnAccept);
             this.Controls.Add(this.txtBox);
             this.Controls.Add(this.labelText);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "InputForm";
-            this.Resizable = false;
-            this.ShadowType = MetroFramework.Forms.MetroForm.MetroFormShadowType.SystemShadow;
             this.ShowInTaskbar = false;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.InputForm_FormClosing);
             this.ResumeLayout(false);

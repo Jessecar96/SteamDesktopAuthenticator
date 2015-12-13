@@ -17,15 +17,21 @@ namespace Steam_Desktop_Authenticator
         // current one, if any; or null if the current process
         // is unique.
         {
-            Process curr = Process.GetCurrentProcess();
-            Process[] procs = Process.GetProcessesByName(curr.ProcessName);
-            foreach (Process p in procs)
-            {
-                if ((p.Id != curr.Id) &&
-                    (p.MainModule.FileName == curr.MainModule.FileName))
-                    return p;
+            try {
+                Process curr = Process.GetCurrentProcess();
+                Process[] procs = Process.GetProcessesByName(curr.ProcessName);
+                foreach (Process p in procs)
+                {
+                    if ((p.Id != curr.Id) &&
+                        (p.MainModule.FileName == curr.MainModule.FileName))
+                        return p;
+                }
+                return null;
             }
-            return null;
+            catch (Exception)
+            {
+                return null;
+            }
         }
         
         /// <summary>
