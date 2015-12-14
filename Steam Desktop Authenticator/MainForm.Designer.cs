@@ -138,7 +138,7 @@
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(160, 31);
             this.btnDelete.TabIndex = 5;
-            this.btnDelete.Text = "Remove Authenticator";
+            this.btnDelete.Text = "Deactivate Authenticator";
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
@@ -219,19 +219,19 @@
             // menuImportMaFile
             // 
             this.menuImportMaFile.Name = "menuImportMaFile";
-            this.menuImportMaFile.Size = new System.Drawing.Size(152, 22);
+            this.menuImportMaFile.Size = new System.Drawing.Size(148, 22);
             this.menuImportMaFile.Text = "Import maFile";
             this.menuImportMaFile.Click += new System.EventHandler(this.menuImportMaFile_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(145, 6);
             // 
             // menuQuit
             // 
             this.menuQuit.Name = "menuQuit";
-            this.menuQuit.Size = new System.Drawing.Size(152, 22);
+            this.menuQuit.Size = new System.Drawing.Size(148, 22);
             this.menuQuit.Text = "Quit";
             this.menuQuit.Click += new System.EventHandler(this.menuQuit_Click);
             // 
