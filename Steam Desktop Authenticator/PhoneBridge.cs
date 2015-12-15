@@ -82,16 +82,14 @@ namespace Steam_Desktop_Authenticator
             {
                 OnOutputLog("Using root method");
                 json = PullJson(id);
-                if (json == null)
-                    return null;
-                acc = JsonConvert.DeserializeObject<SteamGuardAccount>(json);
             } else {
                 OnOutputLog("Using no-root method");
                 json = PullJsonNoRoot(id);
-                if (json == null)
-                    return null;
-                acc = JsonConvert.DeserializeObject<SteamGuardAccount>(json);
             }
+
+            if (json == null)
+                return null;
+            acc = JsonConvert.DeserializeObject<SteamGuardAccount>(json);
             acc.DeviceID = GetDeviceID(root);
 
             return acc;
