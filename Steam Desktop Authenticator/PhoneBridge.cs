@@ -252,7 +252,8 @@ namespace Steam_Desktop_Authenticator
         private void CleanBackup()
         {
             File.Delete("backup.ab");
-            Directory.Delete("steamguard", true);
+            if (Directory.Exists("steamguard"))
+                Directory.Delete("steamguard", true);
         }
 
         private void DoBackup()

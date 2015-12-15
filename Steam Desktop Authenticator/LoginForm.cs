@@ -309,8 +309,39 @@ namespace Steam_Desktop_Authenticator
             }
 
             acc.Session = mUserLogin.Session;
-            Manifest.GetManifest().SaveAccount(acc, false, null);
+
+            string passKey = null;
+            if (man.Entries.Count == 0)
+            {
+                passKey = man.PromptSetupPassKey("Please enter an encryption passkey. Leave blank or hit cancel to not encrypt (VERY INSECURE).");
+            }
+            else if (man.Entries.Count > 0 && man.Encrypted)
+            {
+                bool passKeyValid = false;
+                while (!passKeyValid)
+                {
+                    InputForm passKeyForm = new InputForm("Please enter your current encryption passkey.");
+                    passKeyForm.ShowDialog();
+                    if (!passKeyForm.Canceled)
+                    {
+                        passKey = passKeyForm.txtBox.Text;
+                        passKeyValid = man.VerifyPasskey(passKey);
+                        if (!passKeyValid)
+                        {
+                            MessageBox.Show("That passkey is invalid. Please enter the same passkey you used for your other accounts.");
+                        }
+                    }
+                    else
+                    {
+                        this.Close();
+                        return;
+                    }
+                }
+            }
+
+            man.SaveAccount(acc, passKey != null, passKey);
             MessageBox.Show("Mobile authenticator successfully linked. Please write down your revocation code: " + acc.RevocationCode);
+            this.Close();
         }
     }
 }
