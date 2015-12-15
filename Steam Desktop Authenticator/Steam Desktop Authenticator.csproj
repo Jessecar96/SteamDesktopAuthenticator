@@ -144,6 +144,12 @@
     <Compile Include="InputForm.Designer.cs">
       <DependentUpon>InputForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ListInputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ListInputForm.Designer.cs">
+      <DependentUpon>ListInputForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -157,6 +163,13 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Manifest.cs" />
+    <Compile Include="PhoneBridge.cs" />
+    <Compile Include="PhoneExtractForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PhoneExtractForm.Designer.cs">
+      <DependentUpon>PhoneExtractForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="CaptchaForm.resx">
@@ -168,11 +181,17 @@
     <EmbeddedResource Include="InputForm.resx">
       <DependentUpon>InputForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ListInputForm.resx">
+      <DependentUpon>ListInputForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PhoneExtractForm.resx">
+      <DependentUpon>PhoneExtractForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

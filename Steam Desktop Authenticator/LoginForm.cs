@@ -18,6 +18,8 @@ namespace Steam_Desktop_Authenticator
 
         public UserLogin mUserLogin;
 
+        private bool waitLogin = false;
+
         public LoginForm()
         {
             InitializeComponent();
@@ -39,6 +41,12 @@ namespace Steam_Desktop_Authenticator
         {
             string username = txtUsername.Text;
             string password = txtPassword.Text;
+
+            if (waitLogin)
+            {
+                FinishExtract(username, password);
+                return;
+            }
 
             mUserLogin = new UserLogin(username, password);
             LoginResult response = LoginResult.BadCredentials;
@@ -226,6 +234,123 @@ namespace Steam_Desktop_Authenticator
             //Linked, finally. Re-save with FullyEnrolled property.
             manifest.SaveAccount(linker.LinkedAccount, passKey != null, passKey);
             MessageBox.Show("Mobile authenticator successfully linked. Please write down your revocation code: " + linker.LinkedAccount.RevocationCode);
+            this.Close();
+        }
+
+        private SteamGuardAccount acc;
+        private void btnFromPhone_Click(object sender, EventArgs e)
+        {
+
+            PhoneExtractForm pForm = new PhoneExtractForm();
+            pForm.ShowDialog();
+            acc = pForm.Result;
+            if (acc == null)
+            {
+                MessageBox.Show("An error occured while extracting the account.");
+            }
+            else
+            {
+                MessageBox.Show("Account extracted succesfully. Please login.");
+                btnFromPhone.Enabled = false;
+                waitLogin = true;
+                txtUsername.Text = acc.AccountName;
+            }
+        }
+
+        private void FinishExtract(string username, string password)
+        {
+            Manifest man = Manifest.GetManifest();
+
+            acc.FullyEnrolled = true;
+
+            UserLogin mUserLogin = new UserLogin(username, password);
+            LoginResult response = LoginResult.BadCredentials;
+
+            while ((response = mUserLogin.DoLogin()) != LoginResult.LoginOkay)
+            {
+                switch (response)
+                {
+                    case LoginResult.NeedEmail:
+                        InputForm emailForm = new InputForm("Enter the code sent to your email:");
+                        emailForm.ShowDialog();
+                        if (emailForm.Canceled)
+                        {
+                            this.Close();
+                            return;
+                        }
+
+                        mUserLogin.EmailCode = emailForm.txtBox.Text;
+                        break;
+
+                    case LoginResult.NeedCaptcha:
+                        CaptchaForm captchaForm = new CaptchaForm(mUserLogin.CaptchaGID);
+                        captchaForm.ShowDialog();
+                        if (captchaForm.Canceled)
+                        {
+                            this.Close();
+                            return;
+                        }
+
+                        mUserLogin.CaptchaText = captchaForm.CaptchaCode;
+                        break;
+
+                    case LoginResult.Need2FA:
+                        emailForm = new InputForm("Enter mobile Steam Guard code:");
+                        emailForm.ShowDialog();
+                        if (emailForm.Canceled)
+                        {
+                            this.Close();
+                            return;
+                        }
+
+                        mUserLogin.TwoFactorCode = emailForm.txtBox.Text;
+                        break;
+
+                    case LoginResult.BadRSA:
+                        MessageBox.Show("Error logging in. Steam returned \"BadRSA\".");
+                        this.Close();
+                        return;
+
+                    case LoginResult.GeneralFailure:
+                        MessageBox.Show("Error logging in. Steam returned \"GeneralFailure\".");
+                        this.Close();
+                        return;
+                }
+            }
+
+            acc.Session = mUserLogin.Session;
+
+            string passKey = null;
+            if (man.Entries.Count == 0)
+            {
+                passKey = man.PromptSetupPassKey("Please enter an encryption passkey. Leave blank or hit cancel to not encrypt (VERY INSECURE).");
+            }
+            else if (man.Entries.Count > 0 && man.Encrypted)
+            {
+                bool passKeyValid = false;
+                while (!passKeyValid)
+                {
+                    InputForm passKeyForm = new InputForm("Please enter your current encryption passkey.");
+                    passKeyForm.ShowDialog();
+                    if (!passKeyForm.Canceled)
+                    {
+                        passKey = passKeyForm.txtBox.Text;
+                        passKeyValid = man.VerifyPasskey(passKey);
+                        if (!passKeyValid)
+                        {
+                            MessageBox.Show("That passkey is invalid. Please enter the same passkey you used for your other accounts.");
+                        }
+                    }
+                    else
+                    {
+                        this.Close();
+                        return;
+                    }
+                }
+            }
+
+            man.SaveAccount(acc, passKey != null, passKey);
+            MessageBox.Show("Mobile authenticator successfully linked. Please write down your revocation code: " + acc.RevocationCode);
             this.Close();
         }
     }
