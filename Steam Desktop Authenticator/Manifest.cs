@@ -266,19 +266,21 @@ namespace Steam_Desktop_Authenticator
             return accounts != null && accounts.Length == 1;
         }
 
-        public bool RemoveAccount(SteamGuardAccount account)
+        public bool RemoveAccount(SteamGuardAccount account, bool deleteMaFile = true)
         {
             ManifestEntry entry = (from e in this.Entries where e.SteamID == account.Session.SteamID select e).FirstOrDefault();
-            if (entry == null) return true; //If something never existed, did you do what they asked?
+            if (entry == null) return true; // If something never existed, did you do what they asked?
 
             string maDir = Manifest.GetExecutableDir() + "/maFiles/";
             string filename = maDir + entry.Filename;
             this.Entries.Remove(entry);
 
             if (this.Entries.Count == 0)
+            {
                 this.Encrypted = false;
+            }
 
-            if (this.Save())
+            if (this.Save() && deleteMaFile)
             {
                 try
                 {

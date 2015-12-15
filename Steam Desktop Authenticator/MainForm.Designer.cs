@@ -47,6 +47,7 @@
             this.menuImportMaFile = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuQuit = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeAccountFromManifestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -210,6 +211,7 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuImportMaFile,
+            this.removeAccountFromManifestToolStripMenuItem,
             this.toolStripSeparator1,
             this.menuQuit});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -219,21 +221,28 @@
             // menuImportMaFile
             // 
             this.menuImportMaFile.Name = "menuImportMaFile";
-            this.menuImportMaFile.Size = new System.Drawing.Size(148, 22);
+            this.menuImportMaFile.Size = new System.Drawing.Size(241, 22);
             this.menuImportMaFile.Text = "Import maFile";
             this.menuImportMaFile.Click += new System.EventHandler(this.menuImportMaFile_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(145, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(238, 6);
             // 
             // menuQuit
             // 
             this.menuQuit.Name = "menuQuit";
-            this.menuQuit.Size = new System.Drawing.Size(148, 22);
+            this.menuQuit.Size = new System.Drawing.Size(241, 22);
             this.menuQuit.Text = "Quit";
             this.menuQuit.Click += new System.EventHandler(this.menuQuit_Click);
+            // 
+            // removeAccountFromManifestToolStripMenuItem
+            // 
+            this.removeAccountFromManifestToolStripMenuItem.Name = "removeAccountFromManifestToolStripMenuItem";
+            this.removeAccountFromManifestToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
+            this.removeAccountFromManifestToolStripMenuItem.Text = "Remove account from manifest";
+            this.removeAccountFromManifestToolStripMenuItem.Click += new System.EventHandler(this.removeAccountFromManifestToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -282,6 +291,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuImportMaFile;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem menuQuit;
+        private System.Windows.Forms.ToolStripMenuItem removeAccountFromManifestToolStripMenuItem;
     }
 }
 

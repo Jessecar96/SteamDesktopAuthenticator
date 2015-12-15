@@ -128,8 +128,18 @@ namespace Steam_Desktop_Authenticator
             // Get new cookies every time (sadly)
             mCurrentAccount.RefreshSession();
 
-            ConfirmationFormWeb confirms = new ConfirmationFormWeb(mCurrentAccount);
-            confirms.Show();
+            try {
+                ConfirmationFormWeb confirms = new ConfirmationFormWeb(mCurrentAccount);
+                confirms.Show();
+            }
+            catch (Exception)
+            {
+                DialogResult res = MessageBox.Show("You are missing depencies requires for CefSharp to run.\nClick OK to visit the troubleshooting page.", "Trade confirmations failed to open", MessageBoxButtons.OKCancel);
+                if(res == DialogResult.OK)
+                {
+                    Process.Start("https://github.com/Jessecar96/SteamDesktopAuthenticator/wiki/CefSharp-Troubleshooting");
+                }
+            }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -254,6 +264,75 @@ namespace Steam_Desktop_Authenticator
             loadAccountsList();
         }
 
+        private void menuImportMaFile_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+
+            // Set filter options and filter index.
+            openFileDialog1.Filter = "maFiles (.maFile)|*.maFile|All Files (*.*)|*.*";
+            openFileDialog1.FilterIndex = 1;
+            openFileDialog1.Multiselect = false;
+
+            // Call the ShowDialog method to show the dialog box.
+            DialogResult userClickedOK = openFileDialog1.ShowDialog();
+
+            // Process input if the user clicked OK.
+            if (userClickedOK == DialogResult.OK)
+            {
+                // Open the selected file to read.
+                System.IO.Stream fileStream = openFileDialog1.OpenFile();
+                string fileContents = null;
+
+                using (System.IO.StreamReader reader = new System.IO.StreamReader(fileStream))
+                {
+                    fileContents = reader.ReadToEnd();
+                }
+                fileStream.Close();
+
+                try
+                {
+                    SteamGuardAccount maFile = JsonConvert.DeserializeObject<SteamGuardAccount>(fileContents);
+                    if (maFile.Session.SteamID != 0)
+                    {
+                        mManifest.SaveAccount(maFile, false);
+                        MessageBox.Show("Account Imported!");
+                        loadAccountsList();
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid SteamID");
+                    }
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Failed to parse JSON file. Import Failed.");
+                }
+            }
+        }
+
+        private void menuQuit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void removeAccountFromManifestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (mManifest.Encrypted)
+            {
+                MessageBox.Show("You cannot remove accounts from the manifest file while it is encrypted.", "Remove from manifest", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                DialogResult res = MessageBox.Show("This will remove the selected account from the manifest file.\nUse this to move a maFile to another computer.\nThis will NOT delete your maFile.", "Remove from manifest", MessageBoxButtons.OKCancel);
+                if (res == DialogResult.OK)
+                {
+                    mManifest.RemoveAccount(mCurrentAccount, false);
+                    MessageBox.Show("Account removed from manifest.\nYou can now move its maFile to another computer and import it using the File menu.", "Remove from manifest");
+                    loadAccountsList();
+                }
+            }
+        }
+
         // Logic for version checking
         private Version newVersion = null;
         private Version currentVersion = null;
@@ -321,57 +400,6 @@ namespace Steam_Desktop_Authenticator
             {
                 MessageBox.Show("Failed to check for updates.");
             }
-        }
-
-        private void menuImportMaFile_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog openFileDialog1 = new OpenFileDialog();
-
-            // Set filter options and filter index.
-            openFileDialog1.Filter = "maFiles (.maFile)|*.maFile|All Files (*.*)|*.*";
-            openFileDialog1.FilterIndex = 1;
-            openFileDialog1.Multiselect = false;
-
-            // Call the ShowDialog method to show the dialog box.
-            DialogResult userClickedOK = openFileDialog1.ShowDialog();
-
-            // Process input if the user clicked OK.
-            if (userClickedOK == DialogResult.OK)
-            {
-                // Open the selected file to read.
-                System.IO.Stream fileStream = openFileDialog1.OpenFile();
-                string fileContents = null;
-
-                using (System.IO.StreamReader reader = new System.IO.StreamReader(fileStream))
-                {
-                    fileContents = reader.ReadToEnd();
-                }
-                fileStream.Close();
-
-                try
-                {
-                    SteamGuardAccount maFile = JsonConvert.DeserializeObject<SteamGuardAccount>(fileContents);
-                    if(maFile.Session.SteamID != 0)
-                    {
-                        mManifest.SaveAccount(maFile, false);
-                        MessageBox.Show("Account Imported!");
-                        loadAccountsList();
-                    }
-                    else
-                    {
-                        throw new Exception("Invalid SteamID");
-                    }
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("This file is not a valid SteamAuth maFile. Import Failed.");
-                }
-            }
-        }
-
-        private void menuQuit_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
         }
     }
 }
