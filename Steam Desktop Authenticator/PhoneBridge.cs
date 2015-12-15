@@ -85,6 +85,7 @@ namespace Steam_Desktop_Authenticator
                 if (json == null)
                     return null;
                 acc = JsonConvert.DeserializeObject<SteamGuardAccount>(json);
+                acc.DeviceID = GetDeviceID();
             } else {
                 OnOutputLog("Using no-root method");
                 json = PullJsonNoRoot(id);
@@ -102,6 +103,34 @@ namespace Steam_Desktop_Authenticator
             if (!DeviceUp()) return "Device not detected";
             if (!SteamAppInstalled()) return "Steam Community app not installed";
             return "";
+        }
+
+        private string GetDeviceID()
+        {
+            OnOutputLog("Extracting Device ID");
+            string id = "ERROR";
+            ManualResetEventSlim mre = new ManualResetEventSlim();
+            DataReceivedEventHandler f1 = (sender, e) =>
+            {
+                if (e.Data.Contains(">@") || e.Data == "") return;
+                if (e.Data.TrimStart().StartsWith("<string"))
+                {
+                    string d = e.Data.Trim();
+                    int i = d.IndexOf("android");
+                    id = d.Substring(23, (d.Length - i) - 9);
+                }
+                if (e.Data == "Done")
+                    mre.Set();
+            };
+
+            console.OutputDataReceived += f1;
+
+            ExecuteCommand("adb shell \"cat /data/data/$STEAMAPP/shared_prefs/steam.uuid.xml\" & echo Done");
+            mre.Wait();
+
+            console.OutputDataReceived -= f1;
+
+            return id;
         }
 
         private string PullJson(string id = "*")
