@@ -42,6 +42,12 @@ namespace Steam_Desktop_Authenticator
             string username = txtUsername.Text;
             string password = txtPassword.Text;
 
+            if (waitLogin)
+            {
+                FinishExtract(username, password);
+                return;
+            }
+
             mUserLogin = new UserLogin(username, password);
             LoginResult response = LoginResult.BadCredentials;
 
@@ -74,7 +80,6 @@ namespace Steam_Desktop_Authenticator
                         break;
 
                     case LoginResult.Need2FA:
-                        if (waitLogin) continue;
                         MessageBox.Show("This account already has a mobile authenticator linked to it. Please remove that first.");
                         this.Close();
                         return;
@@ -161,12 +166,6 @@ namespace Steam_Desktop_Authenticator
                 }
             }
 
-            if (waitLogin)
-            {
-                FinishExtract(linker, session);
-                return;
-            }
-
             //Save the file immediately; losing this would be bad.
             if (!manifest.SaveAccount(linker.LinkedAccount, passKey != null, passKey))
             {
@@ -248,17 +247,70 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
-        private void FinishExtract(AuthenticatorLinker linker, SessionData session)
+        private void FinishExtract(string username, string password)
         {
-            Manifest man = new Manifest();
+            Manifest man = Manifest.GetManifest();
 
-            acc.Session = session;
-            acc.DeviceID = linker.DeviceID;
             acc.FullyEnrolled = true;
 
-            string passKey;
-            passKey = man.PromptSetupPassKey();
-            man.SaveAccount(acc, passKey != null, passKey);
+            UserLogin mUserLogin = new UserLogin(username, password);
+            LoginResult response = LoginResult.BadCredentials;
+
+            while ((response = mUserLogin.DoLogin()) != LoginResult.LoginOkay)
+            {
+                switch (response)
+                {
+                    case LoginResult.NeedEmail:
+                        InputForm emailForm = new InputForm("Enter the code sent to your email:");
+                        emailForm.ShowDialog();
+                        if (emailForm.Canceled)
+                        {
+                            this.Close();
+                            return;
+                        }
+
+                        mUserLogin.EmailCode = emailForm.txtBox.Text;
+                        break;
+
+                    case LoginResult.NeedCaptcha:
+                        CaptchaForm captchaForm = new CaptchaForm(mUserLogin.CaptchaGID);
+                        captchaForm.ShowDialog();
+                        if (captchaForm.Canceled)
+                        {
+                            this.Close();
+                            return;
+                        }
+
+                        mUserLogin.CaptchaText = captchaForm.CaptchaCode;
+                        break;
+
+                    case LoginResult.Need2FA:
+                        emailForm = new InputForm("Enter mobile Steam Guard code:");
+                        emailForm.ShowDialog();
+                        if (emailForm.Canceled)
+                        {
+                            this.Close();
+                            return;
+                        }
+
+                        mUserLogin.TwoFactorCode = emailForm.txtBox.Text;
+                        break;
+
+                    case LoginResult.BadRSA:
+                        MessageBox.Show("Error logging in. Steam returned \"BadRSA\".");
+                        this.Close();
+                        return;
+
+                    case LoginResult.GeneralFailure:
+                        MessageBox.Show("Error logging in. Steam returned \"GeneralFailure\".");
+                        this.Close();
+                        return;
+                }
+            }
+
+            acc.Session = mUserLogin.Session;
+            Manifest.GetManifest().SaveAccount(acc, false, null);
+            MessageBox.Show("Mobile authenticator successfully linked. Please write down your revocation code: " + acc.RevocationCode);
         }
     }
 }
