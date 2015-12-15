@@ -1,17 +1,14 @@
 # Steam Desktop Authenticator
-A desktop implementation of Steam's mobile authenticator app.
+A beta desktop implementation of Steam's mobile authenticator app.
 
-**Be warned! Using this desktop app in place of Steam's mobile app defeats the entire purpose of another device acting as your authenticator. You assume all responsibility for keeping your computer secure. If a 3rd party gains access to your authenticator data, they will gain full, instant access to your Steam account and all its items!**
+### Disclaimer: YOU ARE USING THIS PROGRAM AT YOUR OWN RISK! THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. We (SteamDesktopAuthenticator contributors) provide no support or help in using this program. Using this program puts you at a significant risk of losing your Steam account due to your own neglegence.
+**ALWAYS MAKE BACKUPS OF YOUR `maFiles`! If you lose your encryption key or delete `maFiles` by accident AND you didn't save your recocation code, you are screwed.**
 
-# DO NOT UNDER ANY CIRCUMSTANCES EVER DELETE THE `maFiles` FOLDER OR ANYTHING INSIDE IT!
+IF you lost your `maFiles` OR lost your encryption key, go [here](https://store.steampowered.com/twofactor/manage) and click "Remove Authenticator" then enter your revocation code that you wrote down when you first added your account to SDA.
 
-**Doing this will completely lock you out of your Steam account!** If you need to remove your authenticator click the "Remove Authenticator" button before doing anything!
+If you did not follow the directions and did not write your revocation code down, you're well and truly screwed. The only option is beg to [Steam Support](https://support.steampowered.com/) and say you lost your mobile authenticator and the revocation code.
 
-The only way to recover your account if you deleted the files already is to go [here](https://store.steampowered.com/twofactor/manage) and click "Remove Authenticator" and enter your revocation code that you wrote down when you first added your account to SDA.
-
-If you did not follow the directions and did not write this down, you're out of luck. The only option is to contact [Steam Support](https://support.steampowered.com/) and say you lost your mobile authenticator and the revocation code.
-
-## Setup Instructions:
+## If you agree to all this risk, here's how to set it up:
 - Download & Install [DirectX](https://support.microsoft.com/en-us/kb/179113) if you don't have it installed already.
 - Download & Install [Visual C++ Redistributable 2013 (vcredist_x86.exe)](https://www.microsoft.com/en-us/download/details.aspx?id=40784) from the Microsoft website if you don't have it already.
 - Download & Install [.NET Framework 4.5.2](http://go.microsoft.com/fwlink/?LinkId=397707) from the Microsoft website if you're using Windows 7. Windows 8 and above should do this automatically for you.
@@ -27,16 +24,4 @@ If you did not follow the directions and did not write this down, you're out of 
 
 [How to use SDA on multiple computers.](https://github.com/Jessecar96/SteamDesktopAuthenticator/wiki/Using-SDA-on-multiple-computers)
 
-
 **All data is stored in the `maFiles` folder where you extracted the program to. This contains your sensitive Steam account details. You should back this up, and NEVER share it with someone else.**
-
-**When updating, make sure to save your `maFiles` folder. You can just replace all the .exe and .dll files over the old ones and you'll be fine.**
-
-## Features:
-- Generate login codes and confirm trades on multiple Steam accounts with ease.
-- Enable Steam's mobile auth on new accounts.
-- Encryption of sensitive account details.
-
-## Coming soon:
-- Notifications when you have a trade waiting to be confirmed.
-- Import config file from a rooted Android device so you don't have to remove and re-add the desktop authenticator.
