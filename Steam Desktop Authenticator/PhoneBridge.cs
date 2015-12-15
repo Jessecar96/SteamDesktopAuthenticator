@@ -85,7 +85,6 @@ namespace Steam_Desktop_Authenticator
                 if (json == null)
                     return null;
                 acc = JsonConvert.DeserializeObject<SteamGuardAccount>(json);
-                acc.DeviceID = GetDeviceID();
             } else {
                 OnOutputLog("Using no-root method");
                 json = PullJsonNoRoot(id);
@@ -93,6 +92,7 @@ namespace Steam_Desktop_Authenticator
                     return null;
                 acc = JsonConvert.DeserializeObject<SteamGuardAccount>(json);
             }
+            acc.DeviceID = GetDeviceID(root);
 
             return acc;
         }
@@ -105,7 +105,7 @@ namespace Steam_Desktop_Authenticator
             return "";
         }
 
-        private string GetDeviceID()
+        private string GetDeviceID(bool root)
         {
             OnOutputLog("Extracting Device ID");
             string id = "ERROR";
@@ -125,10 +125,15 @@ namespace Steam_Desktop_Authenticator
 
             console.OutputDataReceived += f1;
 
-            ExecuteCommand("adb shell \"cat /data/data/$STEAMAPP/shared_prefs/steam.uuid.xml\" & echo Done");
+            if (root)
+                ExecuteCommand("adb shell \"cat /data/data/$STEAMAPP/shared_prefs/steam.uuid.xml\" & echo Done");
+            else
+                ExecuteCommand("adb shell \"cat /sdcard/steamauth/apps/$STEAMAPP/sp/steam.uuid.xml\" & echo Done");
             mre.Wait();
 
             console.OutputDataReceived -= f1;
+
+            CleanBackup();
 
             return id;
         }
@@ -214,20 +219,7 @@ namespace Steam_Desktop_Authenticator
 
             if (!Directory.Exists("steamguard"))
             {
-                OnOutputLog("Extracting (1/5)");
-                ExecuteCommand("adb backup --noapk com.valvesoftware.android.steam.community & echo Done");
-                OnOutputLog("Now unlock your phone and confirm operation");
-                mre.Wait();
-
-                mre.Reset();
-                OnOutputLog("Extracting (2/5)");
-                ExecuteCommand("adb push backup.ab /sdcard/steamauth/backup.ab & echo Done");
-                mre.Wait();
-
-                mre.Reset();
-                OnOutputLog("Extracting (3/5)");
-                ExecuteCommand("adb shell \" cd /sdcard/steamauth ; ( printf " + @" '\x1f\x8b\x08\x00\x00\x00\x00\x00'" + " ; tail -c +25 backup.ab ) |  tar xfvz - \" & echo Done");
-                mre.Wait();
+                DoBackup();
             }
 
             mre.Reset();
@@ -239,8 +231,7 @@ namespace Steam_Desktop_Authenticator
             OnOutputLog("Extracting (5/5)");
             ExecuteCommand("adb shell \"rm -dR /sdcard/steamauth\" & echo Done");
             mre.Wait();
-            File.Delete("backup.ab");
-            
+
             string[] files = Directory.EnumerateFiles("steamguard").ToArray<string>();
             for (int i = 0; i < files.Length; i++)
             {
@@ -255,12 +246,45 @@ namespace Steam_Desktop_Authenticator
                 json = File.ReadAllText("steamguard/Steamguard-" + sid);
             }
 
-            OnOutputLog("Finishing extracting");
-            Directory.Delete("steamguard", true);
-
             console.OutputDataReceived -= f1;
 
             return json;
+        }
+
+        private void CleanBackup()
+        {
+            File.Delete("backup.ab");
+            Directory.Delete("steamguard", true);
+        }
+
+        private void DoBackup()
+        {
+            ManualResetEventSlim mre = new ManualResetEventSlim();
+            DataReceivedEventHandler f1 = (sender, e) =>
+            {
+                if (e.Data.Contains(">@") || e.Data == "") return;
+                if (e.Data == "Done")
+                    mre.Set();
+            };
+
+            console.OutputDataReceived += f1;
+
+            OnOutputLog("Extracting (1/5)");
+            ExecuteCommand("adb backup --noapk com.valvesoftware.android.steam.community & echo Done");
+            OnOutputLog("Now unlock your phone and confirm operation");
+            mre.Wait();
+
+            mre.Reset();
+            OnOutputLog("Extracting (2/5)");
+            ExecuteCommand("adb push backup.ab /sdcard/steamauth/backup.ab & echo Done");
+            mre.Wait();
+
+            mre.Reset();
+            OnOutputLog("Extracting (3/5)");
+            ExecuteCommand("adb shell \" cd /sdcard/steamauth ; ( printf " + @" '\x1f\x8b\x08\x00\x00\x00\x00\x00'" + " ; tail -c +25 backup.ab ) |  tar xfvz - \" & echo Done");
+            mre.Wait();
+
+            console.OutputDataReceived -= f1;
         }
 
         private bool CheckAdb()
