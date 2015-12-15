@@ -17,7 +17,7 @@ namespace Steam_Desktop_Authenticator
     {
 
         public UserLogin mUserLogin;
-
+        public bool refreshLogin = false;
         private bool waitLogin = false;
 
         public LoginForm()
@@ -45,6 +45,10 @@ namespace Steam_Desktop_Authenticator
             if (waitLogin)
             {
                 FinishExtract(username, password);
+                return;
+            } else if(refreshLogin)
+            {
+                RefreshLogin(username, password);
                 return;
             }
 
@@ -237,7 +241,7 @@ namespace Steam_Desktop_Authenticator
             this.Close();
         }
 
-        private SteamGuardAccount acc;
+        public SteamGuardAccount acc;
         private void btnFromPhone_Click(object sender, EventArgs e)
         {
 
@@ -257,6 +261,72 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
+        /// <summary>
+        /// Handles logging in to refresh session data. i.e. changing steam password.
+        /// </summary>
+        /// <param name="username">Steam username</param>
+        /// <param name="password">Steam password</param>
+        private void RefreshLogin(string username, string password)
+        {
+            Manifest man = Manifest.GetManifest();
+
+            acc.FullyEnrolled = true;
+
+            UserLogin mUserLogin = new UserLogin(username, password);
+            LoginResult response = LoginResult.BadCredentials;
+
+            while ((response = mUserLogin.DoLogin()) != LoginResult.LoginOkay)
+            {
+                switch (response)
+                {
+                    case LoginResult.NeedEmail:
+                        InputForm emailForm = new InputForm("Enter the Steam Guard code sent to your email:");
+                        emailForm.ShowDialog();
+                        if (emailForm.Canceled)
+                        {
+                            this.Close();
+                            return;
+                        }
+
+                        mUserLogin.EmailCode = emailForm.txtBox.Text;
+                        break;
+
+                    case LoginResult.NeedCaptcha:
+                        CaptchaForm captchaForm = new CaptchaForm(mUserLogin.CaptchaGID);
+                        captchaForm.ShowDialog();
+                        if (captchaForm.Canceled)
+                        {
+                            this.Close();
+                            return;
+                        }
+
+                        mUserLogin.CaptchaText = captchaForm.CaptchaCode;
+                        break;
+
+                    case LoginResult.Need2FA:
+                        mUserLogin.TwoFactorCode = acc.GenerateSteamGuardCode();
+                        break;
+
+                    case LoginResult.BadRSA:
+                        MessageBox.Show("Error logging in. Steam returned \"BadRSA\".");
+                        this.Close();
+                        return;
+
+                    case LoginResult.GeneralFailure:
+                        MessageBox.Show("Error logging in. Steam returned \"GeneralFailure\".");
+                        this.Close();
+                        return;
+                }
+            }
+
+            HandleManifest(man, true);
+        }
+
+        /// <summary>
+        /// Handles logging in after data has been extracted from Android phone
+        /// </summary>
+        /// <param name="username">Steam username</param>
+        /// <param name="password">Steam password</param>
         private void FinishExtract(string username, string password)
         {
             Manifest man = Manifest.GetManifest();
@@ -295,7 +365,7 @@ namespace Steam_Desktop_Authenticator
                         break;
 
                     case LoginResult.Need2FA:
-                        emailForm = new InputForm("Enter mobile Steam Guard code:");
+                        emailForm = new InputForm("Enter Steam Guard code from your phone:");
                         emailForm.ShowDialog();
                         if (emailForm.Canceled)
                         {
@@ -320,6 +390,11 @@ namespace Steam_Desktop_Authenticator
 
             acc.Session = mUserLogin.Session;
 
+            HandleManifest(man);
+        }
+
+        private void HandleManifest(Manifest man, bool IsRefreshing = false)
+        {
             string passKey = null;
             if (man.Entries.Count == 0)
             {
@@ -350,8 +425,23 @@ namespace Steam_Desktop_Authenticator
             }
 
             man.SaveAccount(acc, passKey != null, passKey);
-            MessageBox.Show("Mobile authenticator successfully linked. Please write down your revocation code: " + acc.RevocationCode);
+            if (IsRefreshing)
+            {
+                MessageBox.Show("Your login session was refreshed.");
+            }
+            else
+            {
+                MessageBox.Show("Mobile authenticator successfully linked. Please write down your revocation code: " + acc.RevocationCode);
+            }
             this.Close();
+        }
+
+        private void LoginForm_Load(object sender, EventArgs e)
+        {
+            if(acc != null && acc.AccountName != null)
+            {
+                txtUsername.Text = acc.AccountName;
+            }
         }
     }
 }

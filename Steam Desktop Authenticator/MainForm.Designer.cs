@@ -47,7 +47,9 @@
             this.menuImportMaFile = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuQuit = new System.Windows.Forms.ToolStripMenuItem();
-            this.removeAccountFromManifestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.accountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeAccountFromManifestToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.loginAgainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -200,7 +202,8 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.fileToolStripMenuItem,
+            this.accountToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(351, 24);
@@ -211,7 +214,6 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuImportMaFile,
-            this.removeAccountFromManifestToolStripMenuItem,
             this.toolStripSeparator1,
             this.menuQuit});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -237,12 +239,28 @@
             this.menuQuit.Text = "Quit";
             this.menuQuit.Click += new System.EventHandler(this.menuQuit_Click);
             // 
-            // removeAccountFromManifestToolStripMenuItem
+            // accountToolStripMenuItem
             // 
-            this.removeAccountFromManifestToolStripMenuItem.Name = "removeAccountFromManifestToolStripMenuItem";
-            this.removeAccountFromManifestToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
-            this.removeAccountFromManifestToolStripMenuItem.Text = "Remove account from manifest";
-            this.removeAccountFromManifestToolStripMenuItem.Click += new System.EventHandler(this.removeAccountFromManifestToolStripMenuItem_Click);
+            this.accountToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.removeAccountFromManifestToolStripMenuItem1,
+            this.loginAgainToolStripMenuItem});
+            this.accountToolStripMenuItem.Name = "accountToolStripMenuItem";
+            this.accountToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
+            this.accountToolStripMenuItem.Text = "Account";
+            // 
+            // removeAccountFromManifestToolStripMenuItem1
+            // 
+            this.removeAccountFromManifestToolStripMenuItem1.Name = "removeAccountFromManifestToolStripMenuItem1";
+            this.removeAccountFromManifestToolStripMenuItem1.Size = new System.Drawing.Size(195, 22);
+            this.removeAccountFromManifestToolStripMenuItem1.Text = "Remove from manifest";
+            this.removeAccountFromManifestToolStripMenuItem1.Click += new System.EventHandler(this.removeAccountFromManifestToolStripMenuItem1_Click);
+            // 
+            // loginAgainToolStripMenuItem
+            // 
+            this.loginAgainToolStripMenuItem.Name = "loginAgainToolStripMenuItem";
+            this.loginAgainToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.loginAgainToolStripMenuItem.Text = "Login again";
+            this.loginAgainToolStripMenuItem.Click += new System.EventHandler(this.loginAgainToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -291,7 +309,9 @@
         private System.Windows.Forms.ToolStripMenuItem menuImportMaFile;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem menuQuit;
-        private System.Windows.Forms.ToolStripMenuItem removeAccountFromManifestToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem accountToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeAccountFromManifestToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem loginAgainToolStripMenuItem;
     }
 }
 

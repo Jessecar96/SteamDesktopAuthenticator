@@ -315,7 +315,7 @@ namespace Steam_Desktop_Authenticator
             Application.Exit();
         }
 
-        private void removeAccountFromManifestToolStripMenuItem_Click(object sender, EventArgs e)
+        private void removeAccountFromManifestToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             if (mManifest.Encrypted)
             {
@@ -331,6 +331,14 @@ namespace Steam_Desktop_Authenticator
                     loadAccountsList();
                 }
             }
+        }
+
+        private void loginAgainToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoginForm mLoginForm = new LoginForm();
+            mLoginForm.acc = mCurrentAccount;
+            mLoginForm.refreshLogin = true;
+            mLoginForm.ShowDialog();
         }
 
         // Logic for version checking

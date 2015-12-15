@@ -126,6 +126,7 @@
             this.Name = "LoginForm";
             this.ShowIcon = false;
             this.Text = "Steam Login";
+            this.Load += new System.EventHandler(this.LoginForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
