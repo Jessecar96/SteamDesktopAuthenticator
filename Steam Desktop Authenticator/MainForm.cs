@@ -31,7 +31,7 @@ namespace Steam_Desktop_Authenticator
 
             this.labelVersion.Text = String.Format("v{0}", Application.ProductVersion);
             this.mManifest = Manifest.GetManifest();
-            
+
             // Make sure we don't show that dialog again.
             this.mManifest.FirstRun = false;
             this.mManifest.Save();
@@ -141,16 +141,17 @@ namespace Steam_Desktop_Authenticator
             // Get new cookies every time (sadly)
             mCurrentAccount.RefreshSession();
 
-            try {
+            try
+            {
                 ConfirmationFormWeb confirms = new ConfirmationFormWeb(mCurrentAccount);
                 confirms.Show();
             }
             catch (Exception)
             {
-                DialogResult res = MessageBox.Show("You are missing depencies requires for CefSharp to run.\nClick OK to visit the troubleshooting page.", "Trade confirmations failed to open", MessageBoxButtons.OKCancel);
-                if(res == DialogResult.OK)
+                DialogResult res = MessageBox.Show("You are missing a dependency required to view your trade confirmations.\nWould you like to install it now?", "Trade confirmations failed to open", MessageBoxButtons.YesNo);
+                if (res == DialogResult.Yes)
                 {
-                    Process.Start("https://github.com/Jessecar96/SteamDesktopAuthenticator/wiki/CefSharp-Troubleshooting");
+                    new InstallRedistribForm().ShowDialog();
                 }
             }
         }
@@ -165,11 +166,11 @@ namespace Steam_Desktop_Authenticator
             {
                 scheme = 2;
             }
-            else if(res == DialogResult.No)
+            else if (res == DialogResult.No)
             {
                 scheme = 1;
             }
-            else if(res == DialogResult.Cancel)
+            else if (res == DialogResult.Cancel)
             {
                 scheme = 0;
             }
