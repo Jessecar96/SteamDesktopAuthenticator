@@ -26,11 +26,11 @@ namespace Steam_Desktop_Authenticator
             set { acc = value; }
         }
 
-        private Confirmation confirm;
-        public Confirmation Confirmation
+        private List<Confirmation> confirms = new List<Confirmation>();
+        public Confirmation[] Confirmation
         {
-            get { return confirm; }
-            set { confirm = value; }
+            get { return confirms.ToArray(); }
+            set { confirms = new List<Confirmation>(value); }
         }
 
         private void TradePopupForm_Load(object sender, EventArgs e)
@@ -49,7 +49,8 @@ namespace Steam_Desktop_Authenticator
             }
             else
             {
-                acc.AcceptConfirmation(confirm);
+                acc.AcceptConfirmation(confirms[0]);
+                confirms.RemoveAt(0);
                 Reset();
             }
         }
@@ -63,7 +64,8 @@ namespace Steam_Desktop_Authenticator
             }
             else
             {
-                acc.DenyConfirmation(confirm);
+                acc.DenyConfirmation(confirms[0]);
+                confirms.RemoveAt(0);
                 Reset();
             }
         }
@@ -79,7 +81,19 @@ namespace Steam_Desktop_Authenticator
             accept2 = false;
             btnAccept.BackColor = Color.FromArgb(192, 255, 192);
             btnDeny.BackColor = Color.FromArgb(255, 255, 192);
-            this.Hide();
+
+            if (confirms.Count == 0)
+            {
+                this.Hide();
+            } else {
+                lblDesc.Text = confirms[0].ConfirmationDescription;
+            }
+        }
+
+        public void Popup()
+        {
+            Reset();
+            this.Show();
         }
     }
 }

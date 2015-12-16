@@ -58,6 +58,7 @@
             this.itemCopySG = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.itemQuit = new System.Windows.Forms.ToolStripMenuItem();
+            this.timerTradesPopup = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -328,6 +329,12 @@
             this.itemQuit.Text = "Quit";
             this.itemQuit.Click += new System.EventHandler(this.itemQuit_Click);
             // 
+            // timerTradesPopup
+            // 
+            this.timerTradesPopup.Enabled = true;
+            this.timerTradesPopup.Interval = 5000;
+            this.timerTradesPopup.Tick += new System.EventHandler(this.timerTradesPopup_Tick);
+            // 
             // MainForm
             // 
             this.AcceptButton = this.btnSteamLogin;
@@ -391,6 +398,7 @@
         private System.Windows.Forms.ToolStripMenuItem itemCopySG;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem itemQuit;
+        private System.Windows.Forms.Timer timerTradesPopup;
     }
 }
 

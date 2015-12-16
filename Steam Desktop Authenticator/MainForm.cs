@@ -25,6 +25,8 @@ namespace Steam_Desktop_Authenticator
         private long steamTime = 0;
         private long currentSteamChunk = 0;
 
+        private TradePopupForm popupFrm;
+
         public MainForm()
         {
             InitializeComponent();
@@ -116,6 +118,7 @@ namespace Steam_Desktop_Authenticator
         {
             if (mCurrentAccount != null && steamTime != 0)
             {
+                popupFrm.Account = mCurrentAccount;
                 txtLoginToken.Text = mCurrentAccount.GenerateSteamGuardCodeForTime(steamTime);
             }
         }
@@ -469,6 +472,16 @@ namespace Steam_Desktop_Authenticator
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             itemRestore_Click(sender, EventArgs.Empty);
+        }
+
+        private void timerTradesPopup_Tick(object sender, EventArgs e)
+        {
+            Confirmation[] confs = mCurrentAccount.FetchConfirmations();
+
+            if (confs.Length == 0) return;
+
+            popupFrm.Confirmation = confs;
+            popupFrm.Popup();
         }
     }
 }
