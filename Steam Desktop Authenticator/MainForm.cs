@@ -25,7 +25,7 @@ namespace Steam_Desktop_Authenticator
         private long steamTime = 0;
         private long currentSteamChunk = 0;
 
-        private TradePopupForm popupFrm;
+        private TradePopupForm popupFrm = new TradePopupForm();
 
         public MainForm()
         {
@@ -476,6 +476,8 @@ namespace Steam_Desktop_Authenticator
 
         private void timerTradesPopup_Tick(object sender, EventArgs e)
         {
+            if (mCurrentAccount == null || popupFrm.Visible) return;
+
             Confirmation[] confs = mCurrentAccount.FetchConfirmations();
 
             if (confs.Length == 0) return;

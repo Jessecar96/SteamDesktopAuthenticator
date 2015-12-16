@@ -13,9 +13,8 @@ namespace Steam_Desktop_Authenticator
 {
     public partial class TradePopupForm : Form
     {
-        public TradePopupForm(SteamGuardAccount account)
+        public TradePopupForm()
         {
-            acc = account;
             InitializeComponent();
         }
 
@@ -23,7 +22,7 @@ namespace Steam_Desktop_Authenticator
         public SteamGuardAccount Account
         {
             get { return acc; }
-            set { acc = value; }
+            set { acc = value; label1.Text = acc.AccountName; }
         }
 
         private List<Confirmation> confirms = new List<Confirmation>();
@@ -35,7 +34,7 @@ namespace Steam_Desktop_Authenticator
 
         private void TradePopupForm_Load(object sender, EventArgs e)
         {
-            
+            this.Location = (Point) Size.Subtract(Screen.GetWorkingArea(this).Size, this.Size);
         }
 
         private bool deny2, accept2;
@@ -57,7 +56,7 @@ namespace Steam_Desktop_Authenticator
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (!accept2)
+            if (!deny2)
             {
                 btnDeny.BackColor = Color.FromArgb(255, 255, 128);
                 deny2 = true;
