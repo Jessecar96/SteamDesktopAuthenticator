@@ -68,6 +68,7 @@ namespace Steam_Desktop_Authenticator
                 SteamGuardAccount account = allAccounts[i];
                 if (account.AccountName == (string)listAccounts.Items[listAccounts.SelectedIndex])
                 {
+                    itemAccount.Text = account.AccountName;
                     mCurrentAccount = account;
                     loadAccountInfo();
                 }
@@ -79,6 +80,8 @@ namespace Steam_Desktop_Authenticator
             mCurrentAccount = null;
             listAccounts.Items.Clear();
             listAccounts.SelectedIndex = -1;
+            itemAccount.Items.Clear();
+            itemAccount.SelectedIndex = -1;
 
             bool success;
             string passKey = mManifest.PromptForPassKey(out success);
@@ -107,9 +110,11 @@ namespace Steam_Desktop_Authenticator
                 {
                     SteamGuardAccount account = allAccounts[i];
                     listAccounts.Items.Add(account.AccountName);
+                    itemAccount.Items.Add(account.AccountName);
                 }
 
                 listAccounts.SelectedIndex = 0;
+                itemAccount.SelectedIndex = 0;
             }
             btnDelete.Enabled = btnTradeConfirmations.Enabled = allAccounts.Length > 0;
         }
@@ -484,6 +489,25 @@ namespace Steam_Desktop_Authenticator
 
             popupFrm.Confirmation = confs;
             popupFrm.Popup();
+        }
+
+        private void itemAccount_TextUpdate(object sender, EventArgs e)
+        {
+
+        }
+
+        private void itemAccount_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //for (int i = 0; i < allAccounts.Length; i++)
+            //{
+            //    SteamGuardAccount account = allAccounts[i];
+            //    if (account.AccountName == itemAccount.SelectedItem as string)
+            //    {
+                    listAccounts.SelectedIndex = itemAccount.SelectedIndex;
+            //        mCurrentAccount = account;
+            //        loadAccountInfo();
+            //    }
+            //}
         }
     }
 }

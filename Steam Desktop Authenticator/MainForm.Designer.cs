@@ -54,6 +54,7 @@
             this.contextMenuStripTray = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itemRestore = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.itemAccount = new System.Windows.Forms.ToolStripComboBox();
             this.itemTrades = new System.Windows.Forms.ToolStripMenuItem();
             this.itemCopySG = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
@@ -284,12 +285,13 @@
             this.contextMenuStripTray.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itemRestore,
             this.toolStripSeparator2,
+            this.itemAccount,
             this.itemTrades,
             this.itemCopySG,
             this.toolStripSeparator3,
             this.itemQuit});
             this.contextMenuStripTray.Name = "contextMenuStripTray";
-            this.contextMenuStripTray.Size = new System.Drawing.Size(216, 104);
+            this.contextMenuStripTray.Size = new System.Drawing.Size(216, 153);
             // 
             // itemRestore
             // 
@@ -302,6 +304,17 @@
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(212, 6);
+            // 
+            // itemAccount
+            // 
+            this.itemAccount.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.itemAccount.Items.AddRange(new object[] {
+            "test1",
+            "test2"});
+            this.itemAccount.Name = "itemAccount";
+            this.itemAccount.Size = new System.Drawing.Size(121, 23);
+            this.itemAccount.SelectedIndexChanged += new System.EventHandler(this.itemAccount_SelectedIndexChanged);
+            this.itemAccount.TextUpdate += new System.EventHandler(this.itemAccount_TextUpdate);
             // 
             // itemTrades
             // 
@@ -399,6 +412,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem itemQuit;
         private System.Windows.Forms.Timer timerTradesPopup;
+        private System.Windows.Forms.ToolStripComboBox itemAccount;
     }
 }
 
