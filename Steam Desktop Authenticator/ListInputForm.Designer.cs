@@ -70,6 +70,7 @@
             this.Controls.Add(this.btnAccept);
             this.Controls.Add(this.lbItems);
             this.Name = "ListInputForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Select one";
             this.Load += new System.EventHandler(this.ListInputForm_Load);
             this.ResumeLayout(false);

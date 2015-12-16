@@ -68,6 +68,7 @@
             this.ClientSize = new System.Drawing.Size(431, 641);
             this.Controls.Add(this.splitContainer1);
             this.Name = "ConfirmationFormWeb";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Trade Confirmations";
             this.splitContainer1.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();

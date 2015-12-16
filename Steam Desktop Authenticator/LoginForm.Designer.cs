@@ -79,7 +79,7 @@
             // btnSteamLogin
             // 
             this.btnSteamLogin.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSteamLogin.Location = new System.Drawing.Point(211, 147);
+            this.btnSteamLogin.Location = new System.Drawing.Point(224, 147);
             this.btnSteamLogin.Name = "btnSteamLogin";
             this.btnSteamLogin.Size = new System.Drawing.Size(110, 33);
             this.btnSteamLogin.TabIndex = 4;
@@ -99,11 +99,11 @@
             // 
             // btnFromPhone
             // 
-            this.btnFromPhone.Location = new System.Drawing.Point(12, 147);
+            this.btnFromPhone.Location = new System.Drawing.Point(65, 147);
             this.btnFromPhone.Name = "btnFromPhone";
-            this.btnFromPhone.Size = new System.Drawing.Size(95, 34);
+            this.btnFromPhone.Size = new System.Drawing.Size(153, 34);
             this.btnFromPhone.TabIndex = 6;
-            this.btnFromPhone.Text = "Get from phone";
+            this.btnFromPhone.Text = "Import from Android device";
             this.btnFromPhone.UseVisualStyleBackColor = true;
             this.btnFromPhone.Click += new System.EventHandler(this.btnFromPhone_Click);
             // 
@@ -125,6 +125,7 @@
             this.MaximizeBox = false;
             this.Name = "LoginForm";
             this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Steam Login";
             this.Load += new System.EventHandler(this.LoginForm_Load);
             this.ResumeLayout(false);

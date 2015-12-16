@@ -65,6 +65,7 @@
             // 
             // btnCancel
             // 
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Location = new System.Drawing.Point(119, 89);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(98, 28);
@@ -88,6 +89,7 @@
             this.MaximizeBox = false;
             this.Name = "InputForm";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.InputForm_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();

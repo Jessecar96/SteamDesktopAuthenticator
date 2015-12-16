@@ -15,6 +15,9 @@ namespace Steam_Desktop_Authenticator
         [JsonProperty("encrypted")]
         public bool Encrypted { get; set; }
 
+        [JsonProperty("first_run")]
+        public bool FirstRun { get; set; } = true;
+
         [JsonProperty("entries")]
         public List<ManifestEntry> Entries { get; set; }
 
@@ -25,18 +28,26 @@ namespace Steam_Desktop_Authenticator
             return Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
         }
 
-        public static Manifest GetManifest()
+        public static Manifest GetManifest(bool forceLoad = false)
         {
-            if (_manifest != null) return _manifest;
+            // Check if already staticly loaded
+            if (_manifest != null && !forceLoad)
+            {
+                return _manifest;
+            }
 
+            // Find config dir and manifest file
             string maDir = Manifest.GetExecutableDir() + "/maFiles/";
             string maFile = maDir + "manifest.json";
+
+            // If there's no config dir, create it
             if (!Directory.Exists(maDir))
             {
                 _manifest = _generateNewManifest();
                 return _manifest;
             }
 
+            // If there's no manifest, create it
             if (!File.Exists(maFile))
             {
                 _manifest = _generateNewManifest(true);
@@ -66,12 +77,13 @@ namespace Steam_Desktop_Authenticator
 
         private static Manifest _generateNewManifest(bool scanDir = false)
         {
-            //No directory means no manifest file anyways.
+            // No directory means no manifest file anyways.
             Manifest newManifest = new Manifest();
             newManifest.Encrypted = false;
             newManifest.Entries = new List<ManifestEntry>();
+            newManifest.FirstRun = true;
 
-            //Take a pre-manifest version and generate a manifest for it.
+            // Take a pre-manifest version and generate a manifest for it.
             if (scanDir)
             {
                 string maDir = Manifest.GetExecutableDir() + "/maFiles/";
@@ -95,9 +107,8 @@ namespace Steam_Desktop_Authenticator
                             };
                             newManifest.Entries.Add(newEntry);
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
-
                         }
                     }
 
@@ -110,7 +121,10 @@ namespace Steam_Desktop_Authenticator
             }
 
             if (newManifest.Save())
+            {
                 return newManifest;
+            }
+
             return null;
         }
 
@@ -180,7 +194,9 @@ namespace Steam_Desktop_Authenticator
                 return null;
             }
             else
+            {
                 MessageBox.Show("Passkey successfully set.");
+            }
 
             return newPassKey;
         }
@@ -287,7 +303,7 @@ namespace Steam_Desktop_Authenticator
                     File.Delete(filename);
                     return true;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     return false;
                 }
@@ -304,6 +320,7 @@ namespace Steam_Desktop_Authenticator
             string salt = null;
             string iV = null;
             string jsonAccount = JsonConvert.SerializeObject(account);
+
             if (encrypt)
             {
                 salt = FileEncryptor.GetRandomSalt();
@@ -336,7 +353,9 @@ namespace Steam_Desktop_Authenticator
             }
 
             if (!foundExistingEntry)
+            {
                 this.Entries.Add(newEntry);
+            }
 
             bool wasEncrypted = this.Encrypted;
             this.Encrypted = encrypt || this.Encrypted;
@@ -352,7 +371,7 @@ namespace Steam_Desktop_Authenticator
                 File.WriteAllText(maDir + filename, jsonAccount);
                 return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
@@ -368,7 +387,7 @@ namespace Steam_Desktop_Authenticator
                 {
                     Directory.CreateDirectory(maDir);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return false;
                 }
@@ -380,7 +399,7 @@ namespace Steam_Desktop_Authenticator
                 File.WriteAllText(filename, contents);
                 return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
@@ -403,7 +422,9 @@ namespace Steam_Desktop_Authenticator
             this.Entries = newEntries;
 
             if (this.Entries.Count == 0)
+            {
                 this.Encrypted = false;
+            }
         }
 
         public class ManifestEntry

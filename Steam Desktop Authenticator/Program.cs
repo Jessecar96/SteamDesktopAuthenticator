@@ -17,7 +17,8 @@ namespace Steam_Desktop_Authenticator
         // current one, if any; or null if the current process
         // is unique.
         {
-            try {
+            try
+            {
                 Process curr = Process.GetCurrentProcess();
                 Process[] procs = Process.GetProcessesByName(curr.ProcessName);
                 foreach (Process p in procs)
@@ -33,7 +34,7 @@ namespace Steam_Desktop_Authenticator
                 return null;
             }
         }
-        
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -41,16 +42,24 @@ namespace Steam_Desktop_Authenticator
         static void Main()
         {
             // run the program only once
-           if (PriorProcess() != null)
+            if (PriorProcess() != null)
             {
                 MessageBox.Show("Another instance of the app is already running.");
                 return;
             }
 
-            // run program
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+
+            Manifest man = Manifest.GetManifest();
+            if(man.FirstRun)
+            {
+                Application.Run(new WelcomeForm());
+            }
+            else
+            {
+                Application.Run(new MainForm());
+            }
         }
     }
 }

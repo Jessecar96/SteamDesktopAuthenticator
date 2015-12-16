@@ -31,6 +31,10 @@ namespace Steam_Desktop_Authenticator
 
             this.labelVersion.Text = String.Format("v{0}", Application.ProductVersion);
             this.mManifest = Manifest.GetManifest();
+            
+            // Make sure we don't show that dialog again.
+            this.mManifest.FirstRun = false;
+            this.mManifest.Save();
 
             pbTimeout.Maximum = 30;
             pbTimeout.Minimum = 0;
@@ -417,6 +421,11 @@ namespace Steam_Desktop_Authenticator
             {
                 MessageBox.Show("Failed to check for updates.");
             }
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

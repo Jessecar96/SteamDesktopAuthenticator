@@ -99,6 +99,7 @@
             this.Controls.Add(this.labelText);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "CaptchaForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCaptcha)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

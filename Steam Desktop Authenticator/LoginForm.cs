@@ -19,10 +19,17 @@ namespace Steam_Desktop_Authenticator
         public UserLogin mUserLogin;
         public bool refreshLogin = false;
         private bool waitLogin = false;
+        private bool forceAndroidImport = false;
 
-        public LoginForm()
+        public LoginForm(bool forceAndroidImport = false)
         {
             InitializeComponent();
+            this.forceAndroidImport = forceAndroidImport;
+
+            if (forceAndroidImport)
+            {
+                phoneImport();
+            }
         }
 
         public string FilterPhoneNumber(string phoneNumber)
@@ -46,7 +53,8 @@ namespace Steam_Desktop_Authenticator
             {
                 FinishExtract(username, password);
                 return;
-            } else if(refreshLogin)
+            }
+            else if (refreshLogin)
             {
                 RefreshLogin(username, password);
                 return;
@@ -244,7 +252,11 @@ namespace Steam_Desktop_Authenticator
         public SteamGuardAccount acc;
         private void btnFromPhone_Click(object sender, EventArgs e)
         {
+            phoneImport();
+        }
 
+        private void phoneImport()
+        {
             PhoneExtractForm pForm = new PhoneExtractForm();
             pForm.ShowDialog();
             acc = pForm.Result;
@@ -438,7 +450,7 @@ namespace Steam_Desktop_Authenticator
 
         private void LoginForm_Load(object sender, EventArgs e)
         {
-            if(acc != null && acc.AccountName != null)
+            if (acc != null && acc.AccountName != null)
             {
                 txtUsername.Text = acc.AccountName;
             }
