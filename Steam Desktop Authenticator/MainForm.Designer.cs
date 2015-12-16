@@ -276,6 +276,7 @@
             this.notifyIcon1.ContextMenuStrip = this.contextMenuStripTray;
             this.notifyIcon1.Text = "Steam Desktop Authenticator";
             this.notifyIcon1.Visible = true;
+            this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
             // 
             // contextMenuStripTray
             // 
@@ -287,7 +288,7 @@
             this.toolStripSeparator3,
             this.itemQuit});
             this.contextMenuStripTray.Name = "contextMenuStripTray";
-            this.contextMenuStripTray.Size = new System.Drawing.Size(216, 126);
+            this.contextMenuStripTray.Size = new System.Drawing.Size(216, 104);
             // 
             // itemRestore
             // 

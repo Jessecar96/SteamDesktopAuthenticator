@@ -465,5 +465,10 @@ namespace Steam_Desktop_Authenticator
                 Clipboard.SetText(txtLoginToken.Text);
             }
         }
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            itemRestore_Click(sender, EventArgs.Empty);
+        }
     }
 }
