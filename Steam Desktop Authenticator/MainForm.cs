@@ -25,6 +25,8 @@ namespace Steam_Desktop_Authenticator
         private long steamTime = 0;
         private long currentSteamChunk = 0;
 
+        private TradePopupForm popupFrm = new TradePopupForm();
+
         public MainForm()
         {
             InitializeComponent();
@@ -66,6 +68,7 @@ namespace Steam_Desktop_Authenticator
                 SteamGuardAccount account = allAccounts[i];
                 if (account.AccountName == (string)listAccounts.Items[listAccounts.SelectedIndex])
                 {
+                    itemAccount.Text = account.AccountName;
                     mCurrentAccount = account;
                     loadAccountInfo();
                 }
@@ -77,6 +80,8 @@ namespace Steam_Desktop_Authenticator
             mCurrentAccount = null;
             listAccounts.Items.Clear();
             listAccounts.SelectedIndex = -1;
+            itemAccount.Items.Clear();
+            itemAccount.SelectedIndex = -1;
 
             bool success;
             string passKey = mManifest.PromptForPassKey(out success);
@@ -105,9 +110,11 @@ namespace Steam_Desktop_Authenticator
                 {
                     SteamGuardAccount account = allAccounts[i];
                     listAccounts.Items.Add(account.AccountName);
+                    itemAccount.Items.Add(account.AccountName);
                 }
 
                 listAccounts.SelectedIndex = 0;
+                itemAccount.SelectedIndex = 0;
             }
             btnDelete.Enabled = btnTradeConfirmations.Enabled = allAccounts.Length > 0;
         }
@@ -116,6 +123,7 @@ namespace Steam_Desktop_Authenticator
         {
             if (mCurrentAccount != null && steamTime != 0)
             {
+                popupFrm.Account = mCurrentAccount;
                 txtLoginToken.Text = mCurrentAccount.GenerateSteamGuardCodeForTime(steamTime);
             }
         }
@@ -427,6 +435,79 @@ namespace Steam_Desktop_Authenticator
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            notifyIcon1.Icon = this.Icon;
+        }
+
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                this.Hide();
+            }
+        }
+
+        private void itemRestore_Click(object sender, EventArgs e)
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+        }
+
+        private void itemQuit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void itemTrades_Click(object sender, EventArgs e)
+        {
+            btnTradeConfirmations_Click(sender, e);
+        }
+
+        private void itemCopySG_Click(object sender, EventArgs e)
+        {
+            if (txtLoginToken.Text != "")
+            {
+                Clipboard.SetText(txtLoginToken.Text);
+            }
+        }
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            itemRestore_Click(sender, EventArgs.Empty);
+        }
+
+        private void timerTradesPopup_Tick(object sender, EventArgs e)
+        {
+            if (mCurrentAccount == null || popupFrm.Visible) return;
+
+            Confirmation[] confs = mCurrentAccount.FetchConfirmations();
+
+            if (confs.Length == 0) return;
+
+            popupFrm.Confirmation = confs;
+            popupFrm.Popup();
+        }
+
+        private void itemAccount_TextUpdate(object sender, EventArgs e)
+        {
+
+        }
+
+        private void itemAccount_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //for (int i = 0; i < allAccounts.Length; i++)
+            //{
+            //    SteamGuardAccount account = allAccounts[i];
+            //    if (account.AccountName == itemAccount.SelectedItem as string)
+            //    {
+                    listAccounts.SelectedIndex = itemAccount.SelectedIndex;
+            //        mCurrentAccount = account;
+            //        loadAccountInfo();
+            //    }
+            //}
         }
     }
 }

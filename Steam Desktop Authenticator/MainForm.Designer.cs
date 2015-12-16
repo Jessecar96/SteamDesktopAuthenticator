@@ -50,9 +50,20 @@
             this.accountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeAccountFromManifestToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.loginAgainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuStripTray = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.itemRestore = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.itemAccount = new System.Windows.Forms.ToolStripComboBox();
+            this.itemTrades = new System.Windows.Forms.ToolStripMenuItem();
+            this.itemCopySG = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.itemQuit = new System.Windows.Forms.ToolStripMenuItem();
+            this.timerTradesPopup = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.contextMenuStripTray.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnSteamLogin
@@ -262,6 +273,81 @@
             this.loginAgainToolStripMenuItem.Text = "Login again";
             this.loginAgainToolStripMenuItem.Click += new System.EventHandler(this.loginAgainToolStripMenuItem_Click);
             // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.ContextMenuStrip = this.contextMenuStripTray;
+            this.notifyIcon1.Text = "Steam Desktop Authenticator";
+            this.notifyIcon1.Visible = true;
+            this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
+            // 
+            // contextMenuStripTray
+            // 
+            this.contextMenuStripTray.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itemRestore,
+            this.toolStripSeparator2,
+            this.itemAccount,
+            this.itemTrades,
+            this.itemCopySG,
+            this.toolStripSeparator3,
+            this.itemQuit});
+            this.contextMenuStripTray.Name = "contextMenuStripTray";
+            this.contextMenuStripTray.Size = new System.Drawing.Size(216, 153);
+            // 
+            // itemRestore
+            // 
+            this.itemRestore.Name = "itemRestore";
+            this.itemRestore.Size = new System.Drawing.Size(215, 22);
+            this.itemRestore.Text = "Restore";
+            this.itemRestore.Click += new System.EventHandler(this.itemRestore_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(212, 6);
+            // 
+            // itemAccount
+            // 
+            this.itemAccount.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.itemAccount.Items.AddRange(new object[] {
+            "test1",
+            "test2"});
+            this.itemAccount.Name = "itemAccount";
+            this.itemAccount.Size = new System.Drawing.Size(121, 23);
+            this.itemAccount.SelectedIndexChanged += new System.EventHandler(this.itemAccount_SelectedIndexChanged);
+            this.itemAccount.TextUpdate += new System.EventHandler(this.itemAccount_TextUpdate);
+            // 
+            // itemTrades
+            // 
+            this.itemTrades.Name = "itemTrades";
+            this.itemTrades.Size = new System.Drawing.Size(215, 22);
+            this.itemTrades.Text = "Trade Confirmations";
+            this.itemTrades.Click += new System.EventHandler(this.itemTrades_Click);
+            // 
+            // itemCopySG
+            // 
+            this.itemCopySG.Name = "itemCopySG";
+            this.itemCopySG.Size = new System.Drawing.Size(215, 22);
+            this.itemCopySG.Text = "Copy SG code to clipboard";
+            this.itemCopySG.Click += new System.EventHandler(this.itemCopySG_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(212, 6);
+            // 
+            // itemQuit
+            // 
+            this.itemQuit.Name = "itemQuit";
+            this.itemQuit.Size = new System.Drawing.Size(215, 22);
+            this.itemQuit.Text = "Quit";
+            this.itemQuit.Click += new System.EventHandler(this.itemQuit_Click);
+            // 
+            // timerTradesPopup
+            // 
+            this.timerTradesPopup.Enabled = true;
+            this.timerTradesPopup.Interval = 5000;
+            this.timerTradesPopup.Tick += new System.EventHandler(this.timerTradesPopup_Tick);
+            // 
             // MainForm
             // 
             this.AcceptButton = this.btnSteamLogin;
@@ -282,12 +368,15 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Steam Desktop Authenticator";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.contextMenuStripTray.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -314,6 +403,16 @@
         private System.Windows.Forms.ToolStripMenuItem accountToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem removeAccountFromManifestToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem loginAgainToolStripMenuItem;
+        private System.Windows.Forms.NotifyIcon notifyIcon1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripTray;
+        private System.Windows.Forms.ToolStripMenuItem itemRestore;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem itemTrades;
+        private System.Windows.Forms.ToolStripMenuItem itemCopySG;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem itemQuit;
+        private System.Windows.Forms.Timer timerTradesPopup;
+        private System.Windows.Forms.ToolStripComboBox itemAccount;
     }
 }
 
