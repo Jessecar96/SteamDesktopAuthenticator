@@ -223,19 +223,19 @@
             // menuImportMaFile
             // 
             this.menuImportMaFile.Name = "menuImportMaFile";
-            this.menuImportMaFile.Size = new System.Drawing.Size(241, 22);
+            this.menuImportMaFile.Size = new System.Drawing.Size(148, 22);
             this.menuImportMaFile.Text = "Import maFile";
             this.menuImportMaFile.Click += new System.EventHandler(this.menuImportMaFile_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(238, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(145, 6);
             // 
             // menuQuit
             // 
             this.menuQuit.Name = "menuQuit";
-            this.menuQuit.Size = new System.Drawing.Size(241, 22);
+            this.menuQuit.Size = new System.Drawing.Size(148, 22);
             this.menuQuit.Text = "Quit";
             this.menuQuit.Click += new System.EventHandler(this.menuQuit_Click);
             // 

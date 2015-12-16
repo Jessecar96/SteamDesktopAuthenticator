@@ -12,6 +12,7 @@ using SteamAuth;
 using System.Diagnostics;
 using System.Net;
 using Newtonsoft.Json;
+using Squirrel;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -36,6 +37,14 @@ namespace Steam_Desktop_Authenticator
             pbTimeout.Value = 30;
 
             checkForUpdates();
+        }
+
+        async void Squirrel_UpdateApp()
+        {
+            using (var mgr = new UpdateManager("https://path/to/my/update/folder"))
+            {
+                await mgr.UpdateApp();
+            }
         }
 
         private void btnSteamLogin_Click(object sender, EventArgs e)
