@@ -138,6 +138,12 @@
     <Compile Include="CaptchaForm.Designer.cs">
       <DependentUpon>CaptchaForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Import_maFile_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Import_maFile_Form.Designer.cs">
+      <DependentUpon>Import_maFile_Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="InputForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -177,6 +183,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConfirmationFormWeb.resx">
       <DependentUpon>ConfirmationFormWeb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Import_maFile_Form.resx">
+      <DependentUpon>Import_maFile_Form.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InputForm.resx">
       <DependentUpon>InputForm.cs</DependentUpon>
