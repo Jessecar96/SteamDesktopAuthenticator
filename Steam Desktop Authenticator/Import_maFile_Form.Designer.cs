@@ -36,12 +36,23 @@ namespace Steam_Desktop_Authenticator
             this.txtBox.Size = new System.Drawing.Size(307, 33);
             this.txtBox.TabIndex = 1;
             // 
+            // info
+            // 
+            this.label1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label1.Location = new System.Drawing.Point(13, 83);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(309, 40);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "If you import a .maFile encrypted, the file manifest.json needs to be next to it";
+            // 
             // btnImport
             // 
             this.btnImport.Location = new System.Drawing.Point(16, 129);
             this.btnImport.Name = "btnImport";
             this.btnImport.Size = new System.Drawing.Size(187, 28);
-            this.btnImport.TabIndex = 2;
+            this.btnImport.TabIndex = 3;
             this.btnImport.Text = "Select .maFile file to Import";
             this.btnImport.UseVisualStyleBackColor = true;
             this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
@@ -52,21 +63,11 @@ namespace Steam_Desktop_Authenticator
             this.btnCancel.Location = new System.Drawing.Point(224, 129);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(98, 28);
-            this.btnCancel.TabIndex = 3;
+            this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
-            // label1
-            // 
-            this.label1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label1.Location = new System.Drawing.Point(13, 83);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(309, 40);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "If you import a .maFile encrypted, the file manifest.json needs to be next to it";
+
             // 
             // Import_maFile_Form
             // 
