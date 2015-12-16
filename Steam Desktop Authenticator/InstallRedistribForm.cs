@@ -14,7 +14,9 @@ namespace Steam_Desktop_Authenticator
 {
     public partial class InstallRedistribForm : Form
     {
-        public InstallRedistribForm()
+        private bool inlineInstall = false;
+
+        public InstallRedistribForm(bool inlineInstall = false)
         {
             InitializeComponent();
             progressBar1.Minimum = 0;
@@ -29,6 +31,7 @@ namespace Steam_Desktop_Authenticator
 
         private void Client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
+            progressBar1.Style = ProgressBarStyle.Marquee;
             try {
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.FileName = Manifest.GetExecutableDir() + "/vcredist_x86.exe";
@@ -39,6 +42,11 @@ namespace Steam_Desktop_Authenticator
                 using (Process exeProcess = Process.Start(startInfo))
                 {
                     exeProcess.WaitForExit();
+
+                    if (inlineInstall)
+                    {
+                        MessageBox.Show("Install complete! You may need to restart Steam Desktop Authenticator to view trade confirmations.");
+                    }
                     this.Close();
                 }
             }
