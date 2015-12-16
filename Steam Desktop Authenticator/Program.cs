@@ -51,14 +51,30 @@ namespace Steam_Desktop_Authenticator
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            // Check for any missing CefSharp depencies
+            List<string> depends = CefSharp.DependencyChecker.CheckDependencies(false, true, Manifest.GetExecutableDir(), null, Manifest.GetExecutableDir() + "\\CefSharp.BrowserSubprocess.exe");
+            if(depends.Count > 0)
+            {
+                MessageBox.Show("You are missing some files required for Steam Desktop Authenticator to run. Try reinstalling", "Failed to load", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             Manifest man = Manifest.GetManifest();
             if(man.FirstRun)
             {
                 // Install VC++ Redist and wait
                 new InstallRedistribForm().ShowDialog();
 
-                // When done run welcome form
-                Application.Run(new WelcomeForm());
+                if (man.Entries.Count > 0)
+                {
+                    // Already has accounts, just run
+                    Application.Run(new MainForm());
+                }
+                else
+                {
+                    // No accounts, run welcome form
+                    Application.Run(new WelcomeForm());
+                }
             }
             else
             {
