@@ -428,5 +428,10 @@ namespace Steam_Desktop_Authenticator
         {
             Application.Exit();
         }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            notifyIcon1.Icon = this.Icon;
+        }
     }
 }

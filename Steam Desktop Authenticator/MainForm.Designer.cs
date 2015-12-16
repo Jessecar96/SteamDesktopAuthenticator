@@ -50,6 +50,7 @@
             this.accountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeAccountFromManifestToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.loginAgainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -262,6 +263,11 @@
             this.loginAgainToolStripMenuItem.Text = "Login again";
             this.loginAgainToolStripMenuItem.Click += new System.EventHandler(this.loginAgainToolStripMenuItem_Click);
             // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.Text = "Steam Desktop Authenticator";
+            this.notifyIcon1.Visible = true;
+            // 
             // MainForm
             // 
             this.AcceptButton = this.btnSteamLogin;
@@ -282,6 +288,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Steam Desktop Authenticator";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -314,6 +321,7 @@
         private System.Windows.Forms.ToolStripMenuItem accountToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem removeAccountFromManifestToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem loginAgainToolStripMenuItem;
+        private System.Windows.Forms.NotifyIcon notifyIcon1;
     }
 }
 
