@@ -13,19 +13,21 @@ namespace Steam_Desktop_Authenticator
 {
     public partial class TradePopupForm : Form
     {
+        private SteamGuardAccount acc;
+        private List<Confirmation> confirms = new List<Confirmation>();
+        private bool deny2, accept2;
+
         public TradePopupForm()
         {
             InitializeComponent();
         }
 
-        private SteamGuardAccount acc;
         public SteamGuardAccount Account
         {
             get { return acc; }
             set { acc = value; label1.Text = acc.AccountName; }
         }
 
-        private List<Confirmation> confirms = new List<Confirmation>();
         public Confirmation[] Confirmation
         {
             get { return confirms.ToArray(); }
@@ -34,30 +36,32 @@ namespace Steam_Desktop_Authenticator
 
         private void TradePopupForm_Load(object sender, EventArgs e)
         {
-            this.Location = (Point) Size.Subtract(Screen.GetWorkingArea(this).Size, this.Size);
+            this.Location = (Point)Size.Subtract(Screen.GetWorkingArea(this).Size, this.Size);
         }
 
-        private bool deny2, accept2;
-
-        private void button3_Click(object sender, EventArgs e)
+        private void btnAccept_Click(object sender, EventArgs e)
         {
             if (!accept2)
             {
+                // Allow user to confirm first
+                lblStatus.Text = "Press Accept again to confirm";
                 btnAccept.BackColor = Color.FromArgb(128, 255, 128);
                 accept2 = true;
             }
             else
             {
+                btnAccept.Text = "Accepting";
                 acc.AcceptConfirmation(confirms[0]);
                 confirms.RemoveAt(0);
                 Reset();
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnDeny_Click(object sender, EventArgs e)
         {
             if (!deny2)
             {
+                lblStatus.Text = "Press Deny again to deny";
                 btnDeny.BackColor = Color.FromArgb(255, 255, 128);
                 deny2 = true;
             }
@@ -69,7 +73,7 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnDismiss_Click(object sender, EventArgs e)
         {
             Reset();
         }
@@ -84,7 +88,9 @@ namespace Steam_Desktop_Authenticator
             if (confirms.Count == 0)
             {
                 this.Hide();
-            } else {
+            }
+            else
+            {
                 lblDesc.Text = confirms[0].ConfirmationDescription;
             }
         }
