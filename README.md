@@ -2,7 +2,7 @@
 A beta desktop implementation of Steam's mobile authenticator app.
 
 ### Disclaimer: YOU ARE USING THIS PROGRAM AT YOUR OWN RISK! THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. We (SteamDesktopAuthenticator contributors) provide no support or help in using this program. Using this program puts you at a significant risk of losing your Steam account due to your own neglegence.
-**ALWAYS MAKE BACKUPS OF YOUR `maFiles`! If you lose your encryption key or delete `maFiles` by accident AND you didn't save your recocation code, you are screwed.**
+**ALWAYS MAKE BACKUPS OF YOUR `maFiles`! If you lose your encryption key or delete `maFiles` by accident AND you didn't save your revocation code, you are screwed.**
 
 IF you lost your `maFiles` OR lost your encryption key, go [here](https://store.steampowered.com/twofactor/manage) and click "Remove Authenticator" then enter your revocation code that you wrote down when you first added your account to SDA.
 
