@@ -188,6 +188,12 @@
     <Compile Include="InputForm.Designer.cs">
       <DependentUpon>InputForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="InstallRedistribForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InstallRedistribForm.Designer.cs">
+      <DependentUpon>InstallRedistribForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ListInputForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -230,6 +236,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InputForm.resx">
       <DependentUpon>InputForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InstallRedistribForm.resx">
+      <DependentUpon>InstallRedistribForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ListInputForm.resx">
       <DependentUpon>ListInputForm.cs</DependentUpon>

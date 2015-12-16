@@ -54,7 +54,7 @@ namespace Steam_Desktop_Authenticator
             Manifest man = Manifest.GetManifest();
             if(man.FirstRun)
             {
-                Application.Run(new WelcomeForm());
+                Application.Run(new InstallRedistribForm());
             }
             else
             {
