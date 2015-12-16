@@ -433,5 +433,37 @@ namespace Steam_Desktop_Authenticator
         {
             notifyIcon1.Icon = this.Icon;
         }
+
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                this.Hide();
+            }
+        }
+
+        private void itemRestore_Click(object sender, EventArgs e)
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+        }
+
+        private void itemQuit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void itemTrades_Click(object sender, EventArgs e)
+        {
+            btnTradeConfirmations_Click(sender, e);
+        }
+
+        private void itemCopySG_Click(object sender, EventArgs e)
+        {
+            if (txtLoginToken.Text != "")
+            {
+                Clipboard.SetText(txtLoginToken.Text);
+            }
+        }
     }
 }
