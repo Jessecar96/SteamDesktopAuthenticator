@@ -29,18 +29,22 @@ namespace Steam_Desktop_Authenticator
 
         private void Client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = Manifest.GetExecutableDir() + "/vcredist_x86.exe";
-            startInfo.Verb = "runas";
-            startInfo.Arguments = "/q";
-            startInfo.WindowStyle = ProcessWindowStyle.Normal;
+            try {
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = Manifest.GetExecutableDir() + "/vcredist_x86.exe";
+                startInfo.Verb = "runas";
+                startInfo.Arguments = "/q";
+                startInfo.WindowStyle = ProcessWindowStyle.Normal;
 
-            using (Process exeProcess = Process.Start(startInfo))
+                using (Process exeProcess = Process.Start(startInfo))
+                {
+                    exeProcess.WaitForExit();
+                    this.Close();
+                }
+            }
+            catch (Exception)
             {
-                exeProcess.WaitForExit();
-
-                this.Hide();
-                new WelcomeForm().ShowDialog();
+                this.Close();
             }
         }
 

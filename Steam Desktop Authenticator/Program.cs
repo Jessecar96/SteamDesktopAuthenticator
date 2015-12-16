@@ -54,7 +54,11 @@ namespace Steam_Desktop_Authenticator
             Manifest man = Manifest.GetManifest();
             if(man.FirstRun)
             {
-                Application.Run(new InstallRedistribForm());
+                // Install VC++ Redist and wait
+                new InstallRedistribForm().ShowDialog();
+
+                // When done run welcome form
+                Application.Run(new WelcomeForm());
             }
             else
             {

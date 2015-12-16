@@ -96,10 +96,5 @@ namespace Steam_Desktop_Authenticator
         {
             new LoginForm(true).ShowDialog();
         }
-
-        private void WelcomeForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Application.Exit();
-        }
     }
 }
