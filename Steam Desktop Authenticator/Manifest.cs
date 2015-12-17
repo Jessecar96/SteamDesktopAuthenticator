@@ -16,7 +16,7 @@ namespace Steam_Desktop_Authenticator
         public bool Encrypted { get; set; }
 
         [JsonProperty("first_run")]
-        public bool FirstRun { get; set; } = true;
+        public bool FirstRun { get; set; }
 
         [JsonProperty("entries")]
         public List<ManifestEntry> Entries { get; set; }
