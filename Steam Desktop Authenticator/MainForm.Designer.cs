@@ -133,6 +133,7 @@
             this.listAccounts.TabIndex = 3;
             this.listAccounts.SelectedValueChanged += new System.EventHandler(this.listAccounts_SelectedValueChanged);
             this.listAccounts.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listAccounts_KeyDown);
+            this.listAccounts.KeyUp += new System.Windows.Forms.KeyEventHandler(this.listAccounts_KeyUp);
             // 
             // timerSteamGuard
             // 

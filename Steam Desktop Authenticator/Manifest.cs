@@ -427,6 +427,14 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
+        public void MoveEntry(int from, int to)
+        {
+            ManifestEntry sel = Entries[from];
+            Entries.RemoveAt(from);
+            Entries.Insert(to, sel);
+            Save();
+        }
+
         public class ManifestEntry
         {
             [JsonProperty("encryption_iv")]

@@ -453,9 +453,30 @@ namespace Steam_Desktop_Authenticator
 
         private void listAccounts_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Control)
+            {
+                if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)
+                {
+                    manifest.MoveEntry(listAccounts.SelectedIndex,
+                        listAccounts.SelectedIndex - (e.KeyCode == Keys.Up ? 1 : -1));
+                    loadAccountsList();
+                }
+                return;
+            }
+            if (!IsKeyAChar(e.KeyCode) || !IsKeyADigit(e.KeyCode)) return;
             txtAccSearch.Show();
             txtAccSearch.Focus();
             txtAccSearch.Text = e.KeyCode.ToString();
+        }
+
+        private static bool IsKeyAChar(Keys key)
+        {
+            return key >= Keys.A && key <= Keys.Z;
+        }
+
+        private static bool IsKeyADigit(Keys key)
+        {
+            return (key >= Keys.D0 && key <= Keys.D9) || (key >= Keys.NumPad0 && key <= Keys.NumPad9);
         }
 
         private void txtAccSearch_TextChanged(object sender, EventArgs e)
@@ -494,6 +515,11 @@ namespace Steam_Desktop_Authenticator
                 itemArray[i] = lb.Items[i].ToString();
             }
             return itemArray;
+        }
+
+        private void listAccounts_KeyUp(object sender, KeyEventArgs e)
+        {
+            
         }
     }
 }
