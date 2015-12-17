@@ -30,9 +30,8 @@ namespace Steam_Desktop_Authenticator
             this.manifest.FirstRun = false;
             this.manifest.Save();
 
-            pbTimeout.Maximum = 30;
-            pbTimeout.Minimum = 0;
-            pbTimeout.Value = 30;
+            // Tick first time manually
+            timerSteamGuard_Tick(new object(), EventArgs.Empty);
         }
 
 
@@ -315,11 +314,13 @@ namespace Steam_Desktop_Authenticator
 
         // Timers
 
-        private void timerSteamGuard_Tick(object sender, EventArgs e)
+        private async void timerSteamGuard_Tick(object sender, EventArgs e)
         {
-            steamTime = TimeAligner.GetSteamTime();
-            currentSteamChunk = steamTime / 30L;
+            lblStatus.Text = "Aligning time with Steam...";
+            steamTime = await TimeAligner.GetSteamTimeAsync();
+            lblStatus.Text = "";
 
+            currentSteamChunk = steamTime / 30L;
             int secondsUntilChange = (int)(steamTime - (currentSteamChunk * 30L));
 
             loadAccountInfo();
@@ -329,23 +330,31 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
-        private void timerTradesPopup_Tick(object sender, EventArgs e)
+        private async void timerTradesPopup_Tick(object sender, EventArgs e)
         {
             if (currentAccount == null || popupFrm.Visible) return;
 
-            Confirmation[] confs = currentAccount.FetchConfirmations();
+            try {
+                lblStatus.Text = "Checking confirmations...";
+                Confirmation[] confs = await currentAccount.FetchConfirmationsAsync();
+                lblStatus.Text = "";
 
-            if (confs.Length == 0) return;
+                if (confs.Length == 0) return;
 
-            popupFrm.Confirmation = confs;
-            popupFrm.Popup();
+                popupFrm.Confirmation = confs;
+                popupFrm.Popup();
+            }
+            catch (SteamGuardAccount.WGTokenInvalidException)
+            {
+                lblStatus.Text = "";
+            }
         }
 
 
         // Other methods
 
         /// <summary>
-        /// Load UI with the current account info
+        /// Load UI with the current account info, this is run every second
         /// </summary>
         private void loadAccountInfo()
         {
@@ -353,7 +362,6 @@ namespace Steam_Desktop_Authenticator
             {
                 popupFrm.Account = currentAccount;
                 txtLoginToken.Text = currentAccount.GenerateSteamGuardCodeForTime(steamTime);
-                currentAccount.RefreshSession();
             }
         }
 
