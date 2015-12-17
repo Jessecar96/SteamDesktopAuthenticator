@@ -34,15 +34,13 @@ namespace Steam_Desktop_Authenticator
             this.labelVersion.Text = String.Format("v{0}", Application.ProductVersion);
             this.mManifest = Manifest.GetManifest();
 
-            // Make sure we don't show that dialog again.
+            // Make sure we don't show that welcome dialog again
             this.mManifest.FirstRun = false;
             this.mManifest.Save();
 
             pbTimeout.Maximum = 30;
             pbTimeout.Minimum = 0;
             pbTimeout.Value = 30;
-
-            checkForUpdates();
         }
 
         async void Squirrel_UpdateApp()
@@ -284,11 +282,6 @@ namespace Steam_Desktop_Authenticator
             loadAccountsList();
         }
 
-        private void menuImportMaFile_Click(object sender, EventArgs e)
-        {
-            
-        }
-
         private void menuQuit_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -330,75 +323,6 @@ namespace Steam_Desktop_Authenticator
         private void fromAndroidDeviceToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new LoginForm(true).ShowDialog();
-        }
-
-        // Logic for version checking
-        private Version newVersion = null;
-        private Version currentVersion = null;
-        private WebClient updateClient = null;
-        private string updateUrl = null;
-        private bool startupUpdateCheck = true;
-
-        private void labelUpdate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            if (newVersion == null || currentVersion == null)
-            {
-                checkForUpdates();
-            }
-            else
-            {
-                compareVersions();
-            }
-        }
-
-        private void checkForUpdates()
-        {
-            if (updateClient != null) return;
-            updateClient = new WebClient();
-            updateClient.DownloadStringCompleted += UpdateClient_DownloadStringCompleted;
-            updateClient.Headers.Add("Content-Type", "application/json");
-            updateClient.Headers.Add("User-Agent", "Steam Desktop Authenticator");
-            updateClient.DownloadStringAsync(new Uri("https://api.github.com/repos/Jessecar96/SteamDesktopAuthenticator/releases/latest"));
-        }
-
-        private void compareVersions()
-        {
-            if (newVersion > currentVersion)
-            {
-                labelUpdate.Text = "Download new version"; // Show the user a new version is available if they press no
-                DialogResult updateDialog = MessageBox.Show(String.Format("A new version is available! Would you like to download it now?\nYou will update from version {0} to {1}", Application.ProductVersion, newVersion.ToString()), "New Version", MessageBoxButtons.YesNo);
-                if (updateDialog == DialogResult.Yes)
-                {
-                    Process.Start(updateUrl);
-                }
-            }
-            else
-            {
-                if (!startupUpdateCheck)
-                {
-                    MessageBox.Show(String.Format("You are using the latest version: {0}", Application.ProductVersion));
-                }
-            }
-
-            newVersion = null; // Check the api again next time they check for updates
-            updateClient = null; // Set to null to indicate it's done checking
-            startupUpdateCheck = false; // Set when it's done checking on startup
-        }
-
-        private void UpdateClient_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
-        {
-            try
-            {
-                dynamic resultObject = JsonConvert.DeserializeObject(e.Result);
-                newVersion = new Version(resultObject.tag_name.Value);
-                currentVersion = new Version(Application.ProductVersion);
-                updateUrl = resultObject.assets.First.browser_download_url.Value;
-                compareVersions();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Failed to check for updates.");
-            }
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
