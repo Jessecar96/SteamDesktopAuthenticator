@@ -37,9 +37,10 @@ namespace Steam_Desktop_Authenticator
 
         // Form event handlers
 
-        private void MainForm_Shown(object sender, EventArgs e)
+        private async void MainForm_Shown(object sender, EventArgs e)
         {
             loadAccountsList();
+            await UpdateCurrentSession();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -297,7 +298,7 @@ namespace Steam_Desktop_Authenticator
 
         // Misc UI handlers
 
-        private void listAccounts_SelectedValueChanged(object sender, EventArgs e)
+        private async void listAccounts_SelectedValueChanged(object sender, EventArgs e)
         {
             for (int i = 0; i < allAccounts.Length; i++)
             {
@@ -307,6 +308,7 @@ namespace Steam_Desktop_Authenticator
                     trayAccountList.Text = account.AccountName;
                     currentAccount = account;
                     loadAccountInfo();
+                    await UpdateCurrentSession();
                 }
             }
         }
@@ -334,7 +336,8 @@ namespace Steam_Desktop_Authenticator
         {
             if (currentAccount == null || popupFrm.Visible) return;
 
-            try {
+            try
+            {
                 lblStatus.Text = "Checking confirmations...";
                 Confirmation[] confs = await currentAccount.FetchConfirmationsAsync();
                 lblStatus.Text = "";
@@ -413,14 +416,36 @@ namespace Steam_Desktop_Authenticator
         }
 
         /// <summary>
+        /// Reload the session of the current account
+        /// </summary>
+        /// <returns></returns>
+        private async Task UpdateCurrentSession()
+        {
+            lblStatus.Text = "Refreshing session...";
+            btnTradeConfirmations.Enabled = false;
+
+            await currentAccount.RefreshSessionAsync();
+
+            lblStatus.Text = "";
+            btnTradeConfirmations.Enabled = true;
+        }
+
+        /// <summary>
         /// Update the program
         /// </summary>
         /// <returns></returns>
-        async Task Squirrel_UpdateAppAsync()
+        private async Task Squirrel_UpdateAppAsync()
         {
-            using (var mgr = new UpdateManager("https://s3.amazonaws.com/steamdesktopauthenticator/releases"))
+            try
             {
-                await mgr.UpdateApp();
+                using (var mgr = new UpdateManager("https://s3.amazonaws.com/steamdesktopauthenticator/releases"))
+                {
+                    await mgr.UpdateApp();
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failed to check for updates.", "Updater", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
