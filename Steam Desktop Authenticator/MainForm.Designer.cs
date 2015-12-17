@@ -99,9 +99,11 @@
             this.pbTimeout.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pbTimeout.Location = new System.Drawing.Point(6, 60);
+            this.pbTimeout.Maximum = 30;
             this.pbTimeout.Name = "pbTimeout";
             this.pbTimeout.Size = new System.Drawing.Size(315, 19);
             this.pbTimeout.TabIndex = 1;
+            this.pbTimeout.Value = 30;
             // 
             // txtLoginToken
             // 
@@ -374,9 +376,9 @@
             this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblStatus.BackColor = System.Drawing.SystemColors.Control;
             this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatus.Location = new System.Drawing.Point(251, 5);
+            this.lblStatus.Location = new System.Drawing.Point(125, 5);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(95, 18);
+            this.lblStatus.Size = new System.Drawing.Size(221, 18);
             this.lblStatus.TabIndex = 11;
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
