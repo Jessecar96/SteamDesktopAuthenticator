@@ -39,7 +39,7 @@
             this.btnTradeConfirmations = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnManageEncryption = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupAccount = new System.Windows.Forms.GroupBox();
             this.labelVersion = new System.Windows.Forms.Label();
             this.labelUpdate = new System.Windows.Forms.LinkLabel();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
@@ -64,8 +64,9 @@
             this.timerTradesPopup = new System.Windows.Forms.Timer(this.components);
             this.lblStatus = new System.Windows.Forms.Label();
             this.txtAccSearch = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.groupAccount.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.menuStripTray.SuspendLayout();
             this.SuspendLayout();
@@ -133,7 +134,6 @@
             this.listAccounts.TabIndex = 3;
             this.listAccounts.SelectedValueChanged += new System.EventHandler(this.listAccounts_SelectedValueChanged);
             this.listAccounts.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listAccounts_KeyDown);
-            this.listAccounts.KeyUp += new System.Windows.Forms.KeyEventHandler(this.listAccounts_KeyUp);
             // 
             // timerSteamGuard
             // 
@@ -175,18 +175,18 @@
             this.btnManageEncryption.UseVisualStyleBackColor = true;
             this.btnManageEncryption.Click += new System.EventHandler(this.btnManageEncryption_Click);
             // 
-            // groupBox2
+            // groupAccount
             // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.groupAccount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.btnTradeConfirmations);
-            this.groupBox2.Controls.Add(this.btnDelete);
-            this.groupBox2.Location = new System.Drawing.Point(12, 155);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(327, 56);
-            this.groupBox2.TabIndex = 7;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Account";
+            this.groupAccount.Controls.Add(this.btnTradeConfirmations);
+            this.groupAccount.Controls.Add(this.btnDelete);
+            this.groupAccount.Location = new System.Drawing.Point(12, 155);
+            this.groupAccount.Name = "groupAccount";
+            this.groupAccount.Size = new System.Drawing.Size(327, 56);
+            this.groupAccount.TabIndex = 7;
+            this.groupAccount.TabStop = false;
+            this.groupAccount.Text = "Account";
             // 
             // labelVersion
             // 
@@ -195,7 +195,7 @@
             this.labelVersion.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelVersion.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.labelVersion.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.labelVersion.Location = new System.Drawing.Point(239, 379);
+            this.labelVersion.Location = new System.Drawing.Point(239, 409);
             this.labelVersion.Name = "labelVersion";
             this.labelVersion.Size = new System.Drawing.Size(100, 15);
             this.labelVersion.TabIndex = 8;
@@ -209,7 +209,7 @@
             this.labelUpdate.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelUpdate.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.labelUpdate.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.labelUpdate.Location = new System.Drawing.Point(12, 380);
+            this.labelUpdate.Location = new System.Drawing.Point(12, 410);
             this.labelUpdate.Name = "labelUpdate";
             this.labelUpdate.Size = new System.Drawing.Size(100, 14);
             this.labelUpdate.TabIndex = 9;
@@ -385,24 +385,33 @@
             // 
             // txtAccSearch
             // 
-            this.txtAccSearch.Location = new System.Drawing.Point(14, 355);
+            this.txtAccSearch.Location = new System.Drawing.Point(49, 383);
             this.txtAccSearch.Name = "txtAccSearch";
-            this.txtAccSearch.Size = new System.Drawing.Size(99, 20);
+            this.txtAccSearch.Size = new System.Drawing.Size(290, 20);
             this.txtAccSearch.TabIndex = 12;
-            this.txtAccSearch.Visible = false;
             this.txtAccSearch.TextChanged += new System.EventHandler(this.txtAccSearch_TextChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(15, 386);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(32, 13);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "Filter:";
             // 
             // MainForm
             // 
             this.AcceptButton = this.btnSteamLogin;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(351, 403);
+            this.ClientSize = new System.Drawing.Size(351, 433);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.txtAccSearch);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.labelUpdate);
             this.Controls.Add(this.labelVersion);
-            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupAccount);
             this.Controls.Add(this.btnManageEncryption);
             this.Controls.Add(this.listAccounts);
             this.Controls.Add(this.groupBox1);
@@ -419,7 +428,7 @@
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
+            this.groupAccount.ResumeLayout(false);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.menuStripTray.ResumeLayout(false);
@@ -438,7 +447,7 @@
         private System.Windows.Forms.Button btnTradeConfirmations;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnManageEncryption;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupAccount;
         private System.Windows.Forms.Label labelVersion;
         private System.Windows.Forms.LinkLabel labelUpdate;
         private System.Windows.Forms.MenuStrip menuStrip;
@@ -463,6 +472,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuImportAndroid;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.TextBox txtAccSearch;
+        private System.Windows.Forms.Label label1;
     }
 }
 

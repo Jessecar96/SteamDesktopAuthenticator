@@ -24,7 +24,13 @@ namespace Steam_Desktop_Authenticator
         public MainForm()
         {
             InitializeComponent();
+        }
 
+
+        // Form event handlers
+
+        private async void MainForm_Shown(object sender, EventArgs e)
+        {
             this.labelVersion.Text = String.Format("v{0}", Application.ProductVersion);
             this.manifest = Manifest.GetManifest();
 
@@ -34,13 +40,7 @@ namespace Steam_Desktop_Authenticator
 
             // Tick first time manually
             timerSteamGuard_Tick(new object(), EventArgs.Empty);
-        }
 
-
-        // Form event handlers
-
-        private async void MainForm_Shown(object sender, EventArgs e)
-        {
             loadAccountsList();
             await UpdateCurrentSession();
         }
@@ -311,8 +311,21 @@ namespace Steam_Desktop_Authenticator
                     currentAccount = account;
                     loadAccountInfo();
                     await UpdateCurrentSession();
+                    break;
                 }
             }
+        }
+
+        private void txtAccSearch_TextChanged(object sender, EventArgs e)
+        {
+            List<string> names = new List<string>(getAllNames());
+            names = names.FindAll(new Predicate<string>(IsFilter));
+
+            listAccounts.Items.Clear();
+            listAccounts.Items.AddRange(names.ToArray());
+
+            trayAccountList.Items.Clear();
+            trayAccountList.Items.AddRange(names.ToArray());
         }
 
 
@@ -367,6 +380,7 @@ namespace Steam_Desktop_Authenticator
             {
                 popupFrm.Account = currentAccount;
                 txtLoginToken.Text = currentAccount.GenerateSteamGuardCodeForTime(steamTime);
+                groupAccount.Text = "Account: " + currentAccount.AccountName;
             }
         }
 
@@ -463,9 +477,12 @@ namespace Steam_Desktop_Authenticator
                 }
                 return;
             }
-            if (!IsKeyAChar(e.KeyCode))
-                if (!IsKeyADigit(e.KeyCode))
-                    return;
+
+            if (!IsKeyAChar(e.KeyCode) && !IsKeyADigit(e.KeyCode))
+            {
+                return;
+            }
+
             txtAccSearch.Show();
             txtAccSearch.Focus();
             txtAccSearch.Text = e.KeyCode.ToString();
@@ -481,21 +498,16 @@ namespace Steam_Desktop_Authenticator
             return (key >= Keys.D0 && key <= Keys.D9) || (key >= Keys.NumPad0 && key <= Keys.NumPad9);
         }
 
-        private void txtAccSearch_TextChanged(object sender, EventArgs e)
-        {
-            List<string> names = new List<string>(getAllNames());
-            names = names.FindAll(new Predicate<string>(IsFilter));
-
-            listAccounts.Items.Clear();
-            listAccounts.Items.AddRange(names.ToArray());
-        }
-
         private bool IsFilter(string f)
         {
             if (txtAccSearch.Text.StartsWith("~"))
+            {
                 return Regex.IsMatch(f, txtAccSearch.Text);
+            }
             else
+            {
                 return f.Contains(txtAccSearch.Text);
+            }
         }
 
         private string[] getAllNames()
@@ -517,11 +529,6 @@ namespace Steam_Desktop_Authenticator
                 itemArray[i] = lb.Items[i].ToString();
             }
             return itemArray;
-        }
-
-        private void listAccounts_KeyUp(object sender, KeyEventArgs e)
-        {
-            
         }
     }
 }
