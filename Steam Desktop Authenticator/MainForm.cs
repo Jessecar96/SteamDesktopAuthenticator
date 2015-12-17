@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SteamAuth;
@@ -16,6 +17,7 @@ namespace Steam_Desktop_Authenticator
 
         private long steamTime = 0;
         private long currentSteamChunk = 0;
+        private string passKey = null;
 
         // Forms
         private TradePopupForm popupFrm = new TradePopupForm();
@@ -38,9 +40,22 @@ namespace Steam_Desktop_Authenticator
             this.manifest.FirstRun = false;
             this.manifest.Save();
 
-            // Tick first time manually
+            // Tick first time manually to sync time
             timerSteamGuard_Tick(new object(), EventArgs.Empty);
 
+            if (manifest.Encrypted)
+            {
+                string passKey = manifest.PromptForPassKey();
+                btnManageEncryption.Text = "Manage Encryption";
+            }
+            else
+            {
+                btnManageEncryption.Text = "Setup Encryption";
+            }
+
+            btnManageEncryption.Enabled = manifest.Entries.Count > 0;
+
+            
             loadAccountsList();
             await UpdateCurrentSession();
         }
@@ -390,29 +405,12 @@ namespace Steam_Desktop_Authenticator
         private void loadAccountsList()
         {
             currentAccount = null;
+
             listAccounts.Items.Clear();
             listAccounts.SelectedIndex = -1;
+
             trayAccountList.Items.Clear();
             trayAccountList.SelectedIndex = -1;
-
-            bool success;
-            string passKey = manifest.PromptForPassKey(out success);
-            if (!success)
-            {
-                this.Close();
-                return;
-            }
-
-            if (manifest.Encrypted)
-            {
-                btnManageEncryption.Text = "Manage Encryption";
-            }
-            else
-            {
-                btnManageEncryption.Text = "Setup Encryption";
-            }
-
-            btnManageEncryption.Enabled = manifest.Entries.Count > 0;
 
             allAccounts = manifest.GetAllAccounts(passKey);
 

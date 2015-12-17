@@ -128,13 +128,14 @@ namespace Steam_Desktop_Authenticator
             return null;
         }
 
-        public string PromptForPassKey(out bool success)
+        public class IncorrectPassKeyException : Exception { }
+        public class ManifestNotEncryptedException : Exception { }
+
+        public string PromptForPassKey()
         {
-            success = false;
             if (!this.Encrypted)
             {
-                success = true;
-                return null;
+                throw new ManifestNotEncryptedException();
             }
 
             bool passKeyValid = false;
@@ -157,7 +158,6 @@ namespace Steam_Desktop_Authenticator
                     return null;
                 }
             }
-            success = passKeyValid;
             return passKey;
         }
 
