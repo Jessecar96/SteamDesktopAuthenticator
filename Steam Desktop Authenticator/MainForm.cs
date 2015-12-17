@@ -527,16 +527,5 @@ namespace Steam_Desktop_Authenticator
             }
             return itemArray;
         }
-
-        private string[] getListboxItems(ListBox lb)
-        {
-            string[] itemArray = new string[lb.Items.Count];
-            int itemCount = lb.Items.Count;
-            for (int i = 0; i < itemCount; i++)
-            {
-                itemArray[i] = lb.Items[i].ToString();
-            }
-            return itemArray;
-        }
     }
 }

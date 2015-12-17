@@ -429,6 +429,7 @@ namespace Steam_Desktop_Authenticator
 
         public void MoveEntry(int from, int to)
         {
+            if (from < 0 || to < 0 || from > Entries.Count || to > Entries.Count - 1) return;
             ManifestEntry sel = Entries[from];
             Entries.RemoveAt(from);
             Entries.Insert(to, sel);
