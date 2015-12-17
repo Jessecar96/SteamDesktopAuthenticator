@@ -1,55 +1,68 @@
 ﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SteamAuth;
-using System.Diagnostics;
-using System.Net;
-using Newtonsoft.Json;
 using Squirrel;
 
 namespace Steam_Desktop_Authenticator
 {
     public partial class MainForm : Form
     {
-        private SteamGuardAccount mCurrentAccount = null;
+        private SteamGuardAccount currentAccount = null;
         private SteamGuardAccount[] allAccounts;
-        private Manifest mManifest;
+        private Manifest manifest;
 
         private long steamTime = 0;
         private long currentSteamChunk = 0;
 
+        // Forms
         private TradePopupForm popupFrm = new TradePopupForm();
+
 
         public MainForm()
         {
             InitializeComponent();
 
             this.labelVersion.Text = String.Format("v{0}", Application.ProductVersion);
-            this.mManifest = Manifest.GetManifest();
+            this.manifest = Manifest.GetManifest();
 
             // Make sure we don't show that welcome dialog again
-            this.mManifest.FirstRun = false;
-            this.mManifest.Save();
+            this.manifest.FirstRun = false;
+            this.manifest.Save();
 
             pbTimeout.Maximum = 30;
             pbTimeout.Minimum = 0;
             pbTimeout.Value = 30;
         }
 
-        async void Squirrel_UpdateApp()
+
+        // Form event handlers
+
+        private void MainForm_Shown(object sender, EventArgs e)
         {
-            using (var mgr = new UpdateManager("https://s3.amazonaws.com/steamdesktopauthenticator/releases"))
+            loadAccountsList();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            trayIcon.Icon = this.Icon;
+        }
+
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
             {
-                await mgr.UpdateApp();
+                this.Hide();
             }
         }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
+
+
+        // UI Button handlers
 
         private void btnSteamLogin_Click(object sender, EventArgs e)
         {
@@ -58,96 +71,13 @@ namespace Steam_Desktop_Authenticator
             this.loadAccountsList();
         }
 
-        private void listAccounts_SelectedValueChanged(object sender, EventArgs e)
-        {
-            // Triggered when list item is clicked
-            for (int i = 0; i < allAccounts.Length; i++)
-            {
-                SteamGuardAccount account = allAccounts[i];
-                if (account.AccountName == (string)listAccounts.Items[listAccounts.SelectedIndex])
-                {
-                    itemAccount.Text = account.AccountName;
-                    mCurrentAccount = account;
-                    loadAccountInfo();
-                }
-            }
-        }
-
-        private void loadAccountInfo()
-        {
-            if (mCurrentAccount != null && steamTime != 0)
-            {
-                popupFrm.Account = mCurrentAccount;
-                txtLoginToken.Text = mCurrentAccount.GenerateSteamGuardCodeForTime(steamTime);
-                mCurrentAccount.RefreshSession();
-            }
-        }
-
-        private void loadAccountsList()
-        {
-            mCurrentAccount = null;
-            listAccounts.Items.Clear();
-            listAccounts.SelectedIndex = -1;
-            itemAccount.Items.Clear();
-            itemAccount.SelectedIndex = -1;
-
-            bool success;
-            string passKey = mManifest.PromptForPassKey(out success);
-            if (!success)
-            {
-                this.Close();
-                return;
-            }
-
-            if (mManifest.Encrypted)
-            {
-                btnManageEncryption.Text = "Manage Encryption";
-            }
-            else
-            {
-                btnManageEncryption.Text = "Setup Encryption";
-            }
-
-            btnManageEncryption.Enabled = mManifest.Entries.Count > 0;
-
-            allAccounts = mManifest.GetAllAccounts(passKey);
-
-            if (allAccounts.Length > 0)
-            {
-                for (int i = 0; i < allAccounts.Length; i++)
-                {
-                    SteamGuardAccount account = allAccounts[i];
-                    listAccounts.Items.Add(account.AccountName);
-                    itemAccount.Items.Add(account.AccountName);
-                }
-
-                listAccounts.SelectedIndex = 0;
-                itemAccount.SelectedIndex = 0;
-            }
-            btnDelete.Enabled = btnTradeConfirmations.Enabled = allAccounts.Length > 0;
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            steamTime = TimeAligner.GetSteamTime();
-            currentSteamChunk = steamTime / 30L;
-
-            int secondsUntilChange = (int)(steamTime - (currentSteamChunk * 30L));
-
-            loadAccountInfo();
-            if (mCurrentAccount != null)
-            {
-                pbTimeout.Value = 30 - secondsUntilChange;
-            }
-        }
-
         private void btnTradeConfirmations_Click(object sender, EventArgs e)
         {
-            if (mCurrentAccount == null) return;
+            if (currentAccount == null) return;
 
             try
             {
-                ConfirmationFormWeb confirms = new ConfirmationFormWeb(mCurrentAccount);
+                ConfirmationFormWeb confirms = new ConfirmationFormWeb(currentAccount);
                 confirms.Show();
             }
             catch (Exception)
@@ -162,7 +92,7 @@ namespace Steam_Desktop_Authenticator
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (mCurrentAccount == null) return;
+            if (currentAccount == null) return;
 
             DialogResult res = MessageBox.Show("Would you like to remove Steam Guard completely?\nYes - Remove Steam Guard completely.\nNo - Switch back to Email authentication.", "Remove Steam Guard", MessageBoxButtons.YesNoCancel);
             int scheme = 0;
@@ -181,8 +111,8 @@ namespace Steam_Desktop_Authenticator
 
             if (scheme != 0)
             {
-                string confCode = mCurrentAccount.GenerateSteamGuardCode();
-                InputForm confirmationDialog = new InputForm(String.Format("Remvoing Steam Guard from {0}. Enter this confirmation code: {1}", mCurrentAccount.AccountName, confCode));
+                string confCode = currentAccount.GenerateSteamGuardCode();
+                InputForm confirmationDialog = new InputForm(String.Format("Remvoing Steam Guard from {0}. Enter this confirmation code: {1}", currentAccount.AccountName, confCode));
                 confirmationDialog.ShowDialog();
 
                 if (confirmationDialog.Canceled)
@@ -197,11 +127,11 @@ namespace Steam_Desktop_Authenticator
                     return;
                 }
 
-                bool success = mCurrentAccount.DeactivateAuthenticator(scheme);
+                bool success = currentAccount.DeactivateAuthenticator(scheme);
                 if (success)
                 {
                     MessageBox.Show(String.Format("Steam Guard {0}. maFile will be deleted after hitting okay. If you need to make a backup, now's the time.", (scheme == 2 ? "removed completely" : "switched to emails")));
-                    this.mManifest.RemoveAccount(mCurrentAccount);
+                    this.manifest.RemoveAccount(currentAccount);
                     this.loadAccountsList();
                 }
                 else
@@ -217,7 +147,7 @@ namespace Steam_Desktop_Authenticator
 
         private void btnManageEncryption_Click(object sender, EventArgs e)
         {
-            if (mManifest.Encrypted)
+            if (manifest.Encrypted)
             {
                 InputForm currentPassKeyForm = new InputForm("Enter current passkey", true);
                 currentPassKeyForm.ShowDialog();
@@ -260,7 +190,7 @@ namespace Steam_Desktop_Authenticator
                 }
 
                 string action = newPassKey == null ? "remove" : "change";
-                if (!mManifest.ChangeEncryptionKey(curPassKey, newPassKey))
+                if (!manifest.ChangeEncryptionKey(curPassKey, newPassKey))
                 {
                     MessageBox.Show("Unable to " + action + " passkey.");
                 }
@@ -272,24 +202,27 @@ namespace Steam_Desktop_Authenticator
             }
             else
             {
-                mManifest.PromptSetupPassKey();
+                manifest.PromptSetupPassKey();
                 this.loadAccountsList();
             }
         }
 
-        private void MainForm_Shown(object sender, EventArgs e)
+        private async void labelUpdate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            loadAccountsList();
+            await Squirrel_UpdateAppAsync();
         }
+
+
+        // Tool strip menu handlers
 
         private void menuQuit_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        private void removeAccountFromManifestToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void menuRemoveAccountFromManifest_Click(object sender, EventArgs e)
         {
-            if (mManifest.Encrypted)
+            if (manifest.Encrypted)
             {
                 MessageBox.Show("You cannot remove accounts from the manifest file while it is encrypted.", "Remove from manifest", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -298,68 +231,58 @@ namespace Steam_Desktop_Authenticator
                 DialogResult res = MessageBox.Show("This will remove the selected account from the manifest file.\nUse this to move a maFile to another computer.\nThis will NOT delete your maFile.", "Remove from manifest", MessageBoxButtons.OKCancel);
                 if (res == DialogResult.OK)
                 {
-                    mManifest.RemoveAccount(mCurrentAccount, false);
+                    manifest.RemoveAccount(currentAccount, false);
                     MessageBox.Show("Account removed from manifest.\nYou can now move its maFile to another computer and import it using the File menu.", "Remove from manifest");
                     loadAccountsList();
                 }
             }
         }
 
-        private void loginAgainToolStripMenuItem_Click(object sender, EventArgs e)
+        private void menuLoginAgain_Click(object sender, EventArgs e)
         {
             LoginForm mLoginForm = new LoginForm();
-            mLoginForm.acc = mCurrentAccount;
+            mLoginForm.acc = currentAccount;
             mLoginForm.refreshLogin = true;
             mLoginForm.ShowDialog();
         }
 
-        private void menu_importMaFile_Click(object sender, EventArgs e)
+        private void menuImportMaFile_Click(object sender, EventArgs e)
         {
             ImportAccountForm currentImport_maFile_Form = new ImportAccountForm();
             currentImport_maFile_Form.ShowDialog();
             loadAccountsList();
         }
 
-        private void fromAndroidDeviceToolStripMenuItem_Click(object sender, EventArgs e)
+        private void menuImportAndroid_Click(object sender, EventArgs e)
         {
             new LoginForm(true).ShowDialog();
         }
 
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+
+        // Tray menu handlers
+
+        private void trayIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            Application.Exit();
+            trayRestore_Click(sender, EventArgs.Empty);
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            notifyIcon1.Icon = this.Icon;
-        }
-
-        private void MainForm_Resize(object sender, EventArgs e)
-        {
-            if (this.WindowState == FormWindowState.Minimized)
-            {
-                this.Hide();
-            }
-        }
-
-        private void itemRestore_Click(object sender, EventArgs e)
+        private void trayRestore_Click(object sender, EventArgs e)
         {
             this.Show();
             this.WindowState = FormWindowState.Normal;
         }
 
-        private void itemQuit_Click(object sender, EventArgs e)
+        private void trayQuit_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        private void itemTrades_Click(object sender, EventArgs e)
+        private void trayTradeConfirmations_Click(object sender, EventArgs e)
         {
             btnTradeConfirmations_Click(sender, e);
         }
 
-        private void itemCopySG_Click(object sender, EventArgs e)
+        private void trayCopySteamGuard_Click(object sender, EventArgs e)
         {
             if (txtLoginToken.Text != "")
             {
@@ -367,16 +290,50 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
-        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void trayAccountList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            itemRestore_Click(sender, EventArgs.Empty);
+            listAccounts.SelectedIndex = trayAccountList.SelectedIndex;
+        }
+
+
+        // Misc UI handlers
+
+        private void listAccounts_SelectedValueChanged(object sender, EventArgs e)
+        {
+            for (int i = 0; i < allAccounts.Length; i++)
+            {
+                SteamGuardAccount account = allAccounts[i];
+                if (account.AccountName == (string)listAccounts.Items[listAccounts.SelectedIndex])
+                {
+                    trayAccountList.Text = account.AccountName;
+                    currentAccount = account;
+                    loadAccountInfo();
+                }
+            }
+        }
+
+
+        // Timers
+
+        private void timerSteamGuard_Tick(object sender, EventArgs e)
+        {
+            steamTime = TimeAligner.GetSteamTime();
+            currentSteamChunk = steamTime / 30L;
+
+            int secondsUntilChange = (int)(steamTime - (currentSteamChunk * 30L));
+
+            loadAccountInfo();
+            if (currentAccount != null)
+            {
+                pbTimeout.Value = 30 - secondsUntilChange;
+            }
         }
 
         private void timerTradesPopup_Tick(object sender, EventArgs e)
         {
-            if (mCurrentAccount == null || popupFrm.Visible) return;
+            if (currentAccount == null || popupFrm.Visible) return;
 
-            Confirmation[] confs = mCurrentAccount.FetchConfirmations();
+            Confirmation[] confs = currentAccount.FetchConfirmations();
 
             if (confs.Length == 0) return;
 
@@ -384,18 +341,79 @@ namespace Steam_Desktop_Authenticator
             popupFrm.Popup();
         }
 
-        private void itemAccount_SelectedIndexChanged(object sender, EventArgs e)
+
+        // Other methods
+
+        /// <summary>
+        /// Load UI with the current account info
+        /// </summary>
+        private void loadAccountInfo()
         {
-            //for (int i = 0; i < allAccounts.Length; i++)
-            //{
-            //    SteamGuardAccount account = allAccounts[i];
-            //    if (account.AccountName == itemAccount.SelectedItem as string)
-            //    {
-                    listAccounts.SelectedIndex = itemAccount.SelectedIndex;
-            //        mCurrentAccount = account;
-            //        loadAccountInfo();
-            //    }
-            //}
+            if (currentAccount != null && steamTime != 0)
+            {
+                popupFrm.Account = currentAccount;
+                txtLoginToken.Text = currentAccount.GenerateSteamGuardCodeForTime(steamTime);
+                currentAccount.RefreshSession();
+            }
+        }
+
+        /// <summary>
+        /// Decrypts files and populates list UI with accounts
+        /// </summary>
+        private void loadAccountsList()
+        {
+            currentAccount = null;
+            listAccounts.Items.Clear();
+            listAccounts.SelectedIndex = -1;
+            trayAccountList.Items.Clear();
+            trayAccountList.SelectedIndex = -1;
+
+            bool success;
+            string passKey = manifest.PromptForPassKey(out success);
+            if (!success)
+            {
+                this.Close();
+                return;
+            }
+
+            if (manifest.Encrypted)
+            {
+                btnManageEncryption.Text = "Manage Encryption";
+            }
+            else
+            {
+                btnManageEncryption.Text = "Setup Encryption";
+            }
+
+            btnManageEncryption.Enabled = manifest.Entries.Count > 0;
+
+            allAccounts = manifest.GetAllAccounts(passKey);
+
+            if (allAccounts.Length > 0)
+            {
+                for (int i = 0; i < allAccounts.Length; i++)
+                {
+                    SteamGuardAccount account = allAccounts[i];
+                    listAccounts.Items.Add(account.AccountName);
+                    trayAccountList.Items.Add(account.AccountName);
+                }
+
+                listAccounts.SelectedIndex = 0;
+                trayAccountList.SelectedIndex = 0;
+            }
+            btnDelete.Enabled = btnTradeConfirmations.Enabled = allAccounts.Length > 0;
+        }
+
+        /// <summary>
+        /// Update the program
+        /// </summary>
+        /// <returns></returns>
+        async Task Squirrel_UpdateAppAsync()
+        {
+            using (var mgr = new UpdateManager("https://s3.amazonaws.com/steamdesktopauthenticator/releases"))
+            {
+                await mgr.UpdateApp();
+            }
         }
     }
 }

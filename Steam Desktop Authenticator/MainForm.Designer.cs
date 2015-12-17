@@ -35,38 +35,38 @@
             this.pbTimeout = new System.Windows.Forms.ProgressBar();
             this.txtLoginToken = new System.Windows.Forms.TextBox();
             this.listAccounts = new System.Windows.Forms.ListBox();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.timerSteamGuard = new System.Windows.Forms.Timer(this.components);
             this.btnTradeConfirmations = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnManageEncryption = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.labelVersion = new System.Windows.Forms.Label();
             this.labelUpdate = new System.Windows.Forms.LinkLabel();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuImportMaFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuImportAndroid = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuQuit = new System.Windows.Forms.ToolStripMenuItem();
-            this.importAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menu_importMaFile = new System.Windows.Forms.ToolStripMenuItem();
             this.accountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.removeAccountFromManifestToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.loginAgainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.contextMenuStripTray = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.itemRestore = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuRemoveAccountFromManifest = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuLoginAgain = new System.Windows.Forms.ToolStripMenuItem();
+            this.trayIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.menuStripTray = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.trayRestore = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.itemAccount = new System.Windows.Forms.ToolStripComboBox();
-            this.itemTrades = new System.Windows.Forms.ToolStripMenuItem();
-            this.itemCopySG = new System.Windows.Forms.ToolStripMenuItem();
+            this.trayAccountList = new System.Windows.Forms.ToolStripComboBox();
+            this.trayTradeConfirmations = new System.Windows.Forms.ToolStripMenuItem();
+            this.trayCopySteamGuard = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.itemQuit = new System.Windows.Forms.ToolStripMenuItem();
+            this.trayQuit = new System.Windows.Forms.ToolStripMenuItem();
             this.timerTradesPopup = new System.Windows.Forms.Timer(this.components);
-            this.fromAndroidDeviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lblStatus = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
-            this.contextMenuStripTray.SuspendLayout();
+            this.menuStrip.SuspendLayout();
+            this.menuStripTray.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnSteamLogin
@@ -130,11 +130,11 @@
             this.listAccounts.TabIndex = 3;
             this.listAccounts.SelectedValueChanged += new System.EventHandler(this.listAccounts_SelectedValueChanged);
             // 
-            // timer1
+            // timerSteamGuard
             // 
-            this.timer1.Enabled = true;
-            this.timer1.Interval = 1000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.timerSteamGuard.Enabled = true;
+            this.timerSteamGuard.Interval = 1000;
+            this.timerSteamGuard.Tick += new System.EventHandler(this.timerSteamGuard_Tick);
             // 
             // btnTradeConfirmations
             // 
@@ -213,17 +213,17 @@
             this.labelUpdate.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.labelUpdate.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.labelUpdate_LinkClicked);
             // 
-            // menuStrip1
+            // menuStrip
             // 
-            this.menuStrip1.BackColor = System.Drawing.SystemColors.Control;
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuStrip.BackColor = System.Drawing.SystemColors.Control;
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.accountToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(351, 24);
-            this.menuStrip1.TabIndex = 10;
-            this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(351, 24);
+            this.menuStrip.TabIndex = 10;
+            this.menuStrip.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
@@ -234,6 +234,29 @@
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
+            // 
+            // importAccountToolStripMenuItem
+            // 
+            this.importAccountToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuImportMaFile,
+            this.menuImportAndroid});
+            this.importAccountToolStripMenuItem.Name = "importAccountToolStripMenuItem";
+            this.importAccountToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.importAccountToolStripMenuItem.Text = "Import Account";
+            // 
+            // menuImportMaFile
+            // 
+            this.menuImportMaFile.Name = "menuImportMaFile";
+            this.menuImportMaFile.Size = new System.Drawing.Size(186, 22);
+            this.menuImportMaFile.Text = "From maFile";
+            this.menuImportMaFile.Click += new System.EventHandler(this.menuImportMaFile_Click);
+            // 
+            // menuImportAndroid
+            // 
+            this.menuImportAndroid.Name = "menuImportAndroid";
+            this.menuImportAndroid.Size = new System.Drawing.Size(186, 22);
+            this.menuImportAndroid.Text = "From Android Device";
+            this.menuImportAndroid.Click += new System.EventHandler(this.menuImportAndroid_Click);
             // 
             // toolStripSeparator1
             // 
@@ -247,125 +270,102 @@
             this.menuQuit.Text = "Quit";
             this.menuQuit.Click += new System.EventHandler(this.menuQuit_Click);
             // 
-            // importAccountToolStripMenuItem
-            // 
-            this.importAccountToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menu_importMaFile,
-            this.fromAndroidDeviceToolStripMenuItem});
-            this.importAccountToolStripMenuItem.Name = "importAccountToolStripMenuItem";
-            this.importAccountToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
-            this.importAccountToolStripMenuItem.Text = "Import Account";
-            // 
-            // menu_importMaFile
-            // 
-            this.menu_importMaFile.Name = "menu_importMaFile";
-            this.menu_importMaFile.Size = new System.Drawing.Size(186, 22);
-            this.menu_importMaFile.Text = "From maFile";
-            this.menu_importMaFile.Click += new System.EventHandler(this.menu_importMaFile_Click);
-            // 
             // accountToolStripMenuItem
             // 
             this.accountToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.removeAccountFromManifestToolStripMenuItem1,
-            this.loginAgainToolStripMenuItem});
+            this.menuRemoveAccountFromManifest,
+            this.menuLoginAgain});
             this.accountToolStripMenuItem.Name = "accountToolStripMenuItem";
             this.accountToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
             this.accountToolStripMenuItem.Text = "Account";
             // 
-            // removeAccountFromManifestToolStripMenuItem1
+            // menuRemoveAccountFromManifest
             // 
-            this.removeAccountFromManifestToolStripMenuItem1.Name = "removeAccountFromManifestToolStripMenuItem1";
-            this.removeAccountFromManifestToolStripMenuItem1.Size = new System.Drawing.Size(195, 22);
-            this.removeAccountFromManifestToolStripMenuItem1.Text = "Remove from manifest";
-            this.removeAccountFromManifestToolStripMenuItem1.Click += new System.EventHandler(this.removeAccountFromManifestToolStripMenuItem1_Click);
+            this.menuRemoveAccountFromManifest.Name = "menuRemoveAccountFromManifest";
+            this.menuRemoveAccountFromManifest.Size = new System.Drawing.Size(195, 22);
+            this.menuRemoveAccountFromManifest.Text = "Remove from manifest";
+            this.menuRemoveAccountFromManifest.Click += new System.EventHandler(this.menuRemoveAccountFromManifest_Click);
             // 
-            // loginAgainToolStripMenuItem
+            // menuLoginAgain
             // 
-            this.loginAgainToolStripMenuItem.Name = "loginAgainToolStripMenuItem";
-            this.loginAgainToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
-            this.loginAgainToolStripMenuItem.Text = "Login again";
-            this.loginAgainToolStripMenuItem.Click += new System.EventHandler(this.loginAgainToolStripMenuItem_Click);
+            this.menuLoginAgain.Name = "menuLoginAgain";
+            this.menuLoginAgain.Size = new System.Drawing.Size(195, 22);
+            this.menuLoginAgain.Text = "Login again";
+            this.menuLoginAgain.Click += new System.EventHandler(this.menuLoginAgain_Click);
             // 
-            // notifyIcon1
+            // trayIcon
             // 
-            this.notifyIcon1.ContextMenuStrip = this.contextMenuStripTray;
-            this.notifyIcon1.Text = "Steam Desktop Authenticator";
-            this.notifyIcon1.Visible = true;
-            this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
+            this.trayIcon.ContextMenuStrip = this.menuStripTray;
+            this.trayIcon.Text = "Steam Desktop Authenticator";
+            this.trayIcon.Visible = true;
+            this.trayIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.trayIcon_MouseDoubleClick);
             // 
-            // contextMenuStripTray
+            // menuStripTray
             // 
-            this.contextMenuStripTray.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itemRestore,
+            this.menuStripTray.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.trayRestore,
             this.toolStripSeparator2,
-            this.itemAccount,
-            this.itemTrades,
-            this.itemCopySG,
+            this.trayAccountList,
+            this.trayTradeConfirmations,
+            this.trayCopySteamGuard,
             this.toolStripSeparator3,
-            this.itemQuit});
-            this.contextMenuStripTray.Name = "contextMenuStripTray";
-            this.contextMenuStripTray.Size = new System.Drawing.Size(216, 131);
+            this.trayQuit});
+            this.menuStripTray.Name = "contextMenuStripTray";
+            this.menuStripTray.Size = new System.Drawing.Size(216, 153);
             // 
-            // itemRestore
+            // trayRestore
             // 
-            this.itemRestore.Name = "itemRestore";
-            this.itemRestore.Size = new System.Drawing.Size(215, 22);
-            this.itemRestore.Text = "Restore";
-            this.itemRestore.Click += new System.EventHandler(this.itemRestore_Click);
+            this.trayRestore.Name = "trayRestore";
+            this.trayRestore.Size = new System.Drawing.Size(215, 22);
+            this.trayRestore.Text = "Restore";
+            this.trayRestore.Click += new System.EventHandler(this.trayRestore_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(212, 6);
             // 
-            // itemAccount
+            // trayAccountList
             // 
-            this.itemAccount.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.itemAccount.Items.AddRange(new object[] {
+            this.trayAccountList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.trayAccountList.Items.AddRange(new object[] {
             "test1",
             "test2"});
-            this.itemAccount.Name = "itemAccount";
-            this.itemAccount.Size = new System.Drawing.Size(121, 23);
-            this.itemAccount.SelectedIndexChanged += new System.EventHandler(this.itemAccount_SelectedIndexChanged);
+            this.trayAccountList.Name = "trayAccountList";
+            this.trayAccountList.Size = new System.Drawing.Size(121, 23);
+            this.trayAccountList.SelectedIndexChanged += new System.EventHandler(this.trayAccountList_SelectedIndexChanged);
             // 
-            // itemTrades
+            // trayTradeConfirmations
             // 
-            this.itemTrades.Name = "itemTrades";
-            this.itemTrades.Size = new System.Drawing.Size(215, 22);
-            this.itemTrades.Text = "Trade Confirmations";
-            this.itemTrades.Click += new System.EventHandler(this.itemTrades_Click);
+            this.trayTradeConfirmations.Name = "trayTradeConfirmations";
+            this.trayTradeConfirmations.Size = new System.Drawing.Size(215, 22);
+            this.trayTradeConfirmations.Text = "Trade Confirmations";
+            this.trayTradeConfirmations.Click += new System.EventHandler(this.trayTradeConfirmations_Click);
             // 
-            // itemCopySG
+            // trayCopySteamGuard
             // 
-            this.itemCopySG.Name = "itemCopySG";
-            this.itemCopySG.Size = new System.Drawing.Size(215, 22);
-            this.itemCopySG.Text = "Copy SG code to clipboard";
-            this.itemCopySG.Click += new System.EventHandler(this.itemCopySG_Click);
+            this.trayCopySteamGuard.Name = "trayCopySteamGuard";
+            this.trayCopySteamGuard.Size = new System.Drawing.Size(215, 22);
+            this.trayCopySteamGuard.Text = "Copy SG code to clipboard";
+            this.trayCopySteamGuard.Click += new System.EventHandler(this.trayCopySteamGuard_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(212, 6);
             // 
-            // itemQuit
+            // trayQuit
             // 
-            this.itemQuit.Name = "itemQuit";
-            this.itemQuit.Size = new System.Drawing.Size(215, 22);
-            this.itemQuit.Text = "Quit";
-            this.itemQuit.Click += new System.EventHandler(this.itemQuit_Click);
+            this.trayQuit.Name = "trayQuit";
+            this.trayQuit.Size = new System.Drawing.Size(215, 22);
+            this.trayQuit.Text = "Quit";
+            this.trayQuit.Click += new System.EventHandler(this.trayQuit_Click);
             // 
             // timerTradesPopup
             // 
             this.timerTradesPopup.Enabled = true;
             this.timerTradesPopup.Interval = 5000;
             this.timerTradesPopup.Tick += new System.EventHandler(this.timerTradesPopup_Tick);
-            // 
-            // fromAndroidDeviceToolStripMenuItem
-            // 
-            this.fromAndroidDeviceToolStripMenuItem.Name = "fromAndroidDeviceToolStripMenuItem";
-            this.fromAndroidDeviceToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
-            this.fromAndroidDeviceToolStripMenuItem.Text = "From Android Device";
-            this.fromAndroidDeviceToolStripMenuItem.Click += new System.EventHandler(this.fromAndroidDeviceToolStripMenuItem_Click);
             // 
             // lblStatus
             // 
@@ -392,8 +392,8 @@
             this.Controls.Add(this.listAccounts);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnSteamLogin);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
+            this.Controls.Add(this.menuStrip);
+            this.MainMenuStrip = this.menuStrip;
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -405,9 +405,9 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            this.contextMenuStripTray.ResumeLayout(false);
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
+            this.menuStripTray.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -419,33 +419,33 @@
         private System.Windows.Forms.ProgressBar pbTimeout;
         private System.Windows.Forms.TextBox txtLoginToken;
         private System.Windows.Forms.ListBox listAccounts;
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer timerSteamGuard;
         private System.Windows.Forms.Button btnTradeConfirmations;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnManageEncryption;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label labelVersion;
         private System.Windows.Forms.LinkLabel labelUpdate;
-        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem menuQuit;
         private System.Windows.Forms.ToolStripMenuItem accountToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem removeAccountFromManifestToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem loginAgainToolStripMenuItem;
-        private System.Windows.Forms.NotifyIcon notifyIcon1;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStripTray;
-        private System.Windows.Forms.ToolStripMenuItem itemRestore;
+        private System.Windows.Forms.ToolStripMenuItem menuRemoveAccountFromManifest;
+        private System.Windows.Forms.ToolStripMenuItem menuLoginAgain;
+        private System.Windows.Forms.NotifyIcon trayIcon;
+        private System.Windows.Forms.ContextMenuStrip menuStripTray;
+        private System.Windows.Forms.ToolStripMenuItem trayRestore;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripMenuItem itemTrades;
-        private System.Windows.Forms.ToolStripMenuItem itemCopySG;
+        private System.Windows.Forms.ToolStripMenuItem trayTradeConfirmations;
+        private System.Windows.Forms.ToolStripMenuItem trayCopySteamGuard;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripMenuItem itemQuit;
+        private System.Windows.Forms.ToolStripMenuItem trayQuit;
         private System.Windows.Forms.Timer timerTradesPopup;
-        private System.Windows.Forms.ToolStripComboBox itemAccount;
+        private System.Windows.Forms.ToolStripComboBox trayAccountList;
         private System.Windows.Forms.ToolStripMenuItem importAccountToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem menu_importMaFile;
-        private System.Windows.Forms.ToolStripMenuItem fromAndroidDeviceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuImportMaFile;
+        private System.Windows.Forms.ToolStripMenuItem menuImportAndroid;
         private System.Windows.Forms.Label lblStatus;
     }
 }
