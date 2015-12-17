@@ -44,9 +44,10 @@
             this.labelUpdate = new System.Windows.Forms.LinkLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuImportMaFile = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuQuit = new System.Windows.Forms.ToolStripMenuItem();
+            this.importAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu_importMaFile = new System.Windows.Forms.ToolStripMenuItem();
             this.accountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeAccountFromManifestToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.loginAgainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,6 +61,7 @@
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.itemQuit = new System.Windows.Forms.ToolStripMenuItem();
             this.timerTradesPopup = new System.Windows.Forms.Timer(this.components);
+            this.fromAndroidDeviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -224,31 +226,40 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuImportMaFile,
+            this.importAccountToolStripMenuItem,
             this.toolStripSeparator1,
             this.menuQuit});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
-            // menuImportMaFile
-            // 
-            this.menuImportMaFile.Name = "menuImportMaFile";
-            this.menuImportMaFile.Size = new System.Drawing.Size(148, 22);
-            this.menuImportMaFile.Text = "Import maFile";
-            this.menuImportMaFile.Click += new System.EventHandler(this.menuImportMaFile_Click);
-            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(145, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(155, 6);
             // 
             // menuQuit
             // 
             this.menuQuit.Name = "menuQuit";
-            this.menuQuit.Size = new System.Drawing.Size(148, 22);
+            this.menuQuit.Size = new System.Drawing.Size(158, 22);
             this.menuQuit.Text = "Quit";
             this.menuQuit.Click += new System.EventHandler(this.menuQuit_Click);
+            // 
+            // importAccountToolStripMenuItem
+            // 
+            this.importAccountToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menu_importMaFile,
+            this.fromAndroidDeviceToolStripMenuItem});
+            this.importAccountToolStripMenuItem.Name = "importAccountToolStripMenuItem";
+            this.importAccountToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.importAccountToolStripMenuItem.Text = "Import Account";
+            // 
+            // menu_importMaFile
+            // 
+            this.menu_importMaFile.Name = "menu_importMaFile";
+            this.menu_importMaFile.Size = new System.Drawing.Size(186, 22);
+            this.menu_importMaFile.Text = "From maFile";
+            this.menu_importMaFile.Click += new System.EventHandler(this.menu_importMaFile_Click);
             // 
             // accountToolStripMenuItem
             // 
@@ -291,7 +302,7 @@
             this.toolStripSeparator3,
             this.itemQuit});
             this.contextMenuStripTray.Name = "contextMenuStripTray";
-            this.contextMenuStripTray.Size = new System.Drawing.Size(216, 153);
+            this.contextMenuStripTray.Size = new System.Drawing.Size(216, 131);
             // 
             // itemRestore
             // 
@@ -314,7 +325,6 @@
             this.itemAccount.Name = "itemAccount";
             this.itemAccount.Size = new System.Drawing.Size(121, 23);
             this.itemAccount.SelectedIndexChanged += new System.EventHandler(this.itemAccount_SelectedIndexChanged);
-            this.itemAccount.TextUpdate += new System.EventHandler(this.itemAccount_TextUpdate);
             // 
             // itemTrades
             // 
@@ -347,6 +357,13 @@
             this.timerTradesPopup.Enabled = true;
             this.timerTradesPopup.Interval = 5000;
             this.timerTradesPopup.Tick += new System.EventHandler(this.timerTradesPopup_Tick);
+            // 
+            // fromAndroidDeviceToolStripMenuItem
+            // 
+            this.fromAndroidDeviceToolStripMenuItem.Name = "fromAndroidDeviceToolStripMenuItem";
+            this.fromAndroidDeviceToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.fromAndroidDeviceToolStripMenuItem.Text = "From Android Device";
+            this.fromAndroidDeviceToolStripMenuItem.Click += new System.EventHandler(this.fromAndroidDeviceToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -397,7 +414,6 @@
         private System.Windows.Forms.LinkLabel labelUpdate;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem menuImportMaFile;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem menuQuit;
         private System.Windows.Forms.ToolStripMenuItem accountToolStripMenuItem;
@@ -413,6 +429,9 @@
         private System.Windows.Forms.ToolStripMenuItem itemQuit;
         private System.Windows.Forms.Timer timerTradesPopup;
         private System.Windows.Forms.ToolStripComboBox itemAccount;
+        private System.Windows.Forms.ToolStripMenuItem importAccountToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menu_importMaFile;
+        private System.Windows.Forms.ToolStripMenuItem fromAndroidDeviceToolStripMenuItem;
     }
 }
 

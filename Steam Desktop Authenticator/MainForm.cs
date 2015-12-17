@@ -286,9 +286,7 @@ namespace Steam_Desktop_Authenticator
 
         private void menuImportMaFile_Click(object sender, EventArgs e)
         {
-            Import_maFile_Form currentImport_maFile_Form = new Import_maFile_Form();
-            currentImport_maFile_Form.ShowDialog();
-            loadAccountsList();
+            
         }
 
         private void menuQuit_Click(object sender, EventArgs e)
@@ -320,6 +318,18 @@ namespace Steam_Desktop_Authenticator
             mLoginForm.acc = mCurrentAccount;
             mLoginForm.refreshLogin = true;
             mLoginForm.ShowDialog();
+        }
+
+        private void menu_importMaFile_Click(object sender, EventArgs e)
+        {
+            ImportAccountForm currentImport_maFile_Form = new ImportAccountForm();
+            currentImport_maFile_Form.ShowDialog();
+            loadAccountsList();
+        }
+
+        private void fromAndroidDeviceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new LoginForm(true).ShowDialog();
         }
 
         // Logic for version checking
@@ -448,11 +458,6 @@ namespace Steam_Desktop_Authenticator
 
             popupFrm.Confirmation = confs;
             popupFrm.Popup();
-        }
-
-        private void itemAccount_TextUpdate(object sender, EventArgs e)
-        {
-
         }
 
         private void itemAccount_SelectedIndexChanged(object sender, EventArgs e)
