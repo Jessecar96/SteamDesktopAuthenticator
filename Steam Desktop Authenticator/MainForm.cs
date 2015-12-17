@@ -457,8 +457,8 @@ namespace Steam_Desktop_Authenticator
             {
                 if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)
                 {
-                    manifest.MoveEntry(listAccounts.SelectedIndex,
-                        listAccounts.SelectedIndex - (e.KeyCode == Keys.Up ? 1 : -1));
+                    int to = listAccounts.SelectedIndex - (e.KeyCode == Keys.Up ? 1 : -1);
+                    manifest.MoveEntry(listAccounts.SelectedIndex, to);
                     loadAccountsList();
                 }
                 return;
