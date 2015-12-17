@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using SteamAuth;
 using Squirrel;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -414,6 +416,51 @@ namespace Steam_Desktop_Authenticator
             {
                 await mgr.UpdateApp();
             }
+        }
+
+        private void listAccounts_KeyDown(object sender, KeyEventArgs e)
+        {
+            txtAccSearch.Show();
+            txtAccSearch.Focus();
+            txtAccSearch.Text = e.KeyCode.ToString();
+        }
+
+        private void txtAccSearch_TextChanged(object sender, EventArgs e)
+        {
+            List<string> names = new List<string>(getAllNames());
+            names = names.FindAll(new Predicate<string>(IsFilter));
+
+            listAccounts.Items.Clear();
+            listAccounts.Items.AddRange(names.ToArray());
+        }
+
+        private bool IsFilter(string f)
+        {
+            if (txtAccSearch.Text.StartsWith("~"))
+                return Regex.IsMatch(f, txtAccSearch.Text);
+            else
+                return f.Contains(txtAccSearch.Text);
+        }
+
+        private string[] getAllNames()
+        {
+            string[] itemArray = new string[allAccounts.Length];
+            for (int i = 0; i < itemArray.Length; i++)
+            {
+                itemArray[i] = allAccounts[i].AccountName;
+            }
+            return itemArray;
+        }
+
+        private string[] getListboxItems(ListBox lb)
+        {
+            string[] itemArray = new string[lb.Items.Count];
+            int itemCount = lb.Items.Count;
+            for (int i = 0; i < itemCount; i++)
+            {
+                itemArray[i] = lb.Items[i].ToString();
+            }
+            return itemArray;
         }
     }
 }
