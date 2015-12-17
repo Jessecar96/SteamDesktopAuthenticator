@@ -63,6 +63,7 @@
             this.trayQuit = new System.Windows.Forms.ToolStripMenuItem();
             this.timerTradesPopup = new System.Windows.Forms.Timer(this.components);
             this.lblStatus = new System.Windows.Forms.Label();
+            this.txtAccSearch = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.menuStrip.SuspendLayout();
@@ -131,6 +132,8 @@
             this.listAccounts.Size = new System.Drawing.Size(327, 160);
             this.listAccounts.TabIndex = 3;
             this.listAccounts.SelectedValueChanged += new System.EventHandler(this.listAccounts_SelectedValueChanged);
+            this.listAccounts.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listAccounts_KeyDown);
+            this.listAccounts.KeyUp += new System.Windows.Forms.KeyEventHandler(this.listAccounts_KeyUp);
             // 
             // timerSteamGuard
             // 
@@ -380,12 +383,22 @@
             this.lblStatus.TabIndex = 11;
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
+            // txtAccSearch
+            // 
+            this.txtAccSearch.Location = new System.Drawing.Point(14, 355);
+            this.txtAccSearch.Name = "txtAccSearch";
+            this.txtAccSearch.Size = new System.Drawing.Size(99, 20);
+            this.txtAccSearch.TabIndex = 12;
+            this.txtAccSearch.Visible = false;
+            this.txtAccSearch.TextChanged += new System.EventHandler(this.txtAccSearch_TextChanged);
+            // 
             // MainForm
             // 
             this.AcceptButton = this.btnSteamLogin;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(351, 403);
+            this.Controls.Add(this.txtAccSearch);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.labelUpdate);
             this.Controls.Add(this.labelVersion);
@@ -449,6 +462,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuImportMaFile;
         private System.Windows.Forms.ToolStripMenuItem menuImportAndroid;
         private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.TextBox txtAccSearch;
     }
 }
 

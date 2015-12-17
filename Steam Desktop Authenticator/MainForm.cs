@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using SteamAuth;
 using Squirrel;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -447,6 +449,79 @@ namespace Steam_Desktop_Authenticator
             {
                 MessageBox.Show("Failed to check for updates.", "Updater", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void listAccounts_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control)
+            {
+                if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)
+                {
+                    int to = listAccounts.SelectedIndex - (e.KeyCode == Keys.Up ? 1 : -1);
+                    manifest.MoveEntry(listAccounts.SelectedIndex, to);
+                    loadAccountsList();
+                }
+                return;
+            }
+            if (!IsKeyAChar(e.KeyCode))
+                if (!IsKeyADigit(e.KeyCode))
+                    return;
+            txtAccSearch.Show();
+            txtAccSearch.Focus();
+            txtAccSearch.Text = e.KeyCode.ToString();
+        }
+
+        private static bool IsKeyAChar(Keys key)
+        {
+            return key >= Keys.A && key <= Keys.Z;
+        }
+
+        private static bool IsKeyADigit(Keys key)
+        {
+            return (key >= Keys.D0 && key <= Keys.D9) || (key >= Keys.NumPad0 && key <= Keys.NumPad9);
+        }
+
+        private void txtAccSearch_TextChanged(object sender, EventArgs e)
+        {
+            List<string> names = new List<string>(getAllNames());
+            names = names.FindAll(new Predicate<string>(IsFilter));
+
+            listAccounts.Items.Clear();
+            listAccounts.Items.AddRange(names.ToArray());
+        }
+
+        private bool IsFilter(string f)
+        {
+            if (txtAccSearch.Text.StartsWith("~"))
+                return Regex.IsMatch(f, txtAccSearch.Text);
+            else
+                return f.Contains(txtAccSearch.Text);
+        }
+
+        private string[] getAllNames()
+        {
+            string[] itemArray = new string[allAccounts.Length];
+            for (int i = 0; i < itemArray.Length; i++)
+            {
+                itemArray[i] = allAccounts[i].AccountName;
+            }
+            return itemArray;
+        }
+
+        private string[] getListboxItems(ListBox lb)
+        {
+            string[] itemArray = new string[lb.Items.Count];
+            int itemCount = lb.Items.Count;
+            for (int i = 0; i < itemCount; i++)
+            {
+                itemArray[i] = lb.Items[i].ToString();
+            }
+            return itemArray;
+        }
+
+        private void listAccounts_KeyUp(object sender, KeyEventArgs e)
+        {
+            
         }
     }
 }

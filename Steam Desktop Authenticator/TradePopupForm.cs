@@ -87,6 +87,9 @@ namespace Steam_Desktop_Authenticator
             btnAccept.BackColor = Color.FromArgb(192, 255, 192);
             btnDeny.BackColor = Color.FromArgb(255, 255, 192);
 
+            btnAccept.Text = "Accept";
+            btnDeny.Text = "Deny";
+
             if (confirms.Count == 0)
             {
                 this.Hide();
