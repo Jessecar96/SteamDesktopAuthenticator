@@ -500,7 +500,15 @@ namespace Steam_Desktop_Authenticator
         {
             if (txtAccSearch.Text.StartsWith("~"))
             {
-                return Regex.IsMatch(f, txtAccSearch.Text);
+                try
+                {
+                    return Regex.IsMatch(f, txtAccSearch.Text);
+                }
+                catch (Exception)
+                {
+                    return true;
+                }
+                
             }
             else
             {
@@ -514,17 +522,6 @@ namespace Steam_Desktop_Authenticator
             for (int i = 0; i < itemArray.Length; i++)
             {
                 itemArray[i] = allAccounts[i].AccountName;
-            }
-            return itemArray;
-        }
-
-        private string[] getListboxItems(ListBox lb)
-        {
-            string[] itemArray = new string[lb.Items.Count];
-            int itemCount = lb.Items.Count;
-            for (int i = 0; i < itemCount; i++)
-            {
-                itemArray[i] = lb.Items[i].ToString();
             }
             return itemArray;
         }
