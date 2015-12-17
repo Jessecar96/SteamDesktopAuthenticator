@@ -85,11 +85,17 @@ namespace Steam_Desktop_Authenticator
 
         private void CheckDevice()
         {
-            if (bridge.GetState() == "device")
+            string state = bridge.GetState();
+            if (state == "device")
             {
                 tCheckDevice.Stop();
                 Log("Starting");
                 Extract();
+            }
+            else if (state == "noadb")
+            {
+                Log("ADB not found");
+                tCheckDevice.Stop();
             }
             else
             {

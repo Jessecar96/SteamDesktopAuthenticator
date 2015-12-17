@@ -402,6 +402,7 @@ namespace Steam_Desktop_Authenticator
         public string GetState()
         {
             InitConsole();
+            if (!CheckAdb()) return "noadb";
 
             string state = "Error";
             ManualResetEventSlim mre = new ManualResetEventSlim();
