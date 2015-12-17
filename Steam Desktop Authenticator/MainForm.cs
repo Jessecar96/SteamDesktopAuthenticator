@@ -435,10 +435,19 @@ namespace Steam_Desktop_Authenticator
         /// <returns></returns>
         private async Task UpdateCurrentSession()
         {
+            await UpdateSession(currentAccount);
+        }
+
+        private List<string> updatedSessions = new List<string>();
+        private async Task UpdateSession(SteamGuardAccount account)
+        {
+            if (updatedSessions.Contains(account.AccountName)) return;
+
             lblStatus.Text = "Refreshing session...";
             btnTradeConfirmations.Enabled = false;
 
             await currentAccount.RefreshSessionAsync();
+            updatedSessions.Add(account.AccountName);
 
             lblStatus.Text = "";
             btnTradeConfirmations.Enabled = true;
