@@ -47,7 +47,7 @@ namespace Steam_Desktop_Authenticator
 
         async void Squirrel_UpdateApp()
         {
-            using (var mgr = new UpdateManager("https://path/to/my/update/folder"))
+            using (var mgr = new UpdateManager("https://s3.amazonaws.com/steamdesktopauthenticator/releases"))
             {
                 await mgr.UpdateApp();
             }
@@ -72,6 +72,16 @@ namespace Steam_Desktop_Authenticator
                     mCurrentAccount = account;
                     loadAccountInfo();
                 }
+            }
+        }
+
+        private void loadAccountInfo()
+        {
+            if (mCurrentAccount != null && steamTime != 0)
+            {
+                popupFrm.Account = mCurrentAccount;
+                txtLoginToken.Text = mCurrentAccount.GenerateSteamGuardCodeForTime(steamTime);
+                mCurrentAccount.RefreshSession();
             }
         }
 
@@ -119,15 +129,6 @@ namespace Steam_Desktop_Authenticator
             btnDelete.Enabled = btnTradeConfirmations.Enabled = allAccounts.Length > 0;
         }
 
-        private void loadAccountInfo()
-        {
-            if (mCurrentAccount != null && steamTime != 0)
-            {
-                popupFrm.Account = mCurrentAccount;
-                txtLoginToken.Text = mCurrentAccount.GenerateSteamGuardCodeForTime(steamTime);
-            }
-        }
-
         private void timer1_Tick(object sender, EventArgs e)
         {
             steamTime = TimeAligner.GetSteamTime();
@@ -145,9 +146,6 @@ namespace Steam_Desktop_Authenticator
         private void btnTradeConfirmations_Click(object sender, EventArgs e)
         {
             if (mCurrentAccount == null) return;
-
-            // Get new cookies every time (sadly)
-            mCurrentAccount.RefreshSession();
 
             try
             {

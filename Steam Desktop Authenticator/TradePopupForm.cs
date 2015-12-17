@@ -75,7 +75,9 @@ namespace Steam_Desktop_Authenticator
 
         private void btnDismiss_Click(object sender, EventArgs e)
         {
-            Reset();
+            // When user presses the X
+            this.Close();
+            //Reset();
         }
 
         private void Reset()
