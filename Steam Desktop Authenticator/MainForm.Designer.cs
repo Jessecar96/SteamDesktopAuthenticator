@@ -137,7 +137,7 @@
             // timerSteamGuard
             // 
             this.timerSteamGuard.Enabled = true;
-            this.timerSteamGuard.Interval = 5000;
+            this.timerSteamGuard.Interval = 1000;
             this.timerSteamGuard.Tick += new System.EventHandler(this.timerSteamGuard_Tick);
             // 
             // btnTradeConfirmations
