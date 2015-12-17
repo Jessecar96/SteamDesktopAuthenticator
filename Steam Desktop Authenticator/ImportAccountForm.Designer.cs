@@ -66,7 +66,7 @@ namespace Steam_Desktop_Authenticator
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(309, 40);
             this.label1.TabIndex = 2;
-            this.label1.Text = "If you import an encrypted .maFile, the file manifest file needs to be next to it" +
+            this.label1.Text = "If you import an encrypted .maFile, the file manifest needs to be next to it" +
     ".";
             // 
             // ImportAccountForm
