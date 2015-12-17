@@ -463,7 +463,9 @@ namespace Steam_Desktop_Authenticator
                 }
                 return;
             }
-            if (!IsKeyAChar(e.KeyCode) || !IsKeyADigit(e.KeyCode)) return;
+            if (!IsKeyAChar(e.KeyCode))
+                if (!IsKeyADigit(e.KeyCode))
+                    return;
             txtAccSearch.Show();
             txtAccSearch.Focus();
             txtAccSearch.Text = e.KeyCode.ToString();
