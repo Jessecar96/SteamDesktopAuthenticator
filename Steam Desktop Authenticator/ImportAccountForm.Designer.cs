@@ -22,9 +22,9 @@ namespace Steam_Desktop_Authenticator
             this.labelText.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.labelText.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelText.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelText.Location = new System.Drawing.Point(13, 14);
+            this.labelText.Location = new System.Drawing.Point(15, 14);
             this.labelText.Name = "labelText";
-            this.labelText.Size = new System.Drawing.Size(319, 25);
+            this.labelText.Size = new System.Drawing.Size(317, 25);
             this.labelText.TabIndex = 0;
             this.labelText.Text = "Enter your encryption passkey if your .maFile is encripted:";
             // 
@@ -62,12 +62,11 @@ namespace Steam_Desktop_Authenticator
             this.label1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label1.Location = new System.Drawing.Point(13, 83);
+            this.label1.Location = new System.Drawing.Point(15, 83);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(309, 40);
+            this.label1.Size = new System.Drawing.Size(307, 40);
             this.label1.TabIndex = 2;
-            this.label1.Text = "If you import an encrypted .maFile, the file manifest file needs to be next to it" +
-    ".";
+            this.label1.Text = "If you import an encrypted .maFile, the manifest file must be next to it.";
             // 
             // ImportAccountForm
             // 
