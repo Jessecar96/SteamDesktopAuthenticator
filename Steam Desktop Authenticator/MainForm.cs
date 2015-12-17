@@ -502,7 +502,15 @@ namespace Steam_Desktop_Authenticator
         {
             if (txtAccSearch.Text.StartsWith("~"))
             {
-                return Regex.IsMatch(f, txtAccSearch.Text);
+                try
+                {
+                    return Regex.IsMatch(f, txtAccSearch.Text);
+                }
+                catch (Exception)
+                {
+                    return true;
+                }
+                
             }
             else
             {
