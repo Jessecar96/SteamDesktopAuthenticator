@@ -5,7 +5,8 @@
   Steam Desktop Authenticator
 </h1>
 <p align="center">
-  A beta desktop implementation of Steam's mobile authenticator app.
+  A desktop implementation of Steam's mobile authenticator app.<br/>
+  <sup><b>We are not affliliated with Steam in any way!</b> This project is run by community volunteers.
 </p>
 
 ### Disclaimer: YOU ARE USING THIS PROGRAM AT YOUR OWN RISK! THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. We (SteamDesktopAuthenticator contributors) provide no support or help in using this program. Using this program puts you at a significant risk of losing your Steam account due to your own neglegence.
