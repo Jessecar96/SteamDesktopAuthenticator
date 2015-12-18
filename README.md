@@ -1,5 +1,12 @@
-# Steam Desktop Authenticator
-A beta desktop implementation of Steam's mobile authenticator app.
+<h1 align="center">
+  <sub>
+    <img  src="https://raw.githubusercontent.com/Jessecar96/SteamDesktopAuthenticator/master/icon.png" height="42" width="42" />
+  </sub>
+  Steam Desktop Authenticator
+</h1>
+<p align="center">
+  A beta desktop implementation of Steam's mobile authenticator app.
+</p>
 
 ### Disclaimer: YOU ARE USING THIS PROGRAM AT YOUR OWN RISK! THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. We (SteamDesktopAuthenticator contributors) provide no support or help in using this program. Using this program puts you at a significant risk of losing your Steam account due to your own neglegence.
 **ALWAYS MAKE BACKUPS OF YOUR `maFiles`! If you lose your encryption key or delete `maFiles` by accident AND you didn't save your revocation code, you are screwed.**
