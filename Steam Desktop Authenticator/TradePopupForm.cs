@@ -20,12 +20,13 @@ namespace Steam_Desktop_Authenticator
         public TradePopupForm()
         {
             InitializeComponent();
+            lblStatus.Text = "";
         }
 
         public SteamGuardAccount Account
         {
             get { return acc; }
-            set { acc = value; label1.Text = acc.AccountName; }
+            set { acc = value; lblAccount.Text = acc.AccountName; }
         }
 
         public Confirmation[] Confirmation
@@ -50,7 +51,7 @@ namespace Steam_Desktop_Authenticator
             }
             else
             {
-                btnAccept.Text = "Accepting";
+                lblStatus.Text = "Accepting...";
                 acc.AcceptConfirmation(confirms[0]);
                 confirms.RemoveAt(0);
                 Reset();
@@ -61,23 +62,17 @@ namespace Steam_Desktop_Authenticator
         {
             if (!deny2)
             {
-                lblStatus.Text = "Press Deny again to deny";
+                lblStatus.Text = "Press Deny again to confirm";
                 btnDeny.BackColor = Color.FromArgb(255, 255, 128);
                 deny2 = true;
             }
             else
             {
+                lblStatus.Text = "Denying...";
                 acc.DenyConfirmation(confirms[0]);
                 confirms.RemoveAt(0);
                 Reset();
             }
-        }
-
-        private void btnDismiss_Click(object sender, EventArgs e)
-        {
-            // When user presses the X
-            this.Close();
-            //Reset();
         }
 
         private void Reset()
@@ -89,6 +84,8 @@ namespace Steam_Desktop_Authenticator
 
             btnAccept.Text = "Accept";
             btnDeny.Text = "Deny";
+            lblAccount.Text = "";
+            lblStatus.Text = "";
 
             if (confirms.Count == 0)
             {
