@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SteamAuth;
@@ -55,9 +55,13 @@ namespace Steam_Desktop_Authenticator
 
             btnManageEncryption.Enabled = manifest.Entries.Count > 0;
 
-            
+
             loadAccountsList();
             await UpdateCurrentSession();
+
+            // Check for updates here, after a few seconds
+            await Task.Delay(5000);
+            await Squirrel_UpdateAppAsync(false);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -226,7 +230,7 @@ namespace Steam_Desktop_Authenticator
 
         private async void labelUpdate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            await Squirrel_UpdateAppAsync();
+            await Squirrel_UpdateAppAsync(true);
         }
 
 
@@ -457,19 +461,34 @@ namespace Steam_Desktop_Authenticator
         /// Update the program
         /// </summary>
         /// <returns></returns>
-        private async Task Squirrel_UpdateAppAsync()
+        private async Task Squirrel_UpdateAppAsync(bool showErrors = false)
         {
+            Debug.WriteLine("Checking for updates...");
             try
             {
                 using (var mgr = new UpdateManager("https://s3.amazonaws.com/steamdesktopauthenticator/releases"))
                 {
+                    SquirrelAwareApp.HandleEvents(
+                      onInitialInstall: v => OnFirstInstall(mgr)
+                    );
+
                     await mgr.UpdateApp();
                 }
             }
-            catch (Exception)
+            catch (Exception eff)
             {
-                MessageBox.Show("Failed to check for updates.", "Updater", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Debug.WriteLine("Failed");
+                if (showErrors)
+                {
+                    MessageBox.Show("Failed to check for updates.", "Updater", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
+        }
+
+        private void OnFirstInstall(UpdateManager mgr)
+        {
+            mgr.CreateShortcutsForExecutable("Steam Desktop Authenticator.exe", ShortcutLocation.Desktop, false);
+            mgr.CreateShortcutsForExecutable("Steam Desktop Authenticator.exe", ShortcutLocation.StartMenu, false);
         }
 
         private void listAccounts_KeyDown(object sender, KeyEventArgs e)
@@ -517,7 +536,7 @@ namespace Steam_Desktop_Authenticator
                 {
                     return true;
                 }
-                
+
             }
             else
             {
