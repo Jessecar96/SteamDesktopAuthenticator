@@ -32,28 +32,37 @@ namespace Steam_Desktop_Authenticator
         private void Client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
             progressBar1.Style = ProgressBarStyle.Marquee;
-            try {
+            try
+            {
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.FileName = Manifest.GetExecutableDir() + "/vcredist_x86.exe";
                 startInfo.Verb = "runas";
                 startInfo.Arguments = "/q";
                 startInfo.WindowStyle = ProcessWindowStyle.Normal;
 
-                using (Process exeProcess = Process.Start(startInfo))
-                {
-                    exeProcess.WaitForExit();
-
-                    if (inlineInstall)
-                    {
-                        MessageBox.Show("Install complete! You may need to restart Steam Desktop Authenticator to view trade confirmations.");
-                    }
-                    this.Close();
-                }
+                Process installProcess = new Process();
+                installProcess.StartInfo = startInfo;
+                installProcess.EnableRaisingEvents = true;
+                installProcess.Exited += InstallProcess_Exited;
+                installProcess.Start();
             }
             catch (Exception)
             {
                 this.Close();
             }
+        }
+
+        private void InstallProcess_Exited(object sender, EventArgs e)
+        {
+            if (inlineInstall)
+            {
+                MessageBox.Show("Install complete! You may need to restart Steam Desktop Authenticator to view trade confirmations.", "Visual C++ Redistributable 2013", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            this.Invoke((MethodInvoker)delegate
+            {
+                this.Close();
+            });
         }
 
         private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
