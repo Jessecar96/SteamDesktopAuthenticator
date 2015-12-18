@@ -195,9 +195,9 @@
             this.labelVersion.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelVersion.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.labelVersion.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.labelVersion.Location = new System.Drawing.Point(239, 409);
+            this.labelVersion.Location = new System.Drawing.Point(277, 413);
             this.labelVersion.Name = "labelVersion";
-            this.labelVersion.Size = new System.Drawing.Size(100, 15);
+            this.labelVersion.Size = new System.Drawing.Size(70, 15);
             this.labelVersion.TabIndex = 8;
             this.labelVersion.Text = "v0.0.0";
             this.labelVersion.TextAlign = System.Drawing.ContentAlignment.BottomRight;
@@ -209,9 +209,9 @@
             this.labelUpdate.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelUpdate.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.labelUpdate.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.labelUpdate.Location = new System.Drawing.Point(12, 410);
+            this.labelUpdate.Location = new System.Drawing.Point(5, 413);
             this.labelUpdate.Name = "labelUpdate";
-            this.labelUpdate.Size = new System.Drawing.Size(100, 14);
+            this.labelUpdate.Size = new System.Drawing.Size(122, 14);
             this.labelUpdate.TabIndex = 9;
             this.labelUpdate.TabStop = true;
             this.labelUpdate.Text = "Check for updates";

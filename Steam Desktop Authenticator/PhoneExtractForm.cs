@@ -13,16 +13,16 @@ namespace Steam_Desktop_Authenticator
 {
     public partial class PhoneExtractForm : Form
     {
+        private PhoneBridge bridge;
+        private ManualResetEventSlim mreWait = new ManualResetEventSlim(false);
+        private SteamAuth.SteamGuardAccount steamAccount;
+        private string SelectedSteamID = "*";
+        public SteamAuth.SteamGuardAccount Result;
+
         public PhoneExtractForm()
         {
             InitializeComponent();
         }
-
-        PhoneBridge bridge;
-        ManualResetEventSlim mreWait = new ManualResetEventSlim(false);
-        string SelectedSteamID = "*";
-
-        public SteamAuth.SteamGuardAccount Result;
 
         private void PhoneExtractForm_Load(object sender, EventArgs e)
         {
@@ -33,7 +33,9 @@ namespace Steam_Desktop_Authenticator
         {
             Log(msg);
             if (msg != "Device not detected")
+            {
                 ResetAll();
+            }
         }
 
         private void Bridge_DeviceWaited(object sender, EventArgs e)
@@ -69,18 +71,27 @@ namespace Steam_Desktop_Authenticator
                 bridge.ConnectWiFi(input.txtBox.Text);
             }
         }
-
-        private SteamAuth.SteamGuardAccount acc;
+        
         private void Extract()
         {
-            acc = bridge.ExtractSteamGuardAccount(SelectedSteamID, SelectedSteamID != "*");
+            steamAccount = bridge.ExtractSteamGuardAccount(SelectedSteamID, SelectedSteamID != "*");
 
-            if (acc != null)
+            if (steamAccount != null)
             {
-                Result = acc;
+                Result = steamAccount;
                 Log("Account extracted succesfully!");
-                this.Close();
+                LoginAccount();
             }
+        }
+
+        private void LoginAccount()
+        {
+            MessageBox.Show("Account extracted succesfully! Please login to it.");
+            LoginForm login = new LoginForm();
+            login.androidAccount = steamAccount;
+            login.loginFromAndroid = true;
+            login.SetUsername(steamAccount.AccountName);
+            login.ShowDialog();
         }
 
         private void CheckDevice()

@@ -258,7 +258,7 @@ namespace Steam_Desktop_Authenticator
         private void menuLoginAgain_Click(object sender, EventArgs e)
         {
             LoginForm mLoginForm = new LoginForm();
-            mLoginForm.acc = currentAccount;
+            mLoginForm.androidAccount = currentAccount;
             mLoginForm.refreshLogin = true;
             mLoginForm.ShowDialog();
         }
@@ -272,7 +272,7 @@ namespace Steam_Desktop_Authenticator
 
         private void menuImportAndroid_Click(object sender, EventArgs e)
         {
-            new LoginForm(true).ShowDialog();
+            new PhoneExtractForm().ShowDialog();
         }
 
 

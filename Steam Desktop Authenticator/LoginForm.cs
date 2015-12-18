@@ -1,35 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using SteamAuth;
-using System.Diagnostics;
-using Newtonsoft.Json;
 
 namespace Steam_Desktop_Authenticator
 {
     public partial class LoginForm : Form
     {
 
-        public UserLogin mUserLogin;
+        public UserLogin userLogin;
+        public SteamGuardAccount androidAccount;
         public bool refreshLogin = false;
-        private bool waitLogin = false;
-        private bool forceAndroidImport = false;
+        public bool loginFromAndroid = false;
 
         public LoginForm(bool forceAndroidImport = false)
         {
             InitializeComponent();
-            this.forceAndroidImport = forceAndroidImport;
+        }
 
-            if (forceAndroidImport)
-            {
-                phoneImport();
-            }
+        public void SetUsername(string username)
+        {
+            txtUsername.Text = username;
         }
 
         public string FilterPhoneNumber(string phoneNumber)
@@ -49,7 +39,7 @@ namespace Steam_Desktop_Authenticator
             string username = txtUsername.Text;
             string password = txtPassword.Text;
 
-            if (waitLogin)
+            if (loginFromAndroid)
             {
                 FinishExtract(username, password);
                 return;
@@ -60,10 +50,10 @@ namespace Steam_Desktop_Authenticator
                 return;
             }
 
-            mUserLogin = new UserLogin(username, password);
+            userLogin = new UserLogin(username, password);
             LoginResult response = LoginResult.BadCredentials;
 
-            while ((response = mUserLogin.DoLogin()) != LoginResult.LoginOkay)
+            while ((response = userLogin.DoLogin()) != LoginResult.LoginOkay)
             {
                 switch (response)
                 {
@@ -76,11 +66,11 @@ namespace Steam_Desktop_Authenticator
                             return;
                         }
 
-                        mUserLogin.EmailCode = emailForm.txtBox.Text;
+                        userLogin.EmailCode = emailForm.txtBox.Text;
                         break;
 
                     case LoginResult.NeedCaptcha:
-                        CaptchaForm captchaForm = new CaptchaForm(mUserLogin.CaptchaGID);
+                        CaptchaForm captchaForm = new CaptchaForm(userLogin.CaptchaGID);
                         captchaForm.ShowDialog();
                         if (captchaForm.Canceled)
                         {
@@ -88,7 +78,7 @@ namespace Steam_Desktop_Authenticator
                             return;
                         }
 
-                        mUserLogin.CaptchaText = captchaForm.CaptchaCode;
+                        userLogin.CaptchaText = captchaForm.CaptchaCode;
                         break;
 
                     case LoginResult.Need2FA:
@@ -120,7 +110,7 @@ namespace Steam_Desktop_Authenticator
 
             //Login succeeded
 
-            SessionData session = mUserLogin.Session;
+            SessionData session = userLogin.Session;
             AuthenticatorLinker linker = new AuthenticatorLinker(session);
 
             AuthenticatorLinker.LinkResult linkResponse = AuthenticatorLinker.LinkResult.GeneralFailure;
@@ -249,30 +239,6 @@ namespace Steam_Desktop_Authenticator
             this.Close();
         }
 
-        public SteamGuardAccount acc;
-        private void btnFromPhone_Click(object sender, EventArgs e)
-        {
-            phoneImport();
-        }
-
-        private void phoneImport()
-        {
-            PhoneExtractForm pForm = new PhoneExtractForm();
-            pForm.ShowDialog();
-            acc = pForm.Result;
-            if (acc == null)
-            {
-                MessageBox.Show("An error occured while extracting the account.");
-            }
-            else
-            {
-                MessageBox.Show("Account extracted succesfully. Please login.");
-                btnFromPhone.Enabled = false;
-                waitLogin = true;
-                txtUsername.Text = acc.AccountName;
-            }
-        }
-
         /// <summary>
         /// Handles logging in to refresh session data. i.e. changing steam password.
         /// </summary>
@@ -282,7 +248,7 @@ namespace Steam_Desktop_Authenticator
         {
             Manifest man = Manifest.GetManifest();
 
-            acc.FullyEnrolled = true;
+            androidAccount.FullyEnrolled = true;
 
             UserLogin mUserLogin = new UserLogin(username, password);
             LoginResult response = LoginResult.BadCredentials;
@@ -316,7 +282,7 @@ namespace Steam_Desktop_Authenticator
                         break;
 
                     case LoginResult.Need2FA:
-                        mUserLogin.TwoFactorCode = acc.GenerateSteamGuardCode();
+                        mUserLogin.TwoFactorCode = androidAccount.GenerateSteamGuardCode();
                         break;
 
                     case LoginResult.BadRSA:
@@ -343,7 +309,7 @@ namespace Steam_Desktop_Authenticator
         {
             Manifest man = Manifest.GetManifest();
 
-            acc.FullyEnrolled = true;
+            androidAccount.FullyEnrolled = true;
 
             UserLogin mUserLogin = new UserLogin(username, password);
             LoginResult response = LoginResult.BadCredentials;
@@ -400,7 +366,7 @@ namespace Steam_Desktop_Authenticator
                 }
             }
 
-            acc.Session = mUserLogin.Session;
+            androidAccount.Session = mUserLogin.Session;
 
             HandleManifest(man);
         }
@@ -436,23 +402,23 @@ namespace Steam_Desktop_Authenticator
                 }
             }
 
-            man.SaveAccount(acc, passKey != null, passKey);
+            man.SaveAccount(androidAccount, passKey != null, passKey);
             if (IsRefreshing)
             {
                 MessageBox.Show("Your login session was refreshed.");
             }
             else
             {
-                MessageBox.Show("Mobile authenticator successfully linked. Please write down your revocation code: " + acc.RevocationCode);
+                MessageBox.Show("Mobile authenticator successfully linked. Please write down your revocation code: " + androidAccount.RevocationCode);
             }
             this.Close();
         }
 
         private void LoginForm_Load(object sender, EventArgs e)
         {
-            if (acc != null && acc.AccountName != null)
+            if (androidAccount != null && androidAccount.AccountName != null)
             {
-                txtUsername.Text = acc.AccountName;
+                txtUsername.Text = androidAccount.AccountName;
             }
         }
     }
