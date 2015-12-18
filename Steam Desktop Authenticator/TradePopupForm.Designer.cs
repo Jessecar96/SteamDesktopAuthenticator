@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TradePopupForm));
             this.lblDesc = new System.Windows.Forms.Label();
             this.btnDeny = new System.Windows.Forms.Button();
             this.btnAccept = new System.Windows.Forms.Button();
@@ -100,6 +101,7 @@
             this.Controls.Add(this.btnDeny);
             this.Controls.Add(this.lblDesc);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TradePopupForm";
             this.Text = "New confirmation";
             this.TopMost = true;

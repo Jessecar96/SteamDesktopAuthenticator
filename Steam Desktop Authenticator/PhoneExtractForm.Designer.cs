@@ -114,6 +114,7 @@
             this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.lblLog);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimizeBox = false;
             this.Name = "PhoneExtractForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
