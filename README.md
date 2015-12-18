@@ -1,5 +1,5 @@
 <h1 align="center">
-  <sub><img  src="https://raw.githubusercontent.com/Jessecar96/SteamDesktopAuthenticator/master/icon.png" height="64" width="64" /></sub>
+  <img  src="https://raw.githubusercontent.com/Jessecar96/SteamDesktopAuthenticator/master/icon.png" height="64" width="64" />
   <br/>
   Steam Desktop Authenticator
 </h1>
