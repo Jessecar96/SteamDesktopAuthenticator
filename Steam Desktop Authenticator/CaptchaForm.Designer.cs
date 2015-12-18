@@ -42,11 +42,12 @@
             this.labelText.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.labelText.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelText.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.labelText.Location = new System.Drawing.Point(9, 16);
+            this.labelText.Location = new System.Drawing.Point(-1, 14);
             this.labelText.Name = "labelText";
-            this.labelText.Size = new System.Drawing.Size(284, 18);
+            this.labelText.Size = new System.Drawing.Size(233, 18);
             this.labelText.TabIndex = 0;
-            this.labelText.Text = "Please enter the following captcha code";
+            this.labelText.Text = "Please enter the following captcha code:";
+            this.labelText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // txtBox
             // 
@@ -98,6 +99,7 @@
             this.Controls.Add(this.btnAccept);
             this.Controls.Add(this.txtBox);
             this.Controls.Add(this.labelText);
+            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CaptchaForm";
