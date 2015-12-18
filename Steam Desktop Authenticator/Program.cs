@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using Squirrel;
 
 namespace Steam_Desktop_Authenticator
 {
     static class Program
     {
+        static bool ShowTheWelcomeWizard;
 
         public static Process PriorProcess()
         // Returns a System.Diagnostics.Process pointing to
@@ -36,22 +38,22 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
-        // Activate Old Process Window
-        [DllImportAttribute ("user32.dll")]
-        public static extern IntPtr FindWindow (string lpClassName, string lpWindowName);
-        	
-        [DllImportAttribute ("user32.dll")]
-        public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-        	
-        [DllImportAttribute ("user32.dll")]
-        public static extern bool SetForegroundWindow(IntPtr hWnd);
-        	
-        public static void ShowToFront(string windowName)
-        {
-        	IntPtr firstInstance = FindWindow(null, windowName);
-        	ShowWindow(firstInstance, 1);
-        	SetForegroundWindow(firstInstance);
-        }
++        // Activate Old Process Window
++        [DllImportAttribute ("user32.dll")]
++        public static extern IntPtr FindWindow (string lpClassName, string lpWindowName);
++        	
++        [DllImportAttribute ("user32.dll")]
++        public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
++        	
++        [DllImportAttribute ("user32.dll")]
++        public static extern bool SetForegroundWindow(IntPtr hWnd);
++        	
++        public static void ShowToFront(string windowName)
++        {
++        	IntPtr firstInstance = FindWindow(null, windowName);
++        	ShowWindow(firstInstance, 1);
++        	SetForegroundWindow(firstInstance);
++        }
 
         /// <summary>
         /// The main entry point for the application.
@@ -59,23 +61,33 @@ namespace Steam_Desktop_Authenticator
         [STAThread]
         static void Main()
         {
+            try {
+                using (var mgr = new UpdateManager("https://s3.amazonaws.com/steamdesktopauthenticator/releases"))
+                {
+                    // Note, in most of these scenarios, the app exits after this method
+                    // completes!
+                    SquirrelAwareApp.HandleEvents(
+                      onInitialInstall: v => mgr.CreateShortcutForThisExe(),
+                      onAppUpdate: v => mgr.CreateShortcutForThisExe(),
+                      onAppUninstall: v => mgr.RemoveShortcutForThisExe(),
+                      onFirstRun: () => ShowTheWelcomeWizard = true);
+                }
+            }
+            catch
+            {
+                // Not using a squirrel app
+            }
+
             // run the program only once
             if (PriorProcess() != null)
             {
+                //Another instance of the app is already running.
                 ShowToFront("Steam Desktop Authenticator");
                 return;
             }
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            // Check for any missing CefSharp depencies
-            List<string> depends = CefSharp.DependencyChecker.CheckDependencies(false, true, Manifest.GetExecutableDir(), null, Manifest.GetExecutableDir() + "\\CefSharp.BrowserSubprocess.exe");
-            if(depends.Count > 0)
-            {
-                MessageBox.Show("You are missing some files required for Steam Desktop Authenticator to run. Try reinstalling", "Failed to load", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
 
             Manifest man = Manifest.GetManifest();
             if(man.FirstRun)
