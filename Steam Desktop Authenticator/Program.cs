@@ -5,6 +5,7 @@ using System.Security;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -35,6 +36,23 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
+        // Activate Old Process Window
+        [DllImportAttribute ("user32.dll")]
+        public static extern IntPtr FindWindow (string lpClassName, string lpWindowName);
+        	
+        [DllImportAttribute ("user32.dll")]
+        public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+        	
+        [DllImportAttribute ("user32.dll")]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
+        	
+        public static void ShowToFront(string windowName)
+        {
+        	IntPtr firstInstance = FindWindow(null, windowName);
+        	ShowWindow(firstInstance, 1);
+        	SetForegroundWindow(firstInstance);
+        }
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -44,7 +62,7 @@ namespace Steam_Desktop_Authenticator
             // run the program only once
             if (PriorProcess() != null)
             {
-                MessageBox.Show("Another instance of the app is already running.");
+                ShowToFront("Steam Desktop Authenticator");
                 return;
             }
 
