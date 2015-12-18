@@ -5,11 +5,13 @@ using System.Security;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using Squirrel;
 
 namespace Steam_Desktop_Authenticator
 {
     static class Program
     {
+        static bool ShowTheWelcomeWizard;
 
         public static Process PriorProcess()
         // Returns a System.Diagnostics.Process pointing to
@@ -41,6 +43,23 @@ namespace Steam_Desktop_Authenticator
         [STAThread]
         static void Main()
         {
+            try {
+                using (var mgr = new UpdateManager("https://s3.amazonaws.com/steamdesktopauthenticator/releases"))
+                {
+                    // Note, in most of these scenarios, the app exits after this method
+                    // completes!
+                    SquirrelAwareApp.HandleEvents(
+                      onInitialInstall: v => mgr.CreateShortcutForThisExe(),
+                      onAppUpdate: v => mgr.CreateShortcutForThisExe(),
+                      onAppUninstall: v => mgr.RemoveShortcutForThisExe(),
+                      onFirstRun: () => ShowTheWelcomeWizard = true);
+                }
+            }
+            catch
+            {
+                // Not using a squirrel app
+            }
+
             // run the program only once
             if (PriorProcess() != null)
             {
@@ -50,14 +69,6 @@ namespace Steam_Desktop_Authenticator
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            // Check for any missing CefSharp depencies
-            List<string> depends = CefSharp.DependencyChecker.CheckDependencies(false, true, Manifest.GetExecutableDir(), null, Manifest.GetExecutableDir() + "\\CefSharp.BrowserSubprocess.exe");
-            if(depends.Count > 0)
-            {
-                MessageBox.Show("You are missing some files required for Steam Desktop Authenticator to run. Try reinstalling", "Failed to load", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
 
             Manifest man = Manifest.GetManifest();
             if(man.FirstRun)

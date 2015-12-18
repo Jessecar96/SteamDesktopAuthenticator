@@ -13,6 +13,7 @@ namespace Steam_Desktop_Authenticator
     {
         private SteamGuardAccount currentAccount = null;
         private SteamGuardAccount[] allAccounts;
+        private List<string> updatedSessions = new List<string>();
         private Manifest manifest;
 
         private long steamTime = 0;
@@ -448,10 +449,10 @@ namespace Steam_Desktop_Authenticator
         {
             await UpdateSession(currentAccount);
         }
-
-        private List<string> updatedSessions = new List<string>();
+        
         private async Task UpdateSession(SteamGuardAccount account)
         {
+            if (account == null) return;
             if (updatedSessions.Contains(account.AccountName)) return;
 
             lblStatus.Text = "Refreshing session...";
@@ -468,34 +469,36 @@ namespace Steam_Desktop_Authenticator
         /// Update the program
         /// </summary>
         /// <returns></returns>
-        private async Task Squirrel_UpdateAppAsync(bool showErrors = false)
+        private async Task Squirrel_UpdateAppAsync(bool showMessages = false)
         {
             Debug.WriteLine("Checking for updates...");
             try
             {
                 using (var mgr = new UpdateManager("https://s3.amazonaws.com/steamdesktopauthenticator/releases"))
                 {
-                    SquirrelAwareApp.HandleEvents(
-                      onInitialInstall: v => OnFirstInstall(mgr)
-                    );
-
-                    await mgr.UpdateApp();
+                    UpdateInfo update = await mgr.CheckForUpdate();
+                    if(update.ReleasesToApply.Count > 0)
+                    {
+                        await mgr.UpdateApp();
+                        MessageBox.Show("A new version has been installed. Restart to apply.", "Updater", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        if (showMessages)
+                        {
+                            MessageBox.Show("You are using the latest version.", "Updater", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
                 }
             }
-            catch (Exception eff)
+            catch (Exception err)
             {
                 Debug.WriteLine("Failed");
-                if (showErrors)
+                if (showMessages)
                 {
-                    MessageBox.Show("Failed to check for updates.", "Updater", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(err.ToString(), "Update Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-        }
-
-        private void OnFirstInstall(UpdateManager mgr)
-        {
-            mgr.CreateShortcutsForExecutable("Steam Desktop Authenticator.exe", ShortcutLocation.Desktop, false);
-            mgr.CreateShortcutsForExecutable("Steam Desktop Authenticator.exe", ShortcutLocation.StartMenu, false);
         }
 
         private void listAccounts_KeyDown(object sender, KeyEventArgs e)
