@@ -94,7 +94,17 @@ namespace Steam_Desktop_Authenticator
 
         private void btnAndroidImport_Click(object sender, EventArgs e)
         {
+            int oldEntries = man.Entries.Count;
+
             new PhoneExtractForm().ShowDialog();
+
+            if (man.Entries.Count > oldEntries)
+            {
+                // Mark as not first run anymore
+                man.FirstRun = false;
+                man.Save();
+                showMainForm();
+            }
         }
     }
 }

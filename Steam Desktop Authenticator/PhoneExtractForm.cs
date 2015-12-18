@@ -92,6 +92,7 @@ namespace Steam_Desktop_Authenticator
             login.loginFromAndroid = true;
             login.SetUsername(steamAccount.AccountName);
             login.ShowDialog();
+            this.Close();
         }
 
         private void CheckDevice()

@@ -244,8 +244,9 @@ namespace Steam_Desktop_Authenticator
         /// </summary>
         /// <param name="username">Steam username</param>
         /// <param name="password">Steam password</param>
-        private void RefreshLogin(string username, string password)
+        private async void RefreshLogin(string username, string password)
         {
+            long steamTime = await TimeAligner.GetSteamTimeAsync();
             Manifest man = Manifest.GetManifest();
 
             androidAccount.FullyEnrolled = true;
@@ -282,7 +283,7 @@ namespace Steam_Desktop_Authenticator
                         break;
 
                     case LoginResult.Need2FA:
-                        mUserLogin.TwoFactorCode = androidAccount.GenerateSteamGuardCode();
+                        mUserLogin.TwoFactorCode = androidAccount.GenerateSteamGuardCodeForTime(steamTime);
                         break;
 
                     case LoginResult.BadRSA:
@@ -305,8 +306,9 @@ namespace Steam_Desktop_Authenticator
         /// </summary>
         /// <param name="username">Steam username</param>
         /// <param name="password">Steam password</param>
-        private void FinishExtract(string username, string password)
+        private async void FinishExtract(string username, string password)
         {
+            long steamTime = await TimeAligner.GetSteamTimeAsync();
             Manifest man = Manifest.GetManifest();
 
             androidAccount.FullyEnrolled = true;
@@ -343,15 +345,7 @@ namespace Steam_Desktop_Authenticator
                         break;
 
                     case LoginResult.Need2FA:
-                        emailForm = new InputForm("Enter Steam Guard code from your phone:");
-                        emailForm.ShowDialog();
-                        if (emailForm.Canceled)
-                        {
-                            this.Close();
-                            return;
-                        }
-
-                        mUserLogin.TwoFactorCode = emailForm.txtBox.Text;
+                        mUserLogin.TwoFactorCode = androidAccount.GenerateSteamGuardCodeForTime(steamTime);
                         break;
 
                     case LoginResult.BadRSA:
