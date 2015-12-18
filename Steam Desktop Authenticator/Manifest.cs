@@ -21,6 +21,12 @@ namespace Steam_Desktop_Authenticator
         [JsonProperty("entries")]
         public List<ManifestEntry> Entries { get; set; }
 
+        [JsonProperty("periodic_checking")]
+        public bool PeriodicChecking { get; set; } = false;
+
+        [JsonProperty("periodic_checking_interval")]
+        public int PeriodicCheckingInterval { get; set; } = 5;
+
         private static Manifest _manifest { get; set; }
 
         public static string GetExecutableDir()
@@ -80,6 +86,8 @@ namespace Steam_Desktop_Authenticator
             // No directory means no manifest file anyways.
             Manifest newManifest = new Manifest();
             newManifest.Encrypted = false;
+            newManifest.PeriodicCheckingInterval = 5;
+            newManifest.PeriodicChecking = false;
             newManifest.Entries = new List<ManifestEntry>();
             newManifest.FirstRun = true;
 

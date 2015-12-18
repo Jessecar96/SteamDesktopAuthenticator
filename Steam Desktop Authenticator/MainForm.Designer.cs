@@ -66,6 +66,7 @@
             this.lblStatus = new System.Windows.Forms.Label();
             this.txtAccSearch = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.menuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.groupAccount.SuspendLayout();
             this.menuStrip.SuspendLayout();
@@ -236,6 +237,7 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.importAccountToolStripMenuItem,
             this.toolStripSeparator1,
+            this.menuSettings,
             this.menuQuit});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -401,6 +403,13 @@
             this.label1.TabIndex = 13;
             this.label1.Text = "Filter:";
             // 
+            // menuSettings
+            // 
+            this.menuSettings.Name = "menuSettings";
+            this.menuSettings.Size = new System.Drawing.Size(158, 22);
+            this.menuSettings.Text = "Settings";
+            this.menuSettings.Click += new System.EventHandler(this.menuSettings_Click);
+            // 
             // MainForm
             // 
             this.AcceptButton = this.btnSteamLogin;
@@ -475,6 +484,7 @@
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.TextBox txtAccSearch;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ToolStripMenuItem menuSettings;
     }
 }
 

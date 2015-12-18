@@ -55,7 +55,7 @@ namespace Steam_Desktop_Authenticator
 
             btnManageEncryption.Enabled = manifest.Entries.Count > 0;
 
-
+            loadSettings();
             loadAccountsList();
             await UpdateCurrentSession();
 
@@ -277,6 +277,13 @@ namespace Steam_Desktop_Authenticator
         private void menuImportAndroid_Click(object sender, EventArgs e)
         {
             new PhoneExtractForm().ShowDialog();
+        }
+
+        private void menuSettings_Click(object sender, EventArgs e)
+        {
+            new SettingsForm().ShowDialog();
+            manifest = Manifest.GetManifest(true);
+            loadSettings();
         }
 
 
@@ -552,6 +559,12 @@ namespace Steam_Desktop_Authenticator
                 itemArray[i] = allAccounts[i].AccountName;
             }
             return itemArray;
+        }
+
+        private void loadSettings()
+        {
+            timerTradesPopup.Enabled = manifest.PeriodicChecking;
+            timerTradesPopup.Interval = manifest.PeriodicCheckingInterval * 1000;
         }
     }
 }
