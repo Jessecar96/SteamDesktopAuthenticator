@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using SteamAuth;
 
@@ -307,6 +307,8 @@ namespace Steam_Desktop_Authenticator
                         return;
                 }
             }
+
+            androidAccount.Session = mUserLogin.Session;
 
             HandleManifest(man, true);
         }
