@@ -102,6 +102,10 @@ namespace Steam_Desktop_Authenticator
                     browser.Load(steamAccount.GenerateConfirmationURL());
                     bHandled = true;
                     break;
+                case Keys.F1:
+                    browser.ShowDevTools();
+                    bHandled = true;
+                    break;
             }
             return bHandled;
         }
