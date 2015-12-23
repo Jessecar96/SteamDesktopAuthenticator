@@ -14,11 +14,11 @@ using System.IO;
 
 namespace Steam_Desktop_Authenticator
 {
-    public partial class ImportAccountForm : Form
+    public partial class ImportMaFileForm : Form
     {
         private Manifest mManifest;
 
-        public ImportAccountForm()
+        public ImportMaFileForm()
         {
             InitializeComponent();
             this.mManifest = Manifest.GetManifest();
@@ -30,18 +30,18 @@ namespace Steam_Desktop_Authenticator
             #region check if data already added is encripted
                 string ContiuneImport = "0";
 
-                string ManifestFile = "maFiles/manifest.json";
+                string ManifestFile = "saFiles/manifest.json";
                 if (File.Exists(ManifestFile))
                 {
-                    string AppManifestContents = File.ReadAllText(ManifestFile);
-                    AppManifest AppManifestData = JsonConvert.DeserializeObject<AppManifest>(AppManifestContents);
-                        bool AppManifestData_encrypted = AppManifestData.Encrypted;
-                        if (AppManifestData_encrypted == true)
+                    string AppManifest_maFileContents = File.ReadAllText(ManifestFile);
+                    AppManifest_maFile AppManifest_maFileData = JsonConvert.DeserializeObject<AppManifest_maFile>(AppManifest_maFileContents);
+                        bool AppManifest_maFileData_encrypted = AppManifest_maFileData.Encrypted;
+                        if (AppManifest_maFileData_encrypted == true)
                         {
                             MessageBox.Show("You can't import an .maFile because the existing account in the app is encrypted.\nDecrypt it and try again.");
                             this.Close();
                         }
-                        else if (AppManifestData_encrypted == false)
+                        else if (AppManifest_maFileData_encrypted == false)
                         {
                             ContiuneImport = "1";
                         }
@@ -120,9 +120,9 @@ namespace Steam_Desktop_Authenticator
                                 string ReadManifestEx = "0";
 
                                 //No directory means no manifest file anyways.
-                                ImportManifest newImportManifest = new ImportManifest();
-                                newImportManifest.Encrypted = false;
-                                newImportManifest.Entries = new List<ImportManifestEntry>();
+                                ImportManifest_maFile newImportManifest_maFile = new ImportManifest_maFile();
+                                newImportManifest_maFile.Encrypted = false;
+                                newImportManifest_maFile.Entries = new List<ImportManifestEntry_maFile>();
 
                                 // extract folder path
                                 string fullPath = openFileDialog1.FileName;
@@ -132,20 +132,20 @@ namespace Steam_Desktop_Authenticator
                                 // extract fileName
                                 string ImportFileName = fullPath.Replace(path, "");
 
-                                string ImportManifestFile = path + "manifest.json";
+                                string ImportManifest_maFileFile = path + "manifest.json";
 
 
-                                if (File.Exists(ImportManifestFile))
+                                if (File.Exists(ImportManifest_maFileFile))
                                 {
-                                    string ImportManifestContents = File.ReadAllText(ImportManifestFile);
+                                    string ImportManifest_maFileContents = File.ReadAllText(ImportManifest_maFileFile);
 
 
                                     try
                                     {
-                                        ImportManifest account = JsonConvert.DeserializeObject<ImportManifest>(ImportManifestContents);
+                                        ImportManifest_maFile account = JsonConvert.DeserializeObject<ImportManifest_maFile>(ImportManifest_maFileContents);
                                         //bool Import_encrypted = account.Encrypted;
 
-                                        List<ImportManifest> newEntries = new List<ImportManifest>();
+                                        List<ImportManifest_maFile> newEntries = new List<ImportManifest_maFile>();
 
                                         foreach (var entry in account.Entries)
                                         {
@@ -253,23 +253,23 @@ namespace Steam_Desktop_Authenticator
     }
 
 
-    public class AppManifest
+    public class AppManifest_maFile
     {
         [JsonProperty("encrypted")]
         public bool Encrypted { get; set; }
     }
 
 
-    public class ImportManifest
+    public class ImportManifest_maFile
     {
         [JsonProperty("encrypted")]
         public bool Encrypted { get; set; }
 
         [JsonProperty("entries")]
-        public List<ImportManifestEntry> Entries { get; set; }
+        public List<ImportManifestEntry_maFile> Entries { get; set; }
     }
 
-    public class ImportManifestEntry
+    public class ImportManifestEntry_maFile
     {
         [JsonProperty("encryption_iv")]
         public string IV { get; set; }
