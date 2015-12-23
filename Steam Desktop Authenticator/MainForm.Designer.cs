@@ -78,7 +78,6 @@
             // 
             // btnSteamLogin
             // 
-            this.btnSteamLogin.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.btnSteamLogin.Location = new System.Drawing.Point(12, 27);
             this.btnSteamLogin.Name = "btnSteamLogin";
             this.btnSteamLogin.Size = new System.Drawing.Size(155, 31);
@@ -146,7 +145,7 @@
             // 
             // btnTradeConfirmations
             // 
-            this.btnTradeConfirmations.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnTradeConfirmations.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTradeConfirmations.Enabled = false;
             this.btnTradeConfirmations.Location = new System.Drawing.Point(6, 19);
             this.btnTradeConfirmations.Name = "btnTradeConfirmations";
@@ -158,7 +157,7 @@
             // 
             // btnManageEncryption
             // 
-            this.btnManageEncryption.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnManageEncryption.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnManageEncryption.Location = new System.Drawing.Point(173, 27);
             this.btnManageEncryption.Name = "btnManageEncryption";
             this.btnManageEncryption.Size = new System.Drawing.Size(166, 31);
@@ -394,6 +393,8 @@
             // 
             // txtAccSearch
             // 
+            this.txtAccSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtAccSearch.Location = new System.Drawing.Point(49, 383);
             this.txtAccSearch.Name = "txtAccSearch";
             this.txtAccSearch.Size = new System.Drawing.Size(290, 22);
@@ -423,6 +424,7 @@
             // 
             // btnCopy
             // 
+            this.btnCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCopy.Location = new System.Drawing.Point(267, 19);
             this.btnCopy.Name = "btnCopy";
             this.btnCopy.Size = new System.Drawing.Size(54, 35);
