@@ -189,6 +189,11 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
+        private void btnCopy_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(txtLoginToken.Text);
+        }
+
 
         // Tool strip menu handlers
 

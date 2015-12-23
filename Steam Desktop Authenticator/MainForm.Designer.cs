@@ -69,6 +69,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.menuRefreshSession = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnCopy = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupAccount.SuspendLayout();
             this.menuStrip.SuspendLayout();
@@ -90,6 +91,7 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.btnCopy);
             this.groupBox1.Controls.Add(this.pbTimeout);
             this.groupBox1.Controls.Add(this.txtLoginToken);
             this.groupBox1.Location = new System.Drawing.Point(12, 64);
@@ -119,7 +121,7 @@
             this.txtLoginToken.Location = new System.Drawing.Point(6, 19);
             this.txtLoginToken.Name = "txtLoginToken";
             this.txtLoginToken.ReadOnly = true;
-            this.txtLoginToken.Size = new System.Drawing.Size(315, 35);
+            this.txtLoginToken.Size = new System.Drawing.Size(255, 35);
             this.txtLoginToken.TabIndex = 0;
             this.txtLoginToken.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -419,6 +421,16 @@
             this.toolStripSeparator4.Name = "toolStripSeparator4";
             this.toolStripSeparator4.Size = new System.Drawing.Size(202, 6);
             // 
+            // btnCopy
+            // 
+            this.btnCopy.Location = new System.Drawing.Point(267, 19);
+            this.btnCopy.Name = "btnCopy";
+            this.btnCopy.Size = new System.Drawing.Size(54, 35);
+            this.btnCopy.TabIndex = 2;
+            this.btnCopy.Text = "Copy";
+            this.btnCopy.UseVisualStyleBackColor = true;
+            this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
+            // 
             // MainForm
             // 
             this.AcceptButton = this.btnSteamLogin;
@@ -497,6 +509,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuDeactivateAuthenticator;
         private System.Windows.Forms.ToolStripMenuItem menuRefreshSession;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.Button btnCopy;
     }
 }
 
