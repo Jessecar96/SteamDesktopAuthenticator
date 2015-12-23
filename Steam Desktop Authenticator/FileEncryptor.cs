@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +9,7 @@ using System.IO;
 namespace Steam_Desktop_Authenticator
 {
     /// <summary>
-    /// This class provides the controls that will encrypt and decrypt the *.maFile files
+    /// This class provides the controls that will encrypt and decrypt the *.saFile files
     /// 
     /// Passwords entered will be passed into 100k rounds of PBKDF2 (RFC2898) with a cryptographically random salt.
     /// The generated key will then be passed into AES-256 (RijndalManaged) which will encrypt the data
