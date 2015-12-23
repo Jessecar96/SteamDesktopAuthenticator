@@ -3,9 +3,10 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SteamAuth;
-using Squirrel;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Net;
+using Newtonsoft.Json;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -58,11 +59,8 @@ namespace Steam_Desktop_Authenticator
 
             loadSettings();
             loadAccountsList();
-            await UpdateCurrentSession();
 
-            // Check for updates here, after a few seconds
-            await Task.Delay(5000);
-            await Squirrel_UpdateAppAsync(false);
+            checkForUpdates();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -231,7 +229,14 @@ namespace Steam_Desktop_Authenticator
 
         private async void labelUpdate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            await Squirrel_UpdateAppAsync(true);
+            if (newVersion == null || currentVersion == null)
+            {
+                checkForUpdates();
+            }
+            else
+            {
+                compareVersions();
+            }
         }
 
 
@@ -465,42 +470,6 @@ namespace Steam_Desktop_Authenticator
             btnTradeConfirmations.Enabled = true;
         }
 
-        /// <summary>
-        /// Update the program
-        /// </summary>
-        /// <returns></returns>
-        private async Task Squirrel_UpdateAppAsync(bool showMessages = false)
-        {
-            Debug.WriteLine("Checking for updates...");
-            try
-            {
-                using (var mgr = new UpdateManager("https://s3.amazonaws.com/steamdesktopauthenticator/releases"))
-                {
-                    UpdateInfo update = await mgr.CheckForUpdate();
-                    if(update.ReleasesToApply.Count > 0)
-                    {
-                        await mgr.UpdateApp();
-                        MessageBox.Show("A new version has been installed. Restart to apply.", "Updater", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    else
-                    {
-                        if (showMessages)
-                        {
-                            MessageBox.Show("You are using the latest version.", "Updater", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                    }
-                }
-            }
-            catch (Exception err)
-            {
-                Debug.WriteLine("Failed");
-                if (showMessages)
-                {
-                    MessageBox.Show(err.ToString(), "Update Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
         private void listAccounts_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control)
@@ -568,6 +537,63 @@ namespace Steam_Desktop_Authenticator
         {
             timerTradesPopup.Enabled = manifest.PeriodicChecking;
             timerTradesPopup.Interval = manifest.PeriodicCheckingInterval * 1000;
+        }
+
+        // Logic for version checking
+        private Version newVersion = null;
+        private Version currentVersion = null;
+        private WebClient updateClient = null;
+        private string updateUrl = null;
+        private bool startupUpdateCheck = true;
+
+        private void checkForUpdates()
+        {
+            if (updateClient != null) return;
+            updateClient = new WebClient();
+            updateClient.DownloadStringCompleted += UpdateClient_DownloadStringCompleted;
+            updateClient.Headers.Add("Content-Type", "application/json");
+            updateClient.Headers.Add("User-Agent", "Steam Desktop Authenticator");
+            updateClient.DownloadStringAsync(new Uri("https://api.github.com/repos/Jessecar96/SteamDesktopAuthenticator/releases/latest"));
+        }
+
+        private void compareVersions()
+        {
+            if (newVersion > currentVersion)
+            {
+                labelUpdate.Text = "Download new version"; // Show the user a new version is available if they press no
+                DialogResult updateDialog = MessageBox.Show(String.Format("A new version is available! Would you like to download it now?\nYou will update from version {0} to {1}", Application.ProductVersion, newVersion.ToString()), "New Version", MessageBoxButtons.YesNo);
+                if (updateDialog == DialogResult.Yes)
+                {
+                    Process.Start(updateUrl);
+                }
+            }
+            else
+            {
+                if (!startupUpdateCheck)
+                {
+                    MessageBox.Show(String.Format("You are using the latest version: {0}", Application.ProductVersion));
+                }
+            }
+
+            newVersion = null; // Check the api again next time they check for updates
+            updateClient = null; // Set to null to indicate it's done checking
+            startupUpdateCheck = false; // Set when it's done checking on startup
+        }
+
+        private void UpdateClient_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            try
+            {
+                dynamic resultObject = JsonConvert.DeserializeObject(e.Result);
+                newVersion = new Version(resultObject.tag_name.Value);
+                currentVersion = new Version(Application.ProductVersion);
+                updateUrl = resultObject.assets.First.browser_download_url.Value;
+                compareVersions();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failed to check for updates.");
+            }
         }
     }
 }
