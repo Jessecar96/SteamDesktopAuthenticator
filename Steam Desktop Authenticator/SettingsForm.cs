@@ -25,6 +25,9 @@ namespace Steam_Desktop_Authenticator
             chkPeriodicChecking.Checked = manifest.PeriodicChecking;
             numPeriodicInterval.Value = manifest.PeriodicCheckingInterval;
 
+            // set check all
+            chkCheckAll.Checked = manifest.CheckAllAccounts;
+
             // set GUI Confirmation List btn
             checkBoxConfirmationListBtn.Checked = manifest.ShowConfirmationListButton;
 
@@ -46,6 +49,9 @@ namespace Steam_Desktop_Authenticator
             // Confirmation Popup
             manifest.PeriodicChecking = chkPeriodicChecking.Checked;
             manifest.PeriodicCheckingInterval = (int)numPeriodicInterval.Value;
+
+            // check all
+            manifest.CheckAllAccounts = chkCheckAll.Checked;
 
             // Confirmation List btn
             manifest.ShowConfirmationListButton = checkBoxConfirmationListBtn.Checked;
