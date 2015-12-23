@@ -17,6 +17,8 @@ namespace Steam_Desktop_Authenticator
         private List<string> updatedSessions = new List<string>();
         private Manifest manifest;
 
+        private bool checkAllAccounts;
+
         private long steamTime = 0;
         private long currentSteamChunk = 0;
         private string passKey = null;
@@ -407,15 +409,25 @@ namespace Steam_Desktop_Authenticator
         {
             if (currentAccount == null || popupFrm.Visible) return;
 
+            List<Confirmation> confs = new List<Confirmation>();
+            SteamGuardAccount[] accs =
+                checkAllAccounts ? allAccounts : new SteamGuardAccount[] { currentAccount };
+
             try
             {
                 lblStatus.Text = "Checking confirmations...";
-                Confirmation[] confs = await currentAccount.FetchConfirmationsAsync();
+
+                foreach (var item in accs)
+                {
+                    Confirmation[] tmp = await currentAccount.FetchConfirmationsAsync();
+                    confs.AddRange(tmp);
+                }
+
                 lblStatus.Text = "";
 
-                if (confs.Length == 0) return;
+                if (confs.Count == 0) return;
 
-                popupFrm.Confirmation = confs;
+                popupFrm.Confirmation = confs.ToArray();
                 popupFrm.Popup();
             }
             catch (SteamGuardAccount.WGTokenInvalidException)
@@ -512,9 +524,9 @@ namespace Steam_Desktop_Authenticator
                 return;
             }
 
-            txtAccSearch.Show();
             txtAccSearch.Focus();
             txtAccSearch.Text = e.KeyCode.ToString();
+            txtAccSearch.SelectionStart = 1;
         }
 
         private static bool IsKeyAChar(Keys key)
