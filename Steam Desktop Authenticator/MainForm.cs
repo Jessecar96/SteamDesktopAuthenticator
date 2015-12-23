@@ -512,9 +512,9 @@ namespace Steam_Desktop_Authenticator
                 return;
             }
 
-            txtAccSearch.Show();
             txtAccSearch.Focus();
             txtAccSearch.Text = e.KeyCode.ToString();
+            txtAccSearch.SelectionStart = 1;
         }
 
         private static bool IsKeyAChar(Keys key)
