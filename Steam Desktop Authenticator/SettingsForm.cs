@@ -16,12 +16,14 @@ namespace Steam_Desktop_Authenticator
 
             chkPeriodicChecking.Checked = manifest.PeriodicChecking;
             numPeriodicInterval.Value = manifest.PeriodicCheckingInterval;
+            chkCheckAll.Checked = manifest.CheckAllAccounts;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
             manifest.PeriodicChecking = chkPeriodicChecking.Checked;
             manifest.PeriodicCheckingInterval = (int)numPeriodicInterval.Value;
+            manifest.CheckAllAccounts = chkCheckAll.Checked;
             manifest.Save();
 
             this.Close();
