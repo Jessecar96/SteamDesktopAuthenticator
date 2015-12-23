@@ -14,6 +14,7 @@ namespace Steam_Desktop_Authenticator
     public class PhoneBridge
     {
         public bool OutputToConsole = true;
+        public bool OutputToLog = true;
 
         private Process console;
         private ManualResetEvent mreOutput = new ManualResetEvent(false);
@@ -30,6 +31,8 @@ namespace Steam_Desktop_Authenticator
         {
             if (OutputLog != null)
                 OutputLog(msg);
+            if (OutputToLog)
+                AppendToLog(msg);
         }
 
         private string Error = "";
@@ -54,7 +57,17 @@ namespace Steam_Desktop_Authenticator
                 if (e.Data.Contains(">@") || !OutputToConsole || e.Data == "") return;
                 if (OutputToConsole)
                     Console.WriteLine(e.Data);
+                if (OutputToLog)
+                    AppendToLog(e.Data);
             };
+        }
+
+        private void AppendToLog(string line)
+        {
+            StreamWriter s = File.AppendText("adblog.txt");
+            s.WriteLine(line);
+            s.Flush();
+            s.Close();
         }
 
         public SteamGuardAccount ExtractSteamGuardAccount(string id = "*", bool skipChecks = false)
