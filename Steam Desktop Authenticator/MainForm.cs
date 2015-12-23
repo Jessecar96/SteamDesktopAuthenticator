@@ -47,7 +47,12 @@ namespace Steam_Desktop_Authenticator
 
             if (manifest.Encrypted)
             {
-                string passKey = manifest.PromptForPassKey();
+                passKey = manifest.PromptForPassKey();
+                if(passKey == null)
+                {
+                    Application.Exit();
+                }
+
                 btnManageEncryption.Text = "Manage Encryption";
             }
             else
@@ -167,7 +172,7 @@ namespace Steam_Desktop_Authenticator
             }
             else
             {
-                manifest.PromptSetupPassKey();
+                passKey = manifest.PromptSetupPassKey();
                 this.loadAccountsList();
             }
         }

@@ -129,9 +129,6 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listAccounts.FormattingEnabled = true;
-            this.listAccounts.Items.AddRange(new object[] {
-            "test",
-            "test"});
             this.listAccounts.Location = new System.Drawing.Point(12, 217);
             this.listAccounts.Name = "listAccounts";
             this.listAccounts.Size = new System.Drawing.Size(327, 160);
