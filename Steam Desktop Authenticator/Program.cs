@@ -5,14 +5,11 @@ using System.Security;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
-using Squirrel;
 
 namespace Steam_Desktop_Authenticator
 {
     static class Program
     {
-        static bool ShowTheWelcomeWizard;
-
         public static Process PriorProcess()
         // Returns a System.Diagnostics.Process pointing to
         // a pre-existing process with the same name as the
@@ -43,23 +40,6 @@ namespace Steam_Desktop_Authenticator
         [STAThread]
         static void Main()
         {
-            try {
-                using (var mgr = new UpdateManager("https://s3.amazonaws.com/steamdesktopauthenticator/releases"))
-                {
-                    // Note, in most of these scenarios, the app exits after this method
-                    // completes!
-                    SquirrelAwareApp.HandleEvents(
-                      onInitialInstall: v => mgr.CreateShortcutForThisExe(),
-                      onAppUpdate: v => mgr.CreateShortcutForThisExe(),
-                      onAppUninstall: v => mgr.RemoveShortcutForThisExe(),
-                      onFirstRun: () => ShowTheWelcomeWizard = true);
-                }
-            }
-            catch
-            {
-                // Not using a squirrel app
-            }
-
             // run the program only once
             if (PriorProcess() != null)
             {
