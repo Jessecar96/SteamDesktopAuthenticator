@@ -37,6 +37,9 @@ namespace Steam_Desktop_Authenticator
         [JsonProperty("periodic_checking_interval")]
         public int PeriodicCheckingInterval { get; set; } = 5;
 
+        [JsonProperty("periodic_checking_checkall")]
+        public bool CheckAllAccounts { get; set; } = false;
+
         private static Manifest _manifest { get; set; }
 
         public static string GetExecutableDir()
