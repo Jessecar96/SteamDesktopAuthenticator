@@ -38,7 +38,6 @@
             this.listAccounts = new System.Windows.Forms.ListBox();
             this.timerSteamGuard = new System.Windows.Forms.Timer(this.components);
             this.btnTradeConfirmations = new System.Windows.Forms.Button();
-            this.btnDelete = new System.Windows.Forms.Button();
             this.btnManageEncryption = new System.Windows.Forms.Button();
             this.groupAccount = new System.Windows.Forms.GroupBox();
             this.labelVersion = new System.Windows.Forms.Label();
@@ -52,8 +51,9 @@
             this.menuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.menuQuit = new System.Windows.Forms.ToolStripMenuItem();
             this.accountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuRemoveAccountFromManifest = new System.Windows.Forms.ToolStripMenuItem();
             this.menuLoginAgain = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuRemoveAccountFromManifest = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuDeactivateAuthenticator = new System.Windows.Forms.ToolStripMenuItem();
             this.trayIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.menuStripTray = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.trayRestore = new System.Windows.Forms.ToolStripMenuItem();
@@ -149,22 +149,11 @@
             this.btnTradeConfirmations.Enabled = false;
             this.btnTradeConfirmations.Location = new System.Drawing.Point(6, 19);
             this.btnTradeConfirmations.Name = "btnTradeConfirmations";
-            this.btnTradeConfirmations.Size = new System.Drawing.Size(149, 31);
+            this.btnTradeConfirmations.Size = new System.Drawing.Size(315, 31);
             this.btnTradeConfirmations.TabIndex = 4;
-            this.btnTradeConfirmations.Text = "Trade Confirmations";
+            this.btnTradeConfirmations.Text = "View Trade Confirmations";
             this.btnTradeConfirmations.UseVisualStyleBackColor = true;
             this.btnTradeConfirmations.Click += new System.EventHandler(this.btnTradeConfirmations_Click);
-            // 
-            // btnDelete
-            // 
-            this.btnDelete.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnDelete.Location = new System.Drawing.Point(161, 19);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(160, 31);
-            this.btnDelete.TabIndex = 5;
-            this.btnDelete.Text = "Deactivate Authenticator";
-            this.btnDelete.UseVisualStyleBackColor = true;
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnManageEncryption
             // 
@@ -182,7 +171,6 @@
             this.groupAccount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupAccount.Controls.Add(this.btnTradeConfirmations);
-            this.groupAccount.Controls.Add(this.btnDelete);
             this.groupAccount.Location = new System.Drawing.Point(12, 155);
             this.groupAccount.Name = "groupAccount";
             this.groupAccount.Size = new System.Drawing.Size(327, 56);
@@ -288,25 +276,33 @@
             // accountToolStripMenuItem
             // 
             this.accountToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuLoginAgain,
             this.menuRemoveAccountFromManifest,
-            this.menuLoginAgain});
+            this.menuDeactivateAuthenticator});
             this.accountToolStripMenuItem.Name = "accountToolStripMenuItem";
-            this.accountToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
-            this.accountToolStripMenuItem.Text = "Account";
-            // 
-            // menuRemoveAccountFromManifest
-            // 
-            this.menuRemoveAccountFromManifest.Name = "menuRemoveAccountFromManifest";
-            this.menuRemoveAccountFromManifest.Size = new System.Drawing.Size(195, 22);
-            this.menuRemoveAccountFromManifest.Text = "Remove from manifest";
-            this.menuRemoveAccountFromManifest.Click += new System.EventHandler(this.menuRemoveAccountFromManifest_Click);
+            this.accountToolStripMenuItem.Size = new System.Drawing.Size(111, 20);
+            this.accountToolStripMenuItem.Text = "Selected Account";
             // 
             // menuLoginAgain
             // 
             this.menuLoginAgain.Name = "menuLoginAgain";
-            this.menuLoginAgain.Size = new System.Drawing.Size(195, 22);
+            this.menuLoginAgain.Size = new System.Drawing.Size(205, 22);
             this.menuLoginAgain.Text = "Login again";
             this.menuLoginAgain.Click += new System.EventHandler(this.menuLoginAgain_Click);
+            // 
+            // menuRemoveAccountFromManifest
+            // 
+            this.menuRemoveAccountFromManifest.Name = "menuRemoveAccountFromManifest";
+            this.menuRemoveAccountFromManifest.Size = new System.Drawing.Size(205, 22);
+            this.menuRemoveAccountFromManifest.Text = "Remove from manifest";
+            this.menuRemoveAccountFromManifest.Click += new System.EventHandler(this.menuRemoveAccountFromManifest_Click);
+            // 
+            // menuDeactivateAuthenticator
+            // 
+            this.menuDeactivateAuthenticator.Name = "menuDeactivateAuthenticator";
+            this.menuDeactivateAuthenticator.Size = new System.Drawing.Size(205, 22);
+            this.menuDeactivateAuthenticator.Text = "Deactivate Authenticator";
+            this.menuDeactivateAuthenticator.Click += new System.EventHandler(this.menuDeactivateAuthenticator_Click);
             // 
             // trayIcon
             // 
@@ -387,9 +383,9 @@
             this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblStatus.BackColor = System.Drawing.SystemColors.Control;
             this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatus.Location = new System.Drawing.Point(125, 5);
+            this.lblStatus.Location = new System.Drawing.Point(183, 5);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(221, 18);
+            this.lblStatus.Size = new System.Drawing.Size(163, 18);
             this.lblStatus.TabIndex = 11;
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
@@ -457,7 +453,6 @@
         private System.Windows.Forms.ListBox listAccounts;
         private System.Windows.Forms.Timer timerSteamGuard;
         private System.Windows.Forms.Button btnTradeConfirmations;
-        private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnManageEncryption;
         private System.Windows.Forms.GroupBox groupAccount;
         private System.Windows.Forms.Label labelVersion;
@@ -486,6 +481,7 @@
         private System.Windows.Forms.TextBox txtAccSearch;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripMenuItem menuSettings;
+        private System.Windows.Forms.ToolStripMenuItem menuDeactivateAuthenticator;
     }
 }
 

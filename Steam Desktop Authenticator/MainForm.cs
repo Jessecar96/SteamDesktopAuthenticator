@@ -110,61 +110,6 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            if (currentAccount == null) return;
-
-            DialogResult res = MessageBox.Show("Would you like to remove Steam Guard completely?\nYes - Remove Steam Guard completely.\nNo - Switch back to Email authentication.", "Remove Steam Guard", MessageBoxButtons.YesNoCancel);
-            int scheme = 0;
-            if (res == DialogResult.Yes)
-            {
-                scheme = 2;
-            }
-            else if (res == DialogResult.No)
-            {
-                scheme = 1;
-            }
-            else if (res == DialogResult.Cancel)
-            {
-                scheme = 0;
-            }
-
-            if (scheme != 0)
-            {
-                string confCode = currentAccount.GenerateSteamGuardCode();
-                InputForm confirmationDialog = new InputForm(String.Format("Remvoing Steam Guard from {0}. Enter this confirmation code: {1}", currentAccount.AccountName, confCode));
-                confirmationDialog.ShowDialog();
-
-                if (confirmationDialog.Canceled)
-                {
-                    return;
-                }
-
-                string enteredCode = confirmationDialog.txtBox.Text.ToUpper();
-                if (enteredCode != confCode)
-                {
-                    MessageBox.Show("Confirmation codes do not match. Steam Guard not removed.");
-                    return;
-                }
-
-                bool success = currentAccount.DeactivateAuthenticator(scheme);
-                if (success)
-                {
-                    MessageBox.Show(String.Format("Steam Guard {0}. maFile will be deleted after hitting okay. If you need to make a backup, now's the time.", (scheme == 2 ? "removed completely" : "switched to emails")));
-                    this.manifest.RemoveAccount(currentAccount);
-                    this.loadAccountsList();
-                }
-                else
-                {
-                    MessageBox.Show("Steam Guard failed to deactivate.");
-                }
-            }
-            else
-            {
-                MessageBox.Show("Steam Guard was not removed. No action was taken.");
-            }
-        }
-
         private void btnManageEncryption_Click(object sender, EventArgs e)
         {
             if (manifest.Encrypted)
@@ -227,7 +172,7 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
-        private async void labelUpdate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void labelUpdate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             if (newVersion == null || currentVersion == null)
             {
@@ -290,6 +235,61 @@ namespace Steam_Desktop_Authenticator
             new SettingsForm().ShowDialog();
             manifest = Manifest.GetManifest(true);
             loadSettings();
+        }
+
+        private void menuDeactivateAuthenticator_Click(object sender, EventArgs e)
+        {
+            if (currentAccount == null) return;
+
+            DialogResult res = MessageBox.Show("Would you like to remove Steam Guard completely?\nYes - Remove Steam Guard completely.\nNo - Switch back to Email authentication.", "Remove Steam Guard", MessageBoxButtons.YesNoCancel);
+            int scheme = 0;
+            if (res == DialogResult.Yes)
+            {
+                scheme = 2;
+            }
+            else if (res == DialogResult.No)
+            {
+                scheme = 1;
+            }
+            else if (res == DialogResult.Cancel)
+            {
+                scheme = 0;
+            }
+
+            if (scheme != 0)
+            {
+                string confCode = currentAccount.GenerateSteamGuardCode();
+                InputForm confirmationDialog = new InputForm(String.Format("Remvoing Steam Guard from {0}. Enter this confirmation code: {1}", currentAccount.AccountName, confCode));
+                confirmationDialog.ShowDialog();
+
+                if (confirmationDialog.Canceled)
+                {
+                    return;
+                }
+
+                string enteredCode = confirmationDialog.txtBox.Text.ToUpper();
+                if (enteredCode != confCode)
+                {
+                    MessageBox.Show("Confirmation codes do not match. Steam Guard not removed.");
+                    return;
+                }
+
+                bool success = currentAccount.DeactivateAuthenticator(scheme);
+                if (success)
+                {
+                    MessageBox.Show(String.Format("Steam Guard {0}. maFile will be deleted after hitting okay. If you need to make a backup, now's the time.", (scheme == 2 ? "removed completely" : "switched to emails")));
+                    this.manifest.RemoveAccount(currentAccount);
+                    this.loadAccountsList();
+                }
+                else
+                {
+                    MessageBox.Show("Steam Guard failed to deactivate.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Steam Guard was not removed. No action was taken.");
+            }
         }
 
 
@@ -443,7 +443,7 @@ namespace Steam_Desktop_Authenticator
                 listAccounts.SelectedIndex = 0;
                 trayAccountList.SelectedIndex = 0;
             }
-            btnDelete.Enabled = btnTradeConfirmations.Enabled = allAccounts.Length > 0;
+            menuDeactivateAuthenticator.Enabled = btnTradeConfirmations.Enabled = allAccounts.Length > 0;
         }
 
         /// <summary>
