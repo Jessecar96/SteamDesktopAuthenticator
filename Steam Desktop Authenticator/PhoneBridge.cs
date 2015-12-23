@@ -190,7 +190,7 @@ namespace Steam_Desktop_Authenticator
             if (steamid == "*")
             {
                 OnOutputLog("Extracting (1/2)");
-                ExecuteCommand("adb shell \"su -c ls /data/data/com.valvesoftware.android.steam.community/files\" & echo Done");
+                ExecuteCommand("adb shell \"su -c 'ls /data/data/com.valvesoftware.android.steam.community/files'\" & echo Done");
                 mre.Wait();
                 if (count > 1)
                 {
@@ -201,7 +201,7 @@ namespace Steam_Desktop_Authenticator
 
             mre.Reset();
             OnOutputLog("Extracting " + steamid + " (2/2)");
-            ExecuteCommand("adb shell su -c \"cat /data/data/com.valvesoftware.android.steam.community/files/Steamguard-" + steamid + "\"");
+            ExecuteCommand("adb shell \"su -c 'cat /data/data/com.valvesoftware.android.steam.community/files/Steamguard-" + steamid + "'\"");
             mre.Wait();
 
             console.OutputDataReceived -= f1;
@@ -372,7 +372,7 @@ namespace Steam_Desktop_Authenticator
 
             console.OutputDataReceived += f1;
 
-            ExecuteCommand("adb shell su -c echo Yes");
+            ExecuteCommand("adb shell su -c 'echo Yes'");
             mre.Wait();
 
             console.OutputDataReceived -= f1;
