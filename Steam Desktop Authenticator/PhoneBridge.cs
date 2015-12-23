@@ -72,7 +72,7 @@ namespace Steam_Desktop_Authenticator
 
         public SteamGuardAccount ExtractSteamGuardAccount(string id = "*", bool skipChecks = false)
         {
-            AppendToLog("");
+            if (!skipChecks) AppendToLog("");
             InitConsole(); // Init the console
 
             if (!skipChecks)
