@@ -16,15 +16,12 @@ namespace Steam_Desktop_Authenticator
 {
     public partial class ImportAccountForm : Form
     {
-        private SteamGuardAccount mCurrentAccount = null;
         private Manifest mManifest;
 
         public ImportAccountForm()
         {
             InitializeComponent();
-
             this.mManifest = Manifest.GetManifest();
-
         }
 
         private void btnImport_Click(object sender, EventArgs e)

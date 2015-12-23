@@ -33,7 +33,7 @@ namespace Steam_Desktop_Authenticator
 
         // Form event handlers
 
-        private async void MainForm_Shown(object sender, EventArgs e)
+        private void MainForm_Shown(object sender, EventArgs e)
         {
             this.labelVersion.Text = String.Format("v{0}", Application.ProductVersion);
             this.manifest = Manifest.GetManifest();

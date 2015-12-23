@@ -75,7 +75,7 @@ namespace Steam_Desktop_Authenticator
 
                 return _manifest;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }
