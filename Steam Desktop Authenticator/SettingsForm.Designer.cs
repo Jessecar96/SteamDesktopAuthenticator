@@ -33,6 +33,7 @@ namespace Steam_Desktop_Authenticator
             this.btnOk = new System.Windows.Forms.Button();
             this.numPeriodicInterval = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
+            this.chkCheckAll = new System.Windows.Forms.CheckBox();
             this.GroupPopup = new System.Windows.Forms.GroupBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.radioButton4_SystemTray = new System.Windows.Forms.RadioButton();
@@ -65,7 +66,7 @@ namespace Steam_Desktop_Authenticator
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOk.Font = new System.Drawing.Font("Segoe UI", 9.25F);
-            this.btnOk.Location = new System.Drawing.Point(368, 347);
+            this.btnOk.Location = new System.Drawing.Point(368, 376);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(92, 30);
             this.btnOk.TabIndex = 1;
@@ -75,7 +76,7 @@ namespace Steam_Desktop_Authenticator
             // 
             // numPeriodicInterval
             // 
-            this.numPeriodicInterval.Location = new System.Drawing.Point(14, 45);
+            this.numPeriodicInterval.Location = new System.Drawing.Point(14, 47);
             this.numPeriodicInterval.Maximum = new decimal(new int[] {
             99999,
             0,
@@ -98,22 +99,33 @@ namespace Steam_Desktop_Authenticator
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(100, 50);
+            this.label1.Location = new System.Drawing.Point(100, 52);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(239, 13);
             this.label1.TabIndex = 3;
             this.label1.Text = "Seconds between checking for confirmations";
             // 
+            // chkCheckAll
+            // 
+            this.chkCheckAll.AutoSize = true;
+            this.chkCheckAll.Location = new System.Drawing.Point(14, 80);
+            this.chkCheckAll.Name = "chkCheckAll";
+            this.chkCheckAll.Size = new System.Drawing.Size(213, 17);
+            this.chkCheckAll.TabIndex = 4;
+            this.chkCheckAll.Text = "Check all accounts for confirmations";
+            this.chkCheckAll.UseVisualStyleBackColor = true;
+            // 
             // GroupPopup
             // 
             this.GroupPopup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.GroupPopup.Controls.Add(this.chkCheckAll);
             this.GroupPopup.Controls.Add(this.chkPeriodicChecking);
             this.GroupPopup.Controls.Add(this.numPeriodicInterval);
             this.GroupPopup.Controls.Add(this.label1);
             this.GroupPopup.Location = new System.Drawing.Point(12, 137);
             this.GroupPopup.Name = "GroupPopup";
-            this.GroupPopup.Size = new System.Drawing.Size(548, 81);
+            this.GroupPopup.Size = new System.Drawing.Size(548, 110);
             this.GroupPopup.TabIndex = 4;
             this.GroupPopup.TabStop = false;
             this.GroupPopup.Text = "Popup Notification";
@@ -183,7 +195,7 @@ namespace Steam_Desktop_Authenticator
             this.btnCancel.AutoSize = true;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancel.Location = new System.Drawing.Point(468, 347);
+            this.btnCancel.Location = new System.Drawing.Point(468, 376);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(92, 30);
             this.btnCancel.TabIndex = 6;
@@ -196,7 +208,7 @@ namespace Steam_Desktop_Authenticator
             this.groupConfirmationList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupConfirmationList.Controls.Add(this.checkBoxConfirmationListBtn);
-            this.groupConfirmationList.Location = new System.Drawing.Point(12, 224);
+            this.groupConfirmationList.Location = new System.Drawing.Point(12, 253);
             this.groupConfirmationList.Name = "groupConfirmationList";
             this.groupConfirmationList.Size = new System.Drawing.Size(548, 53);
             this.groupConfirmationList.TabIndex = 5;
@@ -219,7 +231,7 @@ namespace Steam_Desktop_Authenticator
             this.groupUpdates.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupUpdates.Controls.Add(this.checkBoxAutoCheckForUpdates);
-            this.groupUpdates.Location = new System.Drawing.Point(12, 283);
+            this.groupUpdates.Location = new System.Drawing.Point(12, 312);
             this.groupUpdates.Name = "groupUpdates";
             this.groupUpdates.Size = new System.Drawing.Size(548, 53);
             this.groupUpdates.TabIndex = 7;
@@ -240,7 +252,7 @@ namespace Steam_Desktop_Authenticator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(572, 389);
+            this.ClientSize = new System.Drawing.Size(572, 418);
             this.Controls.Add(this.groupUpdates);
             this.Controls.Add(this.groupConfirmationList);
             this.Controls.Add(this.btnCancel);
@@ -285,5 +297,6 @@ namespace Steam_Desktop_Authenticator
         private System.Windows.Forms.GroupBox groupUpdates;
         private System.Windows.Forms.CheckBox checkBoxAutoCheckForUpdates;
         private System.Windows.Forms.RadioButton radioButton4_SystemTray;
+        private System.Windows.Forms.CheckBox chkCheckAll;
     }
 }
