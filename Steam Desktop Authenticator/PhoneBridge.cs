@@ -88,6 +88,8 @@ namespace Steam_Desktop_Authenticator
 
             bool root = IsRooted();
 
+            root = false; // DEBUG ///////////////////////
+
             SteamGuardAccount acc;
             string json;
 
@@ -363,7 +365,7 @@ namespace Steam_Desktop_Authenticator
             DataReceivedEventHandler f1 = (sender, e) =>
             {
                 if (e.Data.Contains(">@") || e.Data == "") return;
-                if (e.Data == "Yes")
+                if (e.Data.Contains("Yes"))
                     root = true;
                 mre.Set();
             };
