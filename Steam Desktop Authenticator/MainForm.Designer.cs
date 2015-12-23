@@ -67,6 +67,8 @@
             this.lblStatus = new System.Windows.Forms.Label();
             this.txtAccSearch = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.menuRefreshSession = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.groupBox1.SuspendLayout();
             this.groupAccount.SuspendLayout();
             this.menuStrip.SuspendLayout();
@@ -277,6 +279,8 @@
             // 
             this.accountToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuLoginAgain,
+            this.menuRefreshSession,
+            this.toolStripSeparator4,
             this.menuRemoveAccountFromManifest,
             this.menuDeactivateAuthenticator});
             this.accountToolStripMenuItem.Name = "accountToolStripMenuItem";
@@ -406,6 +410,18 @@
             this.label1.TabIndex = 13;
             this.label1.Text = "Filter:";
             // 
+            // menuRefreshSession
+            // 
+            this.menuRefreshSession.Name = "menuRefreshSession";
+            this.menuRefreshSession.Size = new System.Drawing.Size(205, 22);
+            this.menuRefreshSession.Text = "Force session refresh";
+            this.menuRefreshSession.Click += new System.EventHandler(this.menuRefreshSession_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(202, 6);
+            // 
             // MainForm
             // 
             this.AcceptButton = this.btnSteamLogin;
@@ -482,6 +498,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripMenuItem menuSettings;
         private System.Windows.Forms.ToolStripMenuItem menuDeactivateAuthenticator;
+        private System.Windows.Forms.ToolStripMenuItem menuRefreshSession;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
     }
 }
 

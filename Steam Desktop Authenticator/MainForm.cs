@@ -292,6 +292,20 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
+        private async void menuRefreshSession_Click(object sender, EventArgs e)
+        {
+            bool status = await currentAccount.RefreshSessionAsync();
+            if(status == true)
+            {
+                MessageBox.Show("Your session has been refreshed.", "Session refresh", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                manifest.SaveAccount(currentAccount, manifest.Encrypted, passKey);
+            } 
+            else
+            {
+                MessageBox.Show("Failed to refresh your session.\nTry again soon.", "Session refresh", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
 
         // Tray menu handlers
 
