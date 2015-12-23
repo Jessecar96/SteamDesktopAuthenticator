@@ -48,7 +48,7 @@
             // 
             this.splitContainer1.Panel1.Controls.Add(this.btnRefresh);
             this.splitContainer1.Size = new System.Drawing.Size(431, 641);
-            this.splitContainer1.SplitterDistance = 32;
+            this.splitContainer1.SplitterDistance = 30;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -57,7 +57,7 @@
             this.btnRefresh.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnRefresh.Location = new System.Drawing.Point(0, 0);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(431, 32);
+            this.btnRefresh.Size = new System.Drawing.Size(431, 30);
             this.btnRefresh.TabIndex = 0;
             this.btnRefresh.Text = "Refresh";
             this.btnRefresh.UseVisualStyleBackColor = true;
