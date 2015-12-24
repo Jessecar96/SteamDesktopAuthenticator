@@ -1,3 +1,7 @@
 [submodule "lib/SteamAuth"]
 	path = lib/SteamAuth
 	url = git://github.com/geel9/SteamAuth
+[submodule "lib/sparrow"]
+	path = lib/sparrow
+	url = git://github.com/pipe01/sparrow
+	branch = master
