@@ -1,6 +1,6 @@
 namespace Steam_Desktop_Authenticator
 {
-    partial class ImportAccountForm
+    partial class ImportMaFileForm
     {
         #region Windows Form Designer generated code
 
@@ -10,7 +10,7 @@ namespace Steam_Desktop_Authenticator
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ImportAccountForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ImportMaFileForm));
             this.labelText = new System.Windows.Forms.Label();
             this.txtBox = new System.Windows.Forms.TextBox();
             this.btnImport = new System.Windows.Forms.Button();
@@ -41,7 +41,7 @@ namespace Steam_Desktop_Authenticator
             // 
             this.btnImport.Location = new System.Drawing.Point(135, 131);
             this.btnImport.Name = "btnImport";
-            this.btnImport.Size = new System.Drawing.Size(187, 28);
+            this.btnImport.Size = new System.Drawing.Size(187, 38);
             this.btnImport.TabIndex = 3;
             this.btnImport.Text = "Select .maFile file to Import";
             this.btnImport.UseVisualStyleBackColor = true;
@@ -50,9 +50,9 @@ namespace Steam_Desktop_Authenticator
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(41, 131);
+            this.btnCancel.Location = new System.Drawing.Point(15, 131);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(88, 28);
+            this.btnCancel.Size = new System.Drawing.Size(98, 38);
             this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -69,13 +69,13 @@ namespace Steam_Desktop_Authenticator
             this.label1.TabIndex = 2;
             this.label1.Text = "If you import an encrypted .maFile, the manifest file must be next to it.";
             // 
-            // ImportAccountForm
+            // ImportMaFileForm
             // 
             this.AcceptButton = this.btnImport;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(336, 171);
+            this.ClientSize = new System.Drawing.Size(336, 181);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnImport);
@@ -85,7 +85,7 @@ namespace Steam_Desktop_Authenticator
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "ImportAccountForm";
+            this.Name = "ImportMaFileForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Import Account";

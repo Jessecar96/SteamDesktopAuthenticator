@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -41,46 +41,47 @@ namespace Steam_Desktop_Authenticator
             {
                 string path = folderBrowser.SelectedPath;
                 string pathToCopy = null;
+                string StarusOk = null;
 
-                if (Directory.Exists(path + "/maFiles"))
+                if (Directory.Exists(path + "/saFiles"))
                 {
                     // User selected the root install dir
-                    pathToCopy = path + "/maFiles";
-                }
-                else if(File.Exists(path + "/manifest.json"))
-                {
-                    // User selected the maFiles dir
-                    pathToCopy = path;
+                    pathToCopy = path + "/saFiles";
+                    StarusOk = "1";
                 }
                 else
                 {
                     // Could not find either.
-                    MessageBox.Show("This folder does not contain either a manifest.json or an maFiles folder.\nPlease select the location where you had Steam Desktop Authenticator installed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("This folder does not contain saFiles folder.\nPlease select the location where you had Steam Desktop Authenticator installed.\n\nIf you are using old .maFile's you will need to import them using the File Impor menu", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                // Copy the contents of the config dir to the new config dir
-                string currentPath = Manifest.GetExecutableDir();
+                
+                if (StarusOk == "1") {
+                    // Copy the contents of the config dir to the new config dir
+                    string currentPath = Manifest.GetExecutableDir();
 
-                // Create config dir if we don't have it
-                if (!Directory.Exists(currentPath + "/maFiles"))
-                {
-                    Directory.CreateDirectory(currentPath + "/maFiles");
+                    // Create config dir if we don't have it
+                    if (!Directory.Exists(currentPath + "/saFiles"))
+                    {
+                        Directory.CreateDirectory(currentPath + "/saFiles");
+                    }
+
+                    // Copy all files from the old dir to the new one
+                    foreach (string newPath in Directory.GetFiles(pathToCopy, "*.*", SearchOption.AllDirectories))
+                    {
+                        File.Copy(newPath, newPath.Replace(pathToCopy, currentPath + "/saFiles"), true);
+                    }
+
+                    // Set first run in manifest
+                    man = Manifest.GetManifest(true);
+                    man.FirstRun = false;
+                    man.Save();
+
+                    // All done!
+                    MessageBox.Show("All accounts and settings have been imported! Press OK to continue.", "Import accounts", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
-                // Copy all files from the old dir to the new one
-                foreach (string newPath in Directory.GetFiles(pathToCopy, "*.*", SearchOption.AllDirectories))
-                {
-                    File.Copy(newPath, newPath.Replace(pathToCopy, currentPath + "/maFiles"), true);
-                }
-
-                // Set first run in manifest
-                man = Manifest.GetManifest(true);
-                man.FirstRun = false;
-                man.Save();
-
-                // All done!
-                MessageBox.Show("All accounts and settings have been imported! Press OK to continue.", "Import accounts", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 showMainForm();
             }
             
@@ -105,6 +106,11 @@ namespace Steam_Desktop_Authenticator
                 man.Save();
                 showMainForm();
             }
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
