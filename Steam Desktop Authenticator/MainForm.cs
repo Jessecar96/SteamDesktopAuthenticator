@@ -24,7 +24,7 @@ namespace Steam_Desktop_Authenticator
         private long currentSteamChunk = 0;
         private string passKey = null;
 
-        private Localizer localizer;
+        private Localizer localizer = new Localizer();
 
         // Forms
         private TradePopupForm popupFrm = new TradePopupForm();
@@ -58,11 +58,11 @@ namespace Steam_Desktop_Authenticator
                     Application.Exit();
                 }
 
-                btnManageEncryption.Text = "Manage Encryption";
+                btnManageEncryption.Text = Locale.GetValue("gui.button.manencrypt");
             }
             else
             {
-                btnManageEncryption.Text = "Setup Encryption";
+                btnManageEncryption.Text = Locale.GetValue("gui.button.manencrypt");
             }
 
             btnManageEncryption.Enabled = manifest.Entries.Count > 0;
@@ -71,13 +71,6 @@ namespace Steam_Desktop_Authenticator
             loadAccountsList();
 
             checkForUpdates();
-
-            LangFile lang = new LangFile();
-            lang.Load(@".\sdalocales\" + manifest.LanguageString + ".slf");
-
-            localizer = new Localizer();
-            
-            localizer.LocalizeControl(this, lang);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -119,7 +112,7 @@ namespace Steam_Desktop_Authenticator
             }
             catch (Exception)
             {
-                DialogResult res = MessageBox.Show("You are missing a dependency required to view your trade confirmations.\nWould you like to install it now?", "Trade confirmations failed to open", MessageBoxButtons.YesNo);
+                DialogResult res = MessageBox.Show(Locale.GetValue("msg.tradedependencymiss"),"Trade confirmations failed to open", MessageBoxButtons.YesNo);
                 if (res == DialogResult.Yes)
                 {
                     new InstallRedistribForm(true).ShowDialog();
@@ -131,7 +124,7 @@ namespace Steam_Desktop_Authenticator
         {
             if (manifest.Encrypted)
             {
-                InputForm currentPassKeyForm = new InputForm("Enter current passkey", true);
+                InputForm currentPassKeyForm = new InputForm(Locale.GetValue("msg.input.currpasskey"), true);
                 currentPassKeyForm.ShowDialog();
 
                 if (currentPassKeyForm.Canceled)
@@ -583,6 +576,11 @@ namespace Steam_Desktop_Authenticator
         {
             timerTradesPopup.Enabled = manifest.PeriodicChecking;
             timerTradesPopup.Interval = manifest.PeriodicCheckingInterval * 1000;
+
+            LangFile lang = new LangFile();
+            lang.Load(@".\sdalocales\" + manifest.LanguageString + ".slf");
+
+            localizer.LocalizeControl(this, lang);
         }
 
         // Logic for version checking

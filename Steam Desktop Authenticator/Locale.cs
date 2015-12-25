@@ -10,5 +10,9 @@ namespace Steam_Desktop_Authenticator
     class Locale
     {
         public static LangFile SelectedLocale;
+        public static string GetValue(string key)
+        {
+            return SelectedLocale.GetValue(key);
+        }
     }
 }

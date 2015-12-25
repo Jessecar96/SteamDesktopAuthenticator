@@ -1,4 +1,4 @@
-﻿Sparrow Language File v0.0.1
+Sparrow Language File v0.0.1
 gui.button.setupnew=Setup New Account
 gui.button.manencrypt=Manage Encryption
 action.copy=Copy
@@ -10,3 +10,12 @@ menu.frommafile=From maFile
 menu.fromdevice=From Android Device
 menu.settings=Settings
 menu.quit=Quit
+gui.menu.logagain=Login again
+gui.menu.refsession=Force session refresh
+gui.menu.remfromman=Remove from manifest
+gui.menu.deactauth=Deactivate authenticator
+gui.frame.logtoken=Login Token
+gui.button.setupencrypt=Setup Encryption
+msg.tradedependencymiss=You are missing a dependency required to view your trade confirmations.\nWould you like to install it now?
+msg.input.currpasskey=Enter current passkey
+msg.input.newpasskey1=Enter new passkey, or leave blank to remove encryption.

@@ -311,6 +311,7 @@
             // 
             this.menuLoginAgain.Name = "menuLoginAgain";
             this.menuLoginAgain.Size = new System.Drawing.Size(205, 22);
+            this.menuLoginAgain.Tag = "!gui.menu.logagain";
             this.menuLoginAgain.Text = "Login again";
             this.menuLoginAgain.Click += new System.EventHandler(this.menuLoginAgain_Click);
             // 
@@ -318,6 +319,7 @@
             // 
             this.menuRefreshSession.Name = "menuRefreshSession";
             this.menuRefreshSession.Size = new System.Drawing.Size(205, 22);
+            this.menuRefreshSession.Tag = "!gui.menu.refsession";
             this.menuRefreshSession.Text = "Force session refresh";
             this.menuRefreshSession.Click += new System.EventHandler(this.menuRefreshSession_Click);
             // 
@@ -330,6 +332,7 @@
             // 
             this.menuRemoveAccountFromManifest.Name = "menuRemoveAccountFromManifest";
             this.menuRemoveAccountFromManifest.Size = new System.Drawing.Size(205, 22);
+            this.menuRemoveAccountFromManifest.Tag = "!gui.menu.remfromman";
             this.menuRemoveAccountFromManifest.Text = "Remove from manifest";
             this.menuRemoveAccountFromManifest.Click += new System.EventHandler(this.menuRemoveAccountFromManifest_Click);
             // 
@@ -337,6 +340,7 @@
             // 
             this.menuDeactivateAuthenticator.Name = "menuDeactivateAuthenticator";
             this.menuDeactivateAuthenticator.Size = new System.Drawing.Size(205, 22);
+            this.menuDeactivateAuthenticator.Tag = "!gui.menu.deactauth";
             this.menuDeactivateAuthenticator.Text = "Deactivate Authenticator";
             this.menuDeactivateAuthenticator.Click += new System.EventHandler(this.menuDeactivateAuthenticator_Click);
             // 

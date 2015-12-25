@@ -18,7 +18,17 @@ namespace Steam_Desktop_Authenticator
         public InputForm(string label, bool password = false)
         {
             InitializeComponent();
-            this.labelText.Text = label;
+            string lbl;
+            if (label.StartsWith("@"))
+            {
+                lbl = label.Substring(1, label.Length - 1);
+            }
+            else
+            {
+                lbl = label;
+            }
+
+            this.labelText.Text = lbl;
 
             if (password)
             {
