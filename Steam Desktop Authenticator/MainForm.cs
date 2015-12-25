@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Net;
 using Newtonsoft.Json;
+using Sparrow;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -22,6 +23,8 @@ namespace Steam_Desktop_Authenticator
         private long steamTime = 0;
         private long currentSteamChunk = 0;
         private string passKey = null;
+
+        private Localizer localizer;
 
         // Forms
         private TradePopupForm popupFrm = new TradePopupForm();
@@ -68,6 +71,13 @@ namespace Steam_Desktop_Authenticator
             loadAccountsList();
 
             checkForUpdates();
+
+            LangFile lang = new LangFile();
+            lang.Load(@".\sdalocales\" + manifest.LanguageString + ".slf");
+
+            localizer = new Localizer();
+            
+            localizer.LocalizeControl(this, lang);
         }
 
         private void MainForm_Load(object sender, EventArgs e)

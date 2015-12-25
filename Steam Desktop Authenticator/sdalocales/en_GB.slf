@@ -1,0 +1,12 @@
+﻿Sparrow Language File v0.0.1
+gui.button.setupnew=Setup New Account
+gui.button.manencrypt=Manage Encryption
+action.copy=Copy
+gui.button.viewconfirms=View Trade Confirmations
+menu.selaccount=Selected Account
+menu.file=File
+menu.importacc=Import Account
+menu.frommafile=From maFile
+menu.fromdevice=From Android Device
+menu.settings=Settings
+menu.quit=Quit

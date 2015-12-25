@@ -82,6 +82,7 @@
             this.btnSteamLogin.Name = "btnSteamLogin";
             this.btnSteamLogin.Size = new System.Drawing.Size(155, 31);
             this.btnSteamLogin.TabIndex = 1;
+            this.btnSteamLogin.Tag = "!gui.button.setupnew";
             this.btnSteamLogin.Text = "Setup New Account";
             this.btnSteamLogin.UseVisualStyleBackColor = true;
             this.btnSteamLogin.Click += new System.EventHandler(this.btnSteamLogin_Click);
@@ -107,6 +108,7 @@
             this.btnCopy.Name = "btnCopy";
             this.btnCopy.Size = new System.Drawing.Size(54, 35);
             this.btnCopy.TabIndex = 2;
+            this.btnCopy.Tag = "!action.copy";
             this.btnCopy.Text = "Copy";
             this.btnCopy.UseVisualStyleBackColor = true;
             this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
@@ -162,6 +164,7 @@
             this.btnTradeConfirmations.Name = "btnTradeConfirmations";
             this.btnTradeConfirmations.Size = new System.Drawing.Size(315, 31);
             this.btnTradeConfirmations.TabIndex = 4;
+            this.btnTradeConfirmations.Tag = "!gui.button.viewconfirms";
             this.btnTradeConfirmations.Text = "View Trade Confirmations";
             this.btnTradeConfirmations.UseVisualStyleBackColor = true;
             this.btnTradeConfirmations.Click += new System.EventHandler(this.btnTradeConfirmations_Click);
@@ -173,6 +176,7 @@
             this.btnManageEncryption.Name = "btnManageEncryption";
             this.btnManageEncryption.Size = new System.Drawing.Size(166, 31);
             this.btnManageEncryption.TabIndex = 6;
+            this.btnManageEncryption.Tag = "!gui.button.manencrypt";
             this.btnManageEncryption.Text = "Manage Encryption";
             this.btnManageEncryption.UseVisualStyleBackColor = true;
             this.btnManageEncryption.Click += new System.EventHandler(this.btnManageEncryption_Click);
@@ -240,6 +244,7 @@
             this.menuQuit});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Tag = "!menu.file";
             this.fileToolStripMenuItem.Text = "File";
             // 
             // importAccountToolStripMenuItem
@@ -249,12 +254,14 @@
             this.menuImportAndroid});
             this.importAccountToolStripMenuItem.Name = "importAccountToolStripMenuItem";
             this.importAccountToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.importAccountToolStripMenuItem.Tag = "!menu.importacc";
             this.importAccountToolStripMenuItem.Text = "Import Account";
             // 
             // menuImportMaFile
             // 
             this.menuImportMaFile.Name = "menuImportMaFile";
             this.menuImportMaFile.Size = new System.Drawing.Size(186, 22);
+            this.menuImportMaFile.Tag = "!menu.frommafile";
             this.menuImportMaFile.Text = "From maFile";
             this.menuImportMaFile.Click += new System.EventHandler(this.menuImportMaFile_Click);
             // 
@@ -262,6 +269,7 @@
             // 
             this.menuImportAndroid.Name = "menuImportAndroid";
             this.menuImportAndroid.Size = new System.Drawing.Size(186, 22);
+            this.menuImportAndroid.Tag = "!menu.fromdevice";
             this.menuImportAndroid.Text = "From Android Device";
             this.menuImportAndroid.Click += new System.EventHandler(this.menuImportAndroid_Click);
             // 
@@ -274,6 +282,7 @@
             // 
             this.menuSettings.Name = "menuSettings";
             this.menuSettings.Size = new System.Drawing.Size(158, 22);
+            this.menuSettings.Tag = "!menu.settings";
             this.menuSettings.Text = "Settings";
             this.menuSettings.Click += new System.EventHandler(this.menuSettings_Click);
             // 
@@ -281,6 +290,7 @@
             // 
             this.menuQuit.Name = "menuQuit";
             this.menuQuit.Size = new System.Drawing.Size(158, 22);
+            this.menuQuit.Tag = "!menu.quit";
             this.menuQuit.Text = "Quit";
             this.menuQuit.Click += new System.EventHandler(this.menuQuit_Click);
             // 
@@ -294,6 +304,7 @@
             this.menuDeactivateAuthenticator});
             this.accountToolStripMenuItem.Name = "accountToolStripMenuItem";
             this.accountToolStripMenuItem.Size = new System.Drawing.Size(111, 20);
+            this.accountToolStripMenuItem.Tag = "!menu.selaccount";
             this.accountToolStripMenuItem.Text = "Selected Account";
             // 
             // menuLoginAgain

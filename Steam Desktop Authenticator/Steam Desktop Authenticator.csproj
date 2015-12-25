@@ -165,6 +165,7 @@
     <Compile Include="ListInputForm.Designer.cs">
       <DependentUpon>ListInputForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Locale.cs" />
     <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -261,11 +262,18 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="sdalocales\en_GB.slf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\lib\sparrow\Sparrow\Sparrow\Sparrow.csproj">
+      <Project>{8bcd3887-2d7b-4984-be2c-83dad217e8e6}</Project>
+      <Name>Sparrow</Name>
+    </ProjectReference>
     <ProjectReference Include="..\lib\SteamAuth\SteamAuth\SteamAuth.csproj">
       <Project>{5ad0934e-f6c4-4ae5-83af-c788313b2a87}</Project>
       <Name>SteamAuth</Name>
@@ -286,6 +294,7 @@
   <ItemGroup>
     <Content Include="icon.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\cef.redist.x64.3.2454.1344\build\cef.redist.x64.targets" Condition="Exists('packages\cef.redist.x64.3.2454.1344\build\cef.redist.x64.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -30,6 +30,9 @@ namespace Steam_Desktop_Authenticator
         [JsonProperty("periodic_checking_checkall")]
         public bool CheckAllAccounts { get; set; } = false;
 
+        [JsonProperty("language")]
+        public string LanguageString { get; set; } = "en_GB";
+
         private static Manifest _manifest { get; set; }
 
         public static string GetExecutableDir()
