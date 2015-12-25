@@ -42,6 +42,7 @@ namespace Steam_Desktop_Authenticator
         {
             this.labelVersion.Text = String.Format("v{0}", Application.ProductVersion);
             this.manifest = Manifest.GetManifest();
+            loadLanguage();
 
             // Make sure we don't show that welcome dialog again
             this.manifest.FirstRun = false;
@@ -124,7 +125,7 @@ namespace Steam_Desktop_Authenticator
         {
             if (manifest.Encrypted)
             {
-                InputForm currentPassKeyForm = new InputForm(Locale.GetValue("msg.input.currpasskey"), true);
+                InputForm currentPassKeyForm = new InputForm(@"msg.input.currpasskey", true);
                 currentPassKeyForm.ShowDialog();
 
                 if (currentPassKeyForm.Canceled)
@@ -134,7 +135,7 @@ namespace Steam_Desktop_Authenticator
 
                 string curPassKey = currentPassKeyForm.txtBox.Text;
 
-                InputForm changePassKeyForm = new InputForm("Enter new passkey, or leave blank to remove encryption.");
+                InputForm changePassKeyForm = new InputForm("@msg.input.newpasskey1");
                 changePassKeyForm.ShowDialog();
 
                 if (changePassKeyForm.Canceled && !string.IsNullOrEmpty(changePassKeyForm.txtBox.Text))
@@ -142,7 +143,7 @@ namespace Steam_Desktop_Authenticator
                     return;
                 }
 
-                InputForm changePassKeyForm2 = new InputForm("Confirm new passkey, or leave blank to remove encryption.");
+                InputForm changePassKeyForm2 = new InputForm("@msg.input.newpasskey2");
                 changePassKeyForm2.ShowDialog();
 
                 if (changePassKeyForm2.Canceled && !string.IsNullOrEmpty(changePassKeyForm.txtBox.Text))
@@ -155,7 +156,7 @@ namespace Steam_Desktop_Authenticator
 
                 if (newPassKey != confirmPassKey)
                 {
-                    MessageBox.Show("Passkeys do not match.");
+                    MessageBox.Show(Locale.GetValue("msg.nomatchpasskey"));
                     return;
                 }
 
@@ -164,10 +165,10 @@ namespace Steam_Desktop_Authenticator
                     newPassKey = null;
                 }
 
-                string action = newPassKey == null ? "remove" : "change";
+                string action = Locale.GetValue("misc." + newPassKey == null ? "remove" : "change");
                 if (!manifest.ChangeEncryptionKey(curPassKey, newPassKey))
                 {
-                    MessageBox.Show("Unable to " + action + " passkey.");
+                    MessageBox.Show(Locale.GetValue("misc.unableto") + action + " " + Locale.GetValue("misc.passkey"));
                 }
                 else
                 {
@@ -211,15 +212,15 @@ namespace Steam_Desktop_Authenticator
         {
             if (manifest.Encrypted)
             {
-                MessageBox.Show("You cannot remove accounts from the manifest file while it is encrypted.", "Remove from manifest", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Locale.GetValue("msg.cantremoveencrypted"), Locale.GetValue("gui.menu.remfromman"), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
-                DialogResult res = MessageBox.Show("This will remove the selected account from the manifest file.\nUse this to move a maFile to another computer.\nThis will NOT delete your maFile.", "Remove from manifest", MessageBoxButtons.OKCancel);
+                DialogResult res = MessageBox.Show(Locale.GetValue("msg.confirm.removefromman"), Locale.GetValue("gui.menu.remfromman"), MessageBoxButtons.OKCancel);
                 if (res == DialogResult.OK)
                 {
                     manifest.RemoveAccount(currentAccount, false);
-                    MessageBox.Show("Account removed from manifest.\nYou can now move its maFile to another computer and import it using the File menu.", "Remove from manifest");
+                    MessageBox.Show(Locale.GetValue("msg.done.remfromman"), Locale.GetValue("gui.menu.remfromman"));
                     loadAccountsList();
                 }
             }
@@ -250,13 +251,14 @@ namespace Steam_Desktop_Authenticator
             new SettingsForm().ShowDialog();
             manifest = Manifest.GetManifest(true);
             loadSettings();
+            loadLanguage();
         }
 
         private void menuDeactivateAuthenticator_Click(object sender, EventArgs e)
         {
             if (currentAccount == null) return;
 
-            DialogResult res = MessageBox.Show("Would you like to remove Steam Guard completely?\nYes - Remove Steam Guard completely.\nNo - Switch back to Email authentication.", "Remove Steam Guard", MessageBoxButtons.YesNoCancel);
+            DialogResult res = MessageBox.Show(Locale.GetValue("msg.confirm.unlinkaccount"), Locale.GetValue("msg.title.unlinkaccount"), MessageBoxButtons.YesNoCancel);
             int scheme = 0;
             if (res == DialogResult.Yes)
             {
@@ -274,7 +276,7 @@ namespace Steam_Desktop_Authenticator
             if (scheme != 0)
             {
                 string confCode = currentAccount.GenerateSteamGuardCode();
-                InputForm confirmationDialog = new InputForm(String.Format("Remvoing Steam Guard from {0}. Enter this confirmation code: {1}", currentAccount.AccountName, confCode));
+                InputForm confirmationDialog = new InputForm(String.Format(Locale.GetValue("msg.enterconfirmcode"), currentAccount.AccountName, confCode));
                 confirmationDialog.ShowDialog();
 
                 if (confirmationDialog.Canceled)
@@ -285,25 +287,25 @@ namespace Steam_Desktop_Authenticator
                 string enteredCode = confirmationDialog.txtBox.Text.ToUpper();
                 if (enteredCode != confCode)
                 {
-                    MessageBox.Show("Confirmation codes do not match. Steam Guard not removed.");
+                    MessageBox.Show(Locale.GetValue("msg.nomatch.confirmcodes"));
                     return;
                 }
 
                 bool success = currentAccount.DeactivateAuthenticator(scheme);
                 if (success)
                 {
-                    MessageBox.Show(String.Format("Steam Guard {0}. maFile will be deleted after hitting okay. If you need to make a backup, now's the time.", (scheme == 2 ? "removed completely" : "switched to emails")));
+                    MessageBox.Show(String.Format(Locale.GetValue("msg.confirm.sgaccountchange"), Locale.GetValue("msg.confirm.sgaccountaction" + (scheme == 2 ? 1 : 2))));
                     this.manifest.RemoveAccount(currentAccount);
                     this.loadAccountsList();
                 }
                 else
                 {
-                    MessageBox.Show("Steam Guard failed to deactivate.");
+                    MessageBox.Show(Locale.GetValue("msg.fail.deacsgaccount"));
                 }
             }
             else
             {
-                MessageBox.Show("Steam Guard was not removed. No action was taken.");
+                MessageBox.Show(Locale.GetValue("msg.nosgaccountchange"));
             }
         }
 
@@ -312,12 +314,12 @@ namespace Steam_Desktop_Authenticator
             bool status = await currentAccount.RefreshSessionAsync();
             if(status == true)
             {
-                MessageBox.Show("Your session has been refreshed.", "Session refresh", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(Locale.GetValue("msg.sessionrefreshed"), Locale.GetValue("msg.title.sessionrefresh"), MessageBoxButtons.OK, MessageBoxIcon.Information);
                 manifest.SaveAccount(currentAccount, manifest.Encrypted, passKey);
             } 
             else
             {
-                MessageBox.Show("Failed to refresh your session.\nTry again soon.", "Session refresh", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Locale.GetValue("msg.fail.sessionrefreshed"), Locale.GetValue("msg.title.sessionrefresh"), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -394,7 +396,7 @@ namespace Steam_Desktop_Authenticator
 
         private async void timerSteamGuard_Tick(object sender, EventArgs e)
         {
-            lblStatus.Text = "Aligning time with Steam...";
+            lblStatus.Text = Locale.GetValue("status.aligntime");
             steamTime = await TimeAligner.GetSteamTimeAsync();
             lblStatus.Text = "";
 
@@ -418,7 +420,7 @@ namespace Steam_Desktop_Authenticator
 
             try
             {
-                lblStatus.Text = "Checking confirmations...";
+                lblStatus.Text = Locale.GetValue("status.checkingconfirm");
 
                 foreach (var item in accs)
                 {
@@ -499,7 +501,7 @@ namespace Steam_Desktop_Authenticator
             if (account == null) return;
             if (updatedSessions.Contains(account.AccountName)) return;
 
-            lblStatus.Text = "Refreshing session...";
+            lblStatus.Text = Locale.GetValue("status.refreshsession");
             btnTradeConfirmations.Enabled = false;
 
             await currentAccount.RefreshSessionAsync();
@@ -576,10 +578,14 @@ namespace Steam_Desktop_Authenticator
         {
             timerTradesPopup.Enabled = manifest.PeriodicChecking;
             timerTradesPopup.Interval = manifest.PeriodicCheckingInterval * 1000;
+        }
 
+        private void loadLanguage()
+        {
             LangFile lang = new LangFile();
             lang.Load(@".\sdalocales\" + manifest.LanguageString + ".slf");
 
+            Locale.SelectedLocale = lang;
             localizer.LocalizeControl(this, lang);
         }
 
@@ -604,8 +610,8 @@ namespace Steam_Desktop_Authenticator
         {
             if (newVersion > currentVersion)
             {
-                labelUpdate.Text = "Download new version"; // Show the user a new version is available if they press no
-                DialogResult updateDialog = MessageBox.Show(String.Format("A new version is available! Would you like to download it now?\nYou will update from version {0} to {1}", Application.ProductVersion, newVersion.ToString()), "New Version", MessageBoxButtons.YesNo);
+                labelUpdate.Text = Locale.GetValue("gui.update.download"); // Show the user a new version is available if they press no
+                DialogResult updateDialog = MessageBox.Show(String.Format(Locale.GetValue("msg.update.new"), Application.ProductVersion, newVersion.ToString()), Locale.GetValue("update.new"), MessageBoxButtons.YesNo);
                 if (updateDialog == DialogResult.Yes)
                 {
                     Process.Start(updateUrl);
@@ -615,7 +621,7 @@ namespace Steam_Desktop_Authenticator
             {
                 if (!startupUpdateCheck)
                 {
-                    MessageBox.Show(String.Format("You are using the latest version: {0}", Application.ProductVersion));
+                    MessageBox.Show(String.Format(Locale.GetValue("msg.update.latest"), Application.ProductVersion));
                 }
             }
 
@@ -636,7 +642,7 @@ namespace Steam_Desktop_Authenticator
             }
             catch (Exception)
             {
-                MessageBox.Show("Failed to check for updates.");
+                MessageBox.Show(Locale.GetValue("msg.update.failcheck"));
             }
         }
     }
