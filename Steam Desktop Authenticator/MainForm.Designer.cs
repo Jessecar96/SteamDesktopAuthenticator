@@ -99,6 +99,7 @@
             this.groupBox1.Size = new System.Drawing.Size(327, 85);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
+            this.groupBox1.Tag = "!gui.frame.logtoken";
             this.groupBox1.Text = "Login Token";
             // 
             // btnCopy
@@ -191,6 +192,7 @@
             this.groupAccount.Size = new System.Drawing.Size(327, 56);
             this.groupAccount.TabIndex = 7;
             this.groupAccount.TabStop = false;
+            this.groupAccount.Tag = "!gui.frame.account";
             this.groupAccount.Text = "Account";
             // 
             // labelVersion
@@ -219,6 +221,7 @@
             this.labelUpdate.Size = new System.Drawing.Size(122, 14);
             this.labelUpdate.TabIndex = 9;
             this.labelUpdate.TabStop = true;
+            this.labelUpdate.Tag = "!update.check";
             this.labelUpdate.Text = "Check for updates";
             this.labelUpdate.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.labelUpdate.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.labelUpdate_LinkClicked);

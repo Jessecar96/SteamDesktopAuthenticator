@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Forms;
 using SteamAuth;
+using Sparrow;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -11,6 +12,8 @@ namespace Steam_Desktop_Authenticator
         public SteamGuardAccount androidAccount;
         public bool refreshLogin = false;
         public bool loginFromAndroid = false;
+
+        private Localizer localizer = new Localizer();
 
         public LoginForm(bool forceAndroidImport = false)
         {
@@ -58,7 +61,7 @@ namespace Steam_Desktop_Authenticator
                 switch (response)
                 {
                     case LoginResult.NeedEmail:
-                        InputForm emailForm = new InputForm("Enter the code sent to your email:");
+                        InputForm emailForm = new InputForm("@msg.entercodeemail");
                         emailForm.ShowDialog();
                         if (emailForm.Canceled)
                         {
@@ -436,6 +439,7 @@ namespace Steam_Desktop_Authenticator
             {
                 txtUsername.Text = androidAccount.AccountName;
             }
+            localizer.LocalizeControl(this, Locale.SelectedLocale);
         }
     }
 }

@@ -45,6 +45,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(86, 25);
             this.label1.TabIndex = 0;
+            this.label1.Tag = "!gui.login.username";
             this.label1.Text = "Username:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -73,6 +74,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(83, 25);
             this.label2.TabIndex = 2;
+            this.label2.Tag = "!gui.login.password";
             this.label2.Text = "Password:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -83,6 +85,7 @@
             this.btnSteamLogin.Name = "btnSteamLogin";
             this.btnSteamLogin.Size = new System.Drawing.Size(110, 33);
             this.btnSteamLogin.TabIndex = 4;
+            this.btnSteamLogin.Tag = "!gui.login.login";
             this.btnSteamLogin.Text = "Login";
             this.btnSteamLogin.UseVisualStyleBackColor = true;
             this.btnSteamLogin.Click += new System.EventHandler(this.btnSteamLogin_Click);
@@ -94,6 +97,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(306, 46);
             this.label3.TabIndex = 5;
+            this.label3.Tag = "!gui.login.info";
             this.label3.Text = "This will activate Steam Desktop Authenticator on your Steam account. This requir" +
     "es a phone number that can receive SMS.";
             // 
