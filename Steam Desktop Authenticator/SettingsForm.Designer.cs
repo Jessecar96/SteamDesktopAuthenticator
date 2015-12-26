@@ -42,9 +42,9 @@
             this.chkPeriodicChecking.AutoSize = true;
             this.chkPeriodicChecking.Location = new System.Drawing.Point(12, 12);
             this.chkPeriodicChecking.Name = "chkPeriodicChecking";
-            this.chkPeriodicChecking.Size = new System.Drawing.Size(224, 30);
+            this.chkPeriodicChecking.Size = new System.Drawing.Size(233, 30);
             this.chkPeriodicChecking.TabIndex = 0;
-            this.chkPeriodicChecking.Text = "Periodicly check for new confirmations\r\nand show a popup when they arrive";
+            this.chkPeriodicChecking.Text = "Periodically check for new confirmations\r\nand show a popup when they arrive";
             this.chkPeriodicChecking.UseVisualStyleBackColor = true;
             // 
             // btnSave
