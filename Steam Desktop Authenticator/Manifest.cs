@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using SteamAuth;
 using System;
 using System.Collections.Generic;
@@ -7,28 +7,45 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace Steam_Desktop_Authenticator
 {
     public class Manifest
     {
+
+        [JsonProperty("use_gui")]
+        public string UseGUI { get; set; } = "1";
+
         [JsonProperty("encrypted")]
         public bool Encrypted { get; set; }
 
         [JsonProperty("first_run")]
         public bool FirstRun { get; set; } = true;
 
+        [JsonProperty("minimise_to_system_tray")]
+        public string MinimiseToSystemTray { get; set; } = "close";
+
+        [JsonProperty("show_confirmation_list_btn")]
+        public bool ShowConfirmationListButton { get; set; } = false;
+
+        [JsonProperty("auto_check_for_updates")]
+        public bool AutoCheckForUpdates { get; set; } = true;
+
         [JsonProperty("entries")]
         public List<ManifestEntry> Entries { get; set; }
 
-        [JsonProperty("periodic_checking")]
-        public bool PeriodicChecking { get; set; } = false;
+        [JsonProperty("popup_new_confirmation_periodic_checking")]
+        public bool PopupNewConfPeriodicChecking { get; set; } = false;
 
-        [JsonProperty("periodic_checking_interval")]
-        public int PeriodicCheckingInterval { get; set; } = 5;
+        [JsonProperty("popup_new_confirmation_periodic_checking_interval")]
+        public int PopupNewConfPerCheckingInterval { get; set; } = 5;
 
-        [JsonProperty("periodic_checking_checkall")]
-        public bool CheckAllAccounts { get; set; } = false;
+        [JsonProperty("popup_new_confirmation_periodic_checkall")]
+        public bool PopupNewConfPerCheckAllAccounts { get; set; } = false;
+
+        [JsonProperty("popup_new_confirmation_border")]
+        public string PopupNewConfirmationBorder { get; set; } = "1";
 
         private static Manifest _manifest { get; set; }
 
@@ -84,13 +101,15 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
+
+
         private static Manifest _generateNewManifest(bool scanDir = false)
         {
             // No directory means no manifest file anyways.
             Manifest newManifest = new Manifest();
             newManifest.Encrypted = false;
-            newManifest.PeriodicCheckingInterval = 5;
-            newManifest.PeriodicChecking = false;
+            newManifest.PopupNewConfPerCheckingInterval = 5;
+            newManifest.PopupNewConfPeriodicChecking = false;
             newManifest.Entries = new List<ManifestEntry>();
             newManifest.FirstRun = true;
 
@@ -293,13 +312,14 @@ namespace Steam_Desktop_Authenticator
             return accounts != null && accounts.Length == 1;
         }
 
-        public bool RemoveAccount(SteamGuardAccount account, bool deleteMaFile = true)
+        public bool RemoveAccount(SteamGuardAccount account, bool deletemaFile = true)
         {
             ManifestEntry entry = (from e in this.Entries where e.SteamID == account.Session.SteamID select e).FirstOrDefault();
             if (entry == null) return true; // If something never existed, did you do what they asked?
 
             string maDir = Manifest.GetExecutableDir() + "/maFiles/";
-            string filename = maDir + entry.Filename;
+            string filenameWithPath = maDir + entry.Filename;
+
             this.Entries.Remove(entry);
 
             if (this.Entries.Count == 0)
@@ -307,11 +327,11 @@ namespace Steam_Desktop_Authenticator
                 this.Encrypted = false;
             }
 
-            if (this.Save() && deleteMaFile)
+            if (this.Save() && deletemaFile)
             {
                 try
                 {
-                    File.Delete(filename);
+                    File.Delete(filenameWithPath);
                     return true;
                 }
                 catch (Exception)
@@ -325,12 +345,22 @@ namespace Steam_Desktop_Authenticator
 
         public bool SaveAccount(SteamGuardAccount account, bool encrypt, string passKey = null)
         {
+
             if (encrypt && String.IsNullOrEmpty(passKey)) return false;
             if (!encrypt && this.Encrypted) return false;
 
             string salt = null;
             string iV = null;
-            string jsonAccount = JsonConvert.SerializeObject(account);
+            string jsonAccount = "";
+
+            try
+            {
+                jsonAccount = JsonConvert.SerializeObject(account);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
 
             if (encrypt)
             {
