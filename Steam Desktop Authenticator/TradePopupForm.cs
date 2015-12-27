@@ -169,8 +169,7 @@ namespace Steam_Desktop_Authenticator
             {
 
                 string Trade_with_user = confirms[CurrentConfirmationNo].ConfirmationDescription.Replace("Trade with ", "");
-                lblDesc.Text = Trade_with_user;
-                lblDesc.Text = "Angelus ★ buying cards 0.11ref";
+                lblDesc.Text = Trade_with_user;;
             }
             if (TotalConfirmations == 1)
             {
