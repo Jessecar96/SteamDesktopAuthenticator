@@ -729,7 +729,7 @@ namespace Steam_Desktop_Authenticator
             else
             {
                 // 
-                // MainForm_Angelus
+                // MainFormGuiCompact
                 // 
                 this.ClientSize = new System.Drawing.Size(309, 394);
                 this.MinimumSize = new System.Drawing.Size(325, 432);
