@@ -66,7 +66,11 @@ namespace Steam_Desktop_Authenticator
             if (manifest.FirstRun)
             {
                 // Install VC++ Redist and wait
-                new InstallRedistribForm().ShowDialog();
+                DialogResult res = MessageBox.Show("Install Visual C++ Redistributable 2013\nvcredist_x86.exe", "SDA Setup", MessageBoxButtons.YesNo);
+                if (res == DialogResult.Yes)
+                {
+                    new InstallRedistribForm().ShowDialog();
+                }
 
                 // Already has accounts, just run
                 if (manifest.Entries.Count > 0)
