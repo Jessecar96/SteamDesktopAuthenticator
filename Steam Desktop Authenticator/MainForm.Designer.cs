@@ -48,6 +48,7 @@
             this.importAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuImportMaFile = new System.Windows.Forms.ToolStripMenuItem();
             this.menuImportAndroid = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuImportWinAuth = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.menuQuit = new System.Windows.Forms.ToolStripMenuItem();
@@ -78,7 +79,7 @@
             // 
             // btnSteamLogin
             // 
-            this.btnSteamLogin.Location = new System.Drawing.Point(12, 27);
+            this.btnSteamLogin.Location = new System.Drawing.Point(11, 27);
             this.btnSteamLogin.Name = "btnSteamLogin";
             this.btnSteamLogin.Size = new System.Drawing.Size(155, 31);
             this.btnSteamLogin.TabIndex = 1;
@@ -93,7 +94,7 @@
             this.groupBox1.Controls.Add(this.btnCopy);
             this.groupBox1.Controls.Add(this.pbTimeout);
             this.groupBox1.Controls.Add(this.txtLoginToken);
-            this.groupBox1.Location = new System.Drawing.Point(12, 64);
+            this.groupBox1.Location = new System.Drawing.Point(11, 64);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(327, 85);
             this.groupBox1.TabIndex = 2;
@@ -131,7 +132,7 @@
             this.txtLoginToken.Location = new System.Drawing.Point(6, 19);
             this.txtLoginToken.Name = "txtLoginToken";
             this.txtLoginToken.ReadOnly = true;
-            this.txtLoginToken.Size = new System.Drawing.Size(255, 35);
+            this.txtLoginToken.Size = new System.Drawing.Size(255, 42);
             this.txtLoginToken.TabIndex = 0;
             this.txtLoginToken.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -141,9 +142,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listAccounts.FormattingEnabled = true;
-            this.listAccounts.Location = new System.Drawing.Point(12, 217);
+            this.listAccounts.ItemHeight = 19;
+            this.listAccounts.Location = new System.Drawing.Point(11, 217);
             this.listAccounts.Name = "listAccounts";
-            this.listAccounts.Size = new System.Drawing.Size(327, 160);
+            this.listAccounts.Size = new System.Drawing.Size(327, 156);
             this.listAccounts.TabIndex = 3;
             this.listAccounts.SelectedValueChanged += new System.EventHandler(this.listAccounts_SelectedValueChanged);
             this.listAccounts.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listAccounts_KeyDown);
@@ -182,7 +184,7 @@
             this.groupAccount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupAccount.Controls.Add(this.btnTradeConfirmations);
-            this.groupAccount.Location = new System.Drawing.Point(12, 155);
+            this.groupAccount.Location = new System.Drawing.Point(11, 155);
             this.groupAccount.Name = "groupAccount";
             this.groupAccount.Size = new System.Drawing.Size(327, 56);
             this.groupAccount.TabIndex = 7;
@@ -196,7 +198,7 @@
             this.labelVersion.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelVersion.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.labelVersion.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.labelVersion.Location = new System.Drawing.Point(277, 413);
+            this.labelVersion.Location = new System.Drawing.Point(277, 414);
             this.labelVersion.Name = "labelVersion";
             this.labelVersion.Size = new System.Drawing.Size(70, 15);
             this.labelVersion.TabIndex = 8;
@@ -210,9 +212,9 @@
             this.labelUpdate.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelUpdate.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.labelUpdate.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.labelUpdate.Location = new System.Drawing.Point(5, 413);
+            this.labelUpdate.Location = new System.Drawing.Point(5, 414);
             this.labelUpdate.Name = "labelUpdate";
-            this.labelUpdate.Size = new System.Drawing.Size(122, 14);
+            this.labelUpdate.Size = new System.Drawing.Size(122, 15);
             this.labelUpdate.TabIndex = 9;
             this.labelUpdate.TabStop = true;
             this.labelUpdate.Text = "Check for updates";
@@ -222,12 +224,13 @@
             // menuStrip
             // 
             this.menuStrip.BackColor = System.Drawing.SystemColors.Control;
+            this.menuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.accountToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(351, 24);
+            this.menuStrip.Size = new System.Drawing.Size(351, 28);
             this.menuStrip.TabIndex = 10;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -239,48 +242,56 @@
             this.menuSettings,
             this.menuQuit});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(44, 24);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // importAccountToolStripMenuItem
             // 
             this.importAccountToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuImportMaFile,
-            this.menuImportAndroid});
+            this.menuImportAndroid,
+            this.menuImportWinAuth});
             this.importAccountToolStripMenuItem.Name = "importAccountToolStripMenuItem";
-            this.importAccountToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.importAccountToolStripMenuItem.Size = new System.Drawing.Size(187, 26);
             this.importAccountToolStripMenuItem.Text = "Import Account";
             // 
             // menuImportMaFile
             // 
             this.menuImportMaFile.Name = "menuImportMaFile";
-            this.menuImportMaFile.Size = new System.Drawing.Size(186, 22);
+            this.menuImportMaFile.Size = new System.Drawing.Size(225, 26);
             this.menuImportMaFile.Text = "From maFile";
             this.menuImportMaFile.Click += new System.EventHandler(this.menuImportMaFile_Click);
             // 
             // menuImportAndroid
             // 
             this.menuImportAndroid.Name = "menuImportAndroid";
-            this.menuImportAndroid.Size = new System.Drawing.Size(186, 22);
+            this.menuImportAndroid.Size = new System.Drawing.Size(225, 26);
             this.menuImportAndroid.Text = "From Android Device";
             this.menuImportAndroid.Click += new System.EventHandler(this.menuImportAndroid_Click);
+            // 
+            // menuImportWinAuth
+            // 
+            this.menuImportWinAuth.Name = "menuImportWinAuth";
+            this.menuImportWinAuth.Size = new System.Drawing.Size(225, 26);
+            this.menuImportWinAuth.Text = "From WinAuth";
+            this.menuImportWinAuth.Click += new System.EventHandler(this.menuImportWinAuth_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(155, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(184, 6);
             // 
             // menuSettings
             // 
             this.menuSettings.Name = "menuSettings";
-            this.menuSettings.Size = new System.Drawing.Size(158, 22);
+            this.menuSettings.Size = new System.Drawing.Size(187, 26);
             this.menuSettings.Text = "Settings";
             this.menuSettings.Click += new System.EventHandler(this.menuSettings_Click);
             // 
             // menuQuit
             // 
             this.menuQuit.Name = "menuQuit";
-            this.menuQuit.Size = new System.Drawing.Size(158, 22);
+            this.menuQuit.Size = new System.Drawing.Size(187, 26);
             this.menuQuit.Text = "Quit";
             this.menuQuit.Click += new System.EventHandler(this.menuQuit_Click);
             // 
@@ -293,39 +304,39 @@
             this.menuRemoveAccountFromManifest,
             this.menuDeactivateAuthenticator});
             this.accountToolStripMenuItem.Name = "accountToolStripMenuItem";
-            this.accountToolStripMenuItem.Size = new System.Drawing.Size(111, 20);
+            this.accountToolStripMenuItem.Size = new System.Drawing.Size(136, 24);
             this.accountToolStripMenuItem.Text = "Selected Account";
             // 
             // menuLoginAgain
             // 
             this.menuLoginAgain.Name = "menuLoginAgain";
-            this.menuLoginAgain.Size = new System.Drawing.Size(205, 22);
+            this.menuLoginAgain.Size = new System.Drawing.Size(249, 26);
             this.menuLoginAgain.Text = "Login again";
             this.menuLoginAgain.Click += new System.EventHandler(this.menuLoginAgain_Click);
             // 
             // menuRefreshSession
             // 
             this.menuRefreshSession.Name = "menuRefreshSession";
-            this.menuRefreshSession.Size = new System.Drawing.Size(205, 22);
+            this.menuRefreshSession.Size = new System.Drawing.Size(249, 26);
             this.menuRefreshSession.Text = "Force session refresh";
             this.menuRefreshSession.Click += new System.EventHandler(this.menuRefreshSession_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(202, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(246, 6);
             // 
             // menuRemoveAccountFromManifest
             // 
             this.menuRemoveAccountFromManifest.Name = "menuRemoveAccountFromManifest";
-            this.menuRemoveAccountFromManifest.Size = new System.Drawing.Size(205, 22);
+            this.menuRemoveAccountFromManifest.Size = new System.Drawing.Size(249, 26);
             this.menuRemoveAccountFromManifest.Text = "Remove from manifest";
             this.menuRemoveAccountFromManifest.Click += new System.EventHandler(this.menuRemoveAccountFromManifest_Click);
             // 
             // menuDeactivateAuthenticator
             // 
             this.menuDeactivateAuthenticator.Name = "menuDeactivateAuthenticator";
-            this.menuDeactivateAuthenticator.Size = new System.Drawing.Size(205, 22);
+            this.menuDeactivateAuthenticator.Size = new System.Drawing.Size(249, 26);
             this.menuDeactivateAuthenticator.Text = "Deactivate Authenticator";
             this.menuDeactivateAuthenticator.Click += new System.EventHandler(this.menuDeactivateAuthenticator_Click);
             // 
@@ -338,6 +349,7 @@
             // 
             // menuStripTray
             // 
+            this.menuStripTray.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStripTray.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.trayRestore,
             this.toolStripSeparator2,
@@ -347,19 +359,19 @@
             this.toolStripSeparator3,
             this.trayQuit});
             this.menuStripTray.Name = "contextMenuStripTray";
-            this.menuStripTray.Size = new System.Drawing.Size(216, 131);
+            this.menuStripTray.Size = new System.Drawing.Size(264, 152);
             // 
             // trayRestore
             // 
             this.trayRestore.Name = "trayRestore";
-            this.trayRestore.Size = new System.Drawing.Size(215, 22);
+            this.trayRestore.Size = new System.Drawing.Size(263, 26);
             this.trayRestore.Text = "Restore";
             this.trayRestore.Click += new System.EventHandler(this.trayRestore_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(212, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(260, 6);
             // 
             // trayAccountList
             // 
@@ -368,32 +380,32 @@
             "test1",
             "test2"});
             this.trayAccountList.Name = "trayAccountList";
-            this.trayAccountList.Size = new System.Drawing.Size(121, 23);
+            this.trayAccountList.Size = new System.Drawing.Size(121, 28);
             this.trayAccountList.SelectedIndexChanged += new System.EventHandler(this.trayAccountList_SelectedIndexChanged);
             // 
             // trayTradeConfirmations
             // 
             this.trayTradeConfirmations.Name = "trayTradeConfirmations";
-            this.trayTradeConfirmations.Size = new System.Drawing.Size(215, 22);
+            this.trayTradeConfirmations.Size = new System.Drawing.Size(263, 26);
             this.trayTradeConfirmations.Text = "Trade Confirmations";
             this.trayTradeConfirmations.Click += new System.EventHandler(this.trayTradeConfirmations_Click);
             // 
             // trayCopySteamGuard
             // 
             this.trayCopySteamGuard.Name = "trayCopySteamGuard";
-            this.trayCopySteamGuard.Size = new System.Drawing.Size(215, 22);
+            this.trayCopySteamGuard.Size = new System.Drawing.Size(263, 26);
             this.trayCopySteamGuard.Text = "Copy SG code to clipboard";
             this.trayCopySteamGuard.Click += new System.EventHandler(this.trayCopySteamGuard_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(212, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(260, 6);
             // 
             // trayQuit
             // 
             this.trayQuit.Name = "trayQuit";
-            this.trayQuit.Size = new System.Drawing.Size(215, 22);
+            this.trayQuit.Size = new System.Drawing.Size(263, 26);
             this.trayQuit.Text = "Quit";
             this.trayQuit.Click += new System.EventHandler(this.trayQuit_Click);
             // 
@@ -408,7 +420,7 @@
             this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblStatus.BackColor = System.Drawing.SystemColors.Control;
             this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatus.Location = new System.Drawing.Point(183, 5);
+            this.lblStatus.Location = new System.Drawing.Point(183, 4);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(163, 18);
             this.lblStatus.TabIndex = 11;
@@ -420,7 +432,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtAccSearch.Location = new System.Drawing.Point(49, 383);
             this.txtAccSearch.Name = "txtAccSearch";
-            this.txtAccSearch.Size = new System.Drawing.Size(290, 22);
+            this.txtAccSearch.Size = new System.Drawing.Size(290, 26);
             this.txtAccSearch.TabIndex = 12;
             this.txtAccSearch.TextChanged += new System.EventHandler(this.txtAccSearch_TextChanged);
             // 
@@ -430,14 +442,14 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(9, 388);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(36, 13);
+            this.label1.Size = new System.Drawing.Size(42, 19);
             this.label1.TabIndex = 13;
             this.label1.Text = "Filter:";
             // 
             // MainForm
             // 
             this.AcceptButton = this.btnSteamLogin;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(351, 433);
             this.Controls.Add(this.label1);
@@ -513,6 +525,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuRefreshSession;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.Button btnCopy;
+        private System.Windows.Forms.ToolStripMenuItem menuImportWinAuth;
     }
 }
 

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.Diagnostics;
+using System.IO;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -23,13 +24,38 @@ namespace Steam_Desktop_Authenticator
 
             string path = Manifest.GetExecutableDir() + "/vcredist_x86.exe";
 
-            WebClient client = new WebClient();
-            client.DownloadFileAsync(new Uri("https://download.microsoft.com/download/2/E/6/2E61CFA4-993B-4DD4-91DA-3737CD5CD6E3/vcredist_x86.exe"), path);
-            client.DownloadProgressChanged += Client_DownloadProgressChanged;
-            client.DownloadFileCompleted += Client_DownloadFileCompleted;
+            // Not downloading the file again if it already exists
+            if (File.Exists(path))
+            {
+                using (var md5 = System.Security.Cryptography.MD5.Create())
+                {
+                    using (var stream = File.OpenRead(path))
+                    {
+                        var md5String = BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLower();
+                        // Hardcoding the md5 since file doesn't change
+                        if (md5String == "0fc525b6b7b96a87523daa7a0013c69d")
+                        {
+                            progressBar1.Value = progressBar1.Maximum;
+                            Install();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                WebClient client = new WebClient();
+                client.DownloadFileAsync(new Uri("https://download.microsoft.com/download/2/E/6/2E61CFA4-993B-4DD4-91DA-3737CD5CD6E3/vcredist_x86.exe"), path);
+                client.DownloadProgressChanged += Client_DownloadProgressChanged;
+                client.DownloadFileCompleted += Client_DownloadFileCompleted;
+            }
         }
 
         private void Client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            Install();
+        }
+
+        private void Install()
         {
             progressBar1.Style = ProgressBarStyle.Marquee;
             try
@@ -51,7 +77,6 @@ namespace Steam_Desktop_Authenticator
                 this.Close();
             }
         }
-
         private void InstallProcess_Exited(object sender, EventArgs e)
         {
             if (inlineInstall)
