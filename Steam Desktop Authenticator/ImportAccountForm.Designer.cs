@@ -34,7 +34,7 @@ namespace Steam_Desktop_Authenticator
             this.txtBox.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBox.Location = new System.Drawing.Point(15, 42);
             this.txtBox.Name = "txtBox";
-            this.txtBox.Size = new System.Drawing.Size(307, 33);
+            this.txtBox.Size = new System.Drawing.Size(307, 39);
             this.txtBox.TabIndex = 1;
             // 
             // btnImport
@@ -72,7 +72,7 @@ namespace Steam_Desktop_Authenticator
             // ImportAccountForm
             // 
             this.AcceptButton = this.btnImport;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(336, 171);

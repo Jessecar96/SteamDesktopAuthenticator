@@ -109,12 +109,13 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.8.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -146,6 +147,12 @@
     </Compile>
     <Compile Include="ImportAccountForm.Designer.cs">
       <DependentUpon>ImportAccountForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ImportWinAuthForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImportWinAuthForm.Designer.cs">
+      <DependentUpon>ImportWinAuthForm.cs</DependentUpon>
     </Compile>
     <Compile Include="InputForm.cs">
       <SubType>Form</SubType>
@@ -213,6 +220,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ImportAccountForm.resx">
       <DependentUpon>ImportAccountForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportWinAuthForm.resx">
+      <DependentUpon>ImportWinAuthForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InputForm.resx">
       <DependentUpon>InputForm.cs</DependentUpon>
