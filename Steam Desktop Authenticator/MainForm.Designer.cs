@@ -274,6 +274,7 @@
             this.menuImportWinAuth.Name = "menuImportWinAuth";
             this.menuImportWinAuth.Size = new System.Drawing.Size(225, 26);
             this.menuImportWinAuth.Text = "From WinAuth";
+            this.menuImportWinAuth.Click += new System.EventHandler(this.menuImportWinAuth_Click);
             // 
             // toolStripSeparator1
             // 
