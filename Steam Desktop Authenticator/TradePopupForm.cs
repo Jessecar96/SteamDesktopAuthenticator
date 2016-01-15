@@ -97,6 +97,8 @@ namespace Steam_Desktop_Authenticator
             else
             {
                 lblStatus.Text = "Accepting...";
+                btnAccept.Enabled = false;
+                btnDeny.Enabled = false;
                 acc.AcceptConfirmation(confirms[CurrentConfirmationNo]);
                 confirms.RemoveAt(CurrentConfirmationNo);
                 CurrentConfirmationNo = -1; // show again first confirmation
@@ -115,6 +117,8 @@ namespace Steam_Desktop_Authenticator
             else
             {
                 lblStatus.Text = "Denying...";
+                btnAccept.Enabled = false;
+                btnDeny.Enabled = false;
                 acc.DenyConfirmation(confirms[CurrentConfirmationNo]);
                 confirms.RemoveAt(CurrentConfirmationNo);
                 CurrentConfirmationNo = -1; // show again first confirmation
@@ -124,6 +128,9 @@ namespace Steam_Desktop_Authenticator
 
         private void Reset(string MoveDirection = "front")
         {
+            btnAccept.Enabled = true;
+            btnDeny.Enabled = true;
+            
             TotalConfirmations = confirms.Count;
 
             // this will trigger the GUI to show next confirmation
