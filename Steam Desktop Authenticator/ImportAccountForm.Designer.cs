@@ -27,7 +27,7 @@ namespace Steam_Desktop_Authenticator
             this.labelText.Name = "labelText";
             this.labelText.Size = new System.Drawing.Size(317, 25);
             this.labelText.TabIndex = 0;
-            this.labelText.Text = "Enter your encryption passkey if your .maFile is encripted:";
+            this.labelText.Text = "Enter your encryption passkey if your .maFile is encrypted:";
             // 
             // txtBox
             // 
