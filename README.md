@@ -32,3 +32,9 @@ If you did not follow the directions and did not write your revocation code down
 [How to update SDA.](https://github.com/Jessecar96/SteamDesktopAuthenticator/wiki/Updating)
 
 [How to use SDA on multiple computers.](https://github.com/Jessecar96/SteamDesktopAuthenticator/wiki/Using-SDA-on-multiple-computers)
+
+## Troubleshooting
+- **Trade confirmation list is completely blank**
+ - Re-login into your account via the main form
+
+If your problem doesn't appear on the list or none of the solutions worked, submit an issue on the issue tracker. When posting logs in an issue, please upload it to some site like [Pastebin](http://www.pastebin.com).
