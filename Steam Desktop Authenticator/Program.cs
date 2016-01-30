@@ -1,38 +1,29 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
+using Microsoft.Win32;
 
 namespace Steam_Desktop_Authenticator
 {
     static class Program
     {
-        public static Process PriorProcess()
-        // Returns a System.Diagnostics.Process pointing to
-        // a pre-existing process with the same name as the
-        // current one, if any; or null if the current process
-        // is unique.
-        {
-            try
-            {
-                Process curr = Process.GetCurrentProcess();
-                Process[] procs = Process.GetProcessesByName(curr.ProcessName);
-                foreach (Process p in procs)
-                {
-                    if ((p.Id != curr.Id) &&
-                        (p.MainModule.FileName == curr.MainModule.FileName))
-                        return p;
-                }
-                return null;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
+
+        // Activate Old Process Window - Part 1
+        [DllImportAttribute("user32.dll")]
+        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        [DllImportAttribute("user32.dll")]
+        public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        [DllImportAttribute("user32.dll")]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+
 
         /// <summary>
         /// The main entry point for the application.
@@ -40,26 +31,58 @@ namespace Steam_Desktop_Authenticator
         [STAThread]
         static void Main()
         {
-            // run the program only once
-            if (PriorProcess() != null)
+            // Activate Old Process Window - Part 2
+            // If another instance is already running, activate it and exit - Part 2
+            try
             {
-                MessageBox.Show("Another instance of the app is already running.");
+                Process currentProc = Process.GetCurrentProcess();
+                foreach (Process proc in Process.GetProcessesByName(currentProc.ProcessName))
+                {
+                    if (proc.Id != currentProc.Id)
+                    {
+                        IntPtr firstInstance = FindWindow(null, "Steam Desktop Authenticator");
+                        ShowWindow(firstInstance, 1);
+                        SetForegroundWindow(firstInstance);
+
+                        return;   // Exit application
+                    }
+                }
+            }
+            catch (Exception)
+            {
                 return;
             }
+
+
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Manifest man = Manifest.GetManifest();
-            if(man.FirstRun)
+            Manifest manifest = Manifest.GetManifest();
+            string RunGUI = manifest.UseGUI;
+
+
+
+            if (manifest.FirstRun)
             {
                 // Install VC++ Redist and wait
-                new InstallRedistribForm().ShowDialog();
-
-                if (man.Entries.Count > 0)
+                DialogResult res = MessageBox.Show("Install Visual C++ Redistributable 2013\nvcredist_x86.exe", "SDA Setup", MessageBoxButtons.YesNo);
+                if (res == DialogResult.Yes)
                 {
-                    // Already has accounts, just run
-                    Application.Run(new MainForm());
+                    new InstallRedistribForm().ShowDialog();
+                }
+
+                // Already has accounts, just run
+                if (manifest.Entries.Count > 0)
+                {
+                    if (RunGUI == "2")
+                    {
+                        Application.Run(new MainFormGuiCompact());
+                    }
+                    else {
+                        // use default GUI
+                        Application.Run(new MainForm());
+                    }
                 }
                 else
                 {
@@ -69,8 +92,17 @@ namespace Steam_Desktop_Authenticator
             }
             else
             {
-                Application.Run(new MainForm());
+                if (RunGUI == "2")
+                {
+                    Application.Run(new MainFormGuiCompact());
+                }
+                else {
+                    Application.Run(new MainForm());
+                }
             }
+
+
+
         }
     }
 }

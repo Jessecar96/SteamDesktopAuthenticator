@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="packages\CefSharp.WinForms.45.0.0\build\CefSharp.WinForms.props" Condition="Exists('packages\CefSharp.WinForms.45.0.0\build\CefSharp.WinForms.props')" />
   <Import Project="packages\CefSharp.Common.45.0.0\build\CefSharp.Common.props" Condition="Exists('packages\CefSharp.Common.45.0.0\build\CefSharp.Common.props')" />
@@ -127,6 +127,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BrowserRequestHandler.cs" />
+    <Compile Include="ConfirmationFormList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfirmationFormList.Designer.cs">
+      <DependentUpon>ConfirmationFormList.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConfirmationFormWeb.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -177,6 +183,12 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainFormGuiCompact.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainFormGuiCompact.Designer.cs">
+      <DependentUpon>MainFormGuiCompact.cs</DependentUpon>
+    </Compile>
     <Compile Include="Manifest.cs" />
     <Compile Include="PhoneBridge.cs" />
     <Compile Include="PhoneExtractForm.cs">
@@ -207,27 +219,42 @@
     </Compile>
     <EmbeddedResource Include="CaptchaForm.resx">
       <DependentUpon>CaptchaForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfirmationFormList.resx">
+      <DependentUpon>ConfirmationFormList.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ConfirmationFormWeb.resx">
       <DependentUpon>ConfirmationFormWeb.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ImportAccountForm.resx">
       <DependentUpon>ImportAccountForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="InputForm.resx">
       <DependentUpon>InputForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="InstallRedistribForm.resx">
       <DependentUpon>InstallRedistribForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ListInputForm.resx">
       <DependentUpon>ListInputForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainFormGuiCompact.resx">
+      <DependentUpon>MainFormGuiCompact.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PhoneExtractForm.resx">
       <DependentUpon>PhoneExtractForm.cs</DependentUpon>

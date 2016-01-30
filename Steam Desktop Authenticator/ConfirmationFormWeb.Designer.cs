@@ -1,4 +1,4 @@
-﻿namespace Steam_Desktop_Authenticator
+namespace Steam_Desktop_Authenticator
 {
     partial class ConfirmationFormWeb
     {
@@ -55,6 +55,7 @@
             // btnRefresh
             // 
             this.btnRefresh.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnRefresh.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.btnRefresh.Location = new System.Drawing.Point(0, 0);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(431, 30);

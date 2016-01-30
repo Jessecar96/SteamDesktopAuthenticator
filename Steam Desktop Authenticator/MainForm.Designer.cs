@@ -1,4 +1,4 @@
-﻿namespace Steam_Desktop_Authenticator
+namespace Steam_Desktop_Authenticator
 {
 
     partial class MainForm
@@ -32,7 +32,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.btnSteamLogin = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupToken = new System.Windows.Forms.GroupBox();
             this.btnCopy = new System.Windows.Forms.Button();
             this.pbTimeout = new System.Windows.Forms.ProgressBar();
             this.txtLoginToken = new System.Windows.Forms.TextBox();
@@ -41,6 +41,7 @@
             this.btnTradeConfirmations = new System.Windows.Forms.Button();
             this.btnManageEncryption = new System.Windows.Forms.Button();
             this.groupAccount = new System.Windows.Forms.GroupBox();
+            this.btnTradeConfirmationsList = new System.Windows.Forms.Button();
             this.labelVersion = new System.Windows.Forms.Label();
             this.labelUpdate = new System.Windows.Forms.LinkLabel();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
@@ -56,7 +57,9 @@
             this.menuRefreshSession = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.menuRemoveAccountFromManifest = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.menuDeactivateAuthenticator = new System.Windows.Forms.ToolStripMenuItem();
+            this.quitUnderXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.trayIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.menuStripTray = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.trayRestore = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,11 +69,12 @@
             this.trayCopySteamGuard = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.trayQuit = new System.Windows.Forms.ToolStripMenuItem();
-            this.timerTradesPopup = new System.Windows.Forms.Timer(this.components);
+            this.Settings_PopupNewConf = new System.Windows.Forms.Timer(this.components);
             this.lblStatus = new System.Windows.Forms.Label();
             this.txtAccSearch = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.groupBox1.SuspendLayout();
+            this.labelDisableListClick = new System.Windows.Forms.Label();
+            this.groupToken.SuspendLayout();
             this.groupAccount.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.menuStripTray.SuspendLayout();
@@ -78,35 +82,36 @@
             // 
             // btnSteamLogin
             // 
-            this.btnSteamLogin.Location = new System.Drawing.Point(12, 27);
+            this.btnSteamLogin.Location = new System.Drawing.Point(9, 26);
             this.btnSteamLogin.Name = "btnSteamLogin";
-            this.btnSteamLogin.Size = new System.Drawing.Size(155, 31);
-            this.btnSteamLogin.TabIndex = 1;
+            this.btnSteamLogin.Size = new System.Drawing.Size(147, 32);
+            this.btnSteamLogin.TabIndex = 20;
             this.btnSteamLogin.Text = "Setup New Account";
             this.btnSteamLogin.UseVisualStyleBackColor = true;
             this.btnSteamLogin.Click += new System.EventHandler(this.btnSteamLogin_Click);
             // 
-            // groupBox1
+            // groupToken
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.groupToken.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.btnCopy);
-            this.groupBox1.Controls.Add(this.pbTimeout);
-            this.groupBox1.Controls.Add(this.txtLoginToken);
-            this.groupBox1.Location = new System.Drawing.Point(12, 64);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(327, 85);
-            this.groupBox1.TabIndex = 2;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Login Token";
+            this.groupToken.Controls.Add(this.btnCopy);
+            this.groupToken.Controls.Add(this.pbTimeout);
+            this.groupToken.Controls.Add(this.txtLoginToken);
+            this.groupToken.Location = new System.Drawing.Point(9, 60);
+            this.groupToken.Name = "groupToken";
+            this.groupToken.Size = new System.Drawing.Size(307, 81);
+            this.groupToken.TabIndex = 3;
+            this.groupToken.TabStop = false;
+            this.groupToken.Text = "Login Token";
             // 
             // btnCopy
             // 
             this.btnCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopy.Location = new System.Drawing.Point(267, 19);
+            this.btnCopy.Font = new System.Drawing.Font("Segoe UI", 9.25F);
+            this.btnCopy.Location = new System.Drawing.Point(235, 17);
             this.btnCopy.Name = "btnCopy";
-            this.btnCopy.Size = new System.Drawing.Size(54, 35);
-            this.btnCopy.TabIndex = 2;
+            this.btnCopy.Size = new System.Drawing.Size(64, 32);
+            this.btnCopy.TabIndex = 4;
             this.btnCopy.Text = "Copy";
             this.btnCopy.UseVisualStyleBackColor = true;
             this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
@@ -115,11 +120,11 @@
             // 
             this.pbTimeout.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbTimeout.Location = new System.Drawing.Point(6, 60);
+            this.pbTimeout.Location = new System.Drawing.Point(8, 56);
             this.pbTimeout.Maximum = 30;
             this.pbTimeout.Name = "pbTimeout";
-            this.pbTimeout.Size = new System.Drawing.Size(315, 19);
-            this.pbTimeout.TabIndex = 1;
+            this.pbTimeout.Size = new System.Drawing.Size(291, 16);
+            this.pbTimeout.TabIndex = 6;
             this.pbTimeout.Value = 30;
             // 
             // txtLoginToken
@@ -127,12 +132,12 @@
             this.txtLoginToken.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtLoginToken.BackColor = System.Drawing.SystemColors.Window;
-            this.txtLoginToken.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtLoginToken.Location = new System.Drawing.Point(6, 19);
+            this.txtLoginToken.Font = new System.Drawing.Font("Segoe UI", 13.55F);
+            this.txtLoginToken.Location = new System.Drawing.Point(8, 17);
             this.txtLoginToken.Name = "txtLoginToken";
             this.txtLoginToken.ReadOnly = true;
-            this.txtLoginToken.Size = new System.Drawing.Size(255, 35);
-            this.txtLoginToken.TabIndex = 0;
+            this.txtLoginToken.Size = new System.Drawing.Size(221, 32);
+            this.txtLoginToken.TabIndex = 5;
             this.txtLoginToken.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // listAccounts
@@ -141,10 +146,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listAccounts.FormattingEnabled = true;
-            this.listAccounts.Location = new System.Drawing.Point(12, 217);
+            this.listAccounts.Location = new System.Drawing.Point(9, 205);
             this.listAccounts.Name = "listAccounts";
-            this.listAccounts.Size = new System.Drawing.Size(327, 160);
-            this.listAccounts.TabIndex = 3;
+            this.listAccounts.Size = new System.Drawing.Size(307, 173);
+            this.listAccounts.TabIndex = 10;
             this.listAccounts.SelectedValueChanged += new System.EventHandler(this.listAccounts_SelectedValueChanged);
             this.listAccounts.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listAccounts_KeyDown);
             // 
@@ -156,23 +161,24 @@
             // 
             // btnTradeConfirmations
             // 
-            this.btnTradeConfirmations.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnTradeConfirmations.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTradeConfirmations.Enabled = false;
-            this.btnTradeConfirmations.Location = new System.Drawing.Point(6, 19);
+            this.btnTradeConfirmations.Font = new System.Drawing.Font("Segoe UI", 9.25F);
+            this.btnTradeConfirmations.Location = new System.Drawing.Point(7, 16);
             this.btnTradeConfirmations.Name = "btnTradeConfirmations";
-            this.btnTradeConfirmations.Size = new System.Drawing.Size(315, 31);
-            this.btnTradeConfirmations.TabIndex = 4;
+            this.btnTradeConfirmations.Size = new System.Drawing.Size(293, 32);
+            this.btnTradeConfirmations.TabIndex = 8;
             this.btnTradeConfirmations.Text = "View Trade Confirmations";
             this.btnTradeConfirmations.UseVisualStyleBackColor = true;
             this.btnTradeConfirmations.Click += new System.EventHandler(this.btnTradeConfirmations_Click);
             // 
             // btnManageEncryption
             // 
-            this.btnManageEncryption.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnManageEncryption.Location = new System.Drawing.Point(173, 27);
+            this.btnManageEncryption.Location = new System.Drawing.Point(165, 26);
             this.btnManageEncryption.Name = "btnManageEncryption";
-            this.btnManageEncryption.Size = new System.Drawing.Size(166, 31);
-            this.btnManageEncryption.TabIndex = 6;
+            this.btnManageEncryption.Size = new System.Drawing.Size(148, 32);
+            this.btnManageEncryption.TabIndex = 21;
             this.btnManageEncryption.Text = "Manage Encryption";
             this.btnManageEncryption.UseVisualStyleBackColor = true;
             this.btnManageEncryption.Click += new System.EventHandler(this.btnManageEncryption_Click);
@@ -181,13 +187,30 @@
             // 
             this.groupAccount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupAccount.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupAccount.Controls.Add(this.btnTradeConfirmationsList);
             this.groupAccount.Controls.Add(this.btnTradeConfirmations);
-            this.groupAccount.Location = new System.Drawing.Point(12, 155);
+            this.groupAccount.Location = new System.Drawing.Point(9, 143);
             this.groupAccount.Name = "groupAccount";
-            this.groupAccount.Size = new System.Drawing.Size(327, 56);
+            this.groupAccount.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.groupAccount.Size = new System.Drawing.Size(307, 56);
             this.groupAccount.TabIndex = 7;
             this.groupAccount.TabStop = false;
             this.groupAccount.Text = "Account";
+            // 
+            // btnTradeConfirmationsList
+            // 
+            this.btnTradeConfirmationsList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnTradeConfirmationsList.Font = new System.Drawing.Font("Segoe UI", 9.25F);
+            this.btnTradeConfirmationsList.Location = new System.Drawing.Point(7, 54);
+            this.btnTradeConfirmationsList.Name = "btnTradeConfirmationsList";
+            this.btnTradeConfirmationsList.Size = new System.Drawing.Size(293, 32);
+            this.btnTradeConfirmationsList.TabIndex = 9;
+            this.btnTradeConfirmationsList.Text = "View Trade Confirmations List";
+            this.btnTradeConfirmationsList.UseVisualStyleBackColor = true;
+            this.btnTradeConfirmationsList.Visible = false;
+            this.btnTradeConfirmationsList.Click += new System.EventHandler(this.btnTradeConfirmationsList_Click);
             // 
             // labelVersion
             // 
@@ -196,10 +219,10 @@
             this.labelVersion.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelVersion.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.labelVersion.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.labelVersion.Location = new System.Drawing.Point(277, 413);
+            this.labelVersion.Location = new System.Drawing.Point(272, 411);
             this.labelVersion.Name = "labelVersion";
-            this.labelVersion.Size = new System.Drawing.Size(70, 15);
-            this.labelVersion.TabIndex = 8;
+            this.labelVersion.Size = new System.Drawing.Size(46, 12);
+            this.labelVersion.TabIndex = 15;
             this.labelVersion.Text = "v0.0.0";
             this.labelVersion.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             // 
@@ -210,10 +233,10 @@
             this.labelUpdate.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelUpdate.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.labelUpdate.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.labelUpdate.Location = new System.Drawing.Point(5, 413);
+            this.labelUpdate.Location = new System.Drawing.Point(8, 410);
             this.labelUpdate.Name = "labelUpdate";
-            this.labelUpdate.Size = new System.Drawing.Size(122, 14);
-            this.labelUpdate.TabIndex = 9;
+            this.labelUpdate.Size = new System.Drawing.Size(94, 11);
+            this.labelUpdate.TabIndex = 13;
             this.labelUpdate.TabStop = true;
             this.labelUpdate.Text = "Check for updates";
             this.labelUpdate.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -224,11 +247,12 @@
             this.menuStrip.BackColor = System.Drawing.SystemColors.Control;
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.accountToolStripMenuItem});
+            this.accountToolStripMenuItem,
+            this.quitUnderXToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(351, 24);
-            this.menuStrip.TabIndex = 10;
+            this.menuStrip.Size = new System.Drawing.Size(325, 24);
+            this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
@@ -291,6 +315,7 @@
             this.menuRefreshSession,
             this.toolStripSeparator4,
             this.menuRemoveAccountFromManifest,
+            this.toolStripSeparator5,
             this.menuDeactivateAuthenticator});
             this.accountToolStripMenuItem.Name = "accountToolStripMenuItem";
             this.accountToolStripMenuItem.Size = new System.Drawing.Size(111, 20);
@@ -322,12 +347,26 @@
             this.menuRemoveAccountFromManifest.Text = "Remove from manifest";
             this.menuRemoveAccountFromManifest.Click += new System.EventHandler(this.menuRemoveAccountFromManifest_Click);
             // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(202, 6);
+            // 
             // menuDeactivateAuthenticator
             // 
             this.menuDeactivateAuthenticator.Name = "menuDeactivateAuthenticator";
             this.menuDeactivateAuthenticator.Size = new System.Drawing.Size(205, 22);
             this.menuDeactivateAuthenticator.Text = "Deactivate Authenticator";
             this.menuDeactivateAuthenticator.Click += new System.EventHandler(this.menuDeactivateAuthenticator_Click);
+            // 
+            // quitUnderXToolStripMenuItem
+            // 
+            this.quitUnderXToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.quitUnderXToolStripMenuItem.Margin = new System.Windows.Forms.Padding(0, 0, 6, 0);
+            this.quitUnderXToolStripMenuItem.Name = "quitUnderXToolStripMenuItem";
+            this.quitUnderXToolStripMenuItem.Size = new System.Drawing.Size(42, 20);
+            this.quitUnderXToolStripMenuItem.Text = "Quit";
+            this.quitUnderXToolStripMenuItem.Click += new System.EventHandler(this.menuQuit_Click);
             // 
             // trayIcon
             // 
@@ -397,30 +436,32 @@
             this.trayQuit.Text = "Quit";
             this.trayQuit.Click += new System.EventHandler(this.trayQuit_Click);
             // 
-            // timerTradesPopup
+            // Settings_PopupNewConf
             // 
-            this.timerTradesPopup.Enabled = true;
-            this.timerTradesPopup.Interval = 5000;
-            this.timerTradesPopup.Tick += new System.EventHandler(this.timerTradesPopup_Tick);
+            this.Settings_PopupNewConf.Enabled = true;
+            this.Settings_PopupNewConf.Interval = 5000;
+            this.Settings_PopupNewConf.Tick += new System.EventHandler(this.Settings_PopupNewConf_Tick);
             // 
             // lblStatus
             // 
-            this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblStatus.BackColor = System.Drawing.SystemColors.Control;
-            this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatus.Location = new System.Drawing.Point(183, 5);
+            this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 6.75F);
+            this.lblStatus.Location = new System.Drawing.Point(108, 410);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(163, 18);
-            this.lblStatus.TabIndex = 11;
-            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lblStatus.Size = new System.Drawing.Size(166, 13);
+            this.lblStatus.TabIndex = 14;
+            this.lblStatus.Text = "Console: status";
+            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // txtAccSearch
             // 
             this.txtAccSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtAccSearch.Location = new System.Drawing.Point(49, 383);
+            this.txtAccSearch.Location = new System.Drawing.Point(54, 385);
             this.txtAccSearch.Name = "txtAccSearch";
-            this.txtAccSearch.Size = new System.Drawing.Size(290, 22);
+            this.txtAccSearch.Size = new System.Drawing.Size(262, 22);
             this.txtAccSearch.TabIndex = 12;
             this.txtAccSearch.TextChanged += new System.EventHandler(this.txtAccSearch_TextChanged);
             // 
@@ -428,33 +469,48 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 388);
+            this.label1.Location = new System.Drawing.Point(8, 389);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(36, 13);
-            this.label1.TabIndex = 13;
-            this.label1.Text = "Filter:";
+            this.label1.Size = new System.Drawing.Size(44, 13);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "Search:";
+            // 
+            // labelDisableListClick
+            // 
+            this.labelDisableListClick.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelDisableListClick.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.labelDisableListClick.Font = new System.Drawing.Font("Segoe UI", 9.25F);
+            this.labelDisableListClick.Location = new System.Drawing.Point(10, 206);
+            this.labelDisableListClick.Name = "labelDisableListClick";
+            this.labelDisableListClick.Size = new System.Drawing.Size(305, 171);
+            this.labelDisableListClick.TabIndex = 16;
+            this.labelDisableListClick.Text = "Refreshing session...";
+            this.labelDisableListClick.Visible = false;
             // 
             // MainForm
             // 
-            this.AcceptButton = this.btnSteamLogin;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(351, 433);
+            this.ClientSize = new System.Drawing.Size(325, 427);
+            this.Controls.Add(this.labelVersion);
+            this.Controls.Add(this.labelDisableListClick);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtAccSearch);
+            this.Controls.Add(this.btnManageEncryption);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.labelUpdate);
-            this.Controls.Add(this.labelVersion);
             this.Controls.Add(this.groupAccount);
-            this.Controls.Add(this.btnManageEncryption);
             this.Controls.Add(this.listAccounts);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupToken);
             this.Controls.Add(this.btnSteamLogin);
             this.Controls.Add(this.menuStrip);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
             this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(341, 465);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Steam Desktop Authenticator";
@@ -462,8 +518,8 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.groupToken.ResumeLayout(false);
+            this.groupToken.PerformLayout();
             this.groupAccount.ResumeLayout(false);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
@@ -475,7 +531,7 @@
 
         #endregion
         private System.Windows.Forms.Button btnSteamLogin;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupToken;
         private System.Windows.Forms.ProgressBar pbTimeout;
         private System.Windows.Forms.TextBox txtLoginToken;
         private System.Windows.Forms.ListBox listAccounts;
@@ -500,7 +556,7 @@
         private System.Windows.Forms.ToolStripMenuItem trayCopySteamGuard;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem trayQuit;
-        private System.Windows.Forms.Timer timerTradesPopup;
+        private System.Windows.Forms.Timer Settings_PopupNewConf;
         private System.Windows.Forms.ToolStripComboBox trayAccountList;
         private System.Windows.Forms.ToolStripMenuItem importAccountToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem menuImportMaFile;
@@ -513,6 +569,10 @@
         private System.Windows.Forms.ToolStripMenuItem menuRefreshSession;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.Button btnCopy;
+        private System.Windows.Forms.ToolStripMenuItem quitUnderXToolStripMenuItem;
+        private System.Windows.Forms.Button btnTradeConfirmationsList;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.Label labelDisableListClick;
     }
 }
 

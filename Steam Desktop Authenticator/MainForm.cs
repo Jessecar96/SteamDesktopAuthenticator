@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,12 +12,17 @@ namespace Steam_Desktop_Authenticator
 {
     public partial class MainForm : Form
     {
+        //Settings-declare
+        public string Settings_MinimiseToSystemTray;
+        public bool Settings_ShowConfirmationListButton;
+        public bool Settings_AutoCheckForUpdates;
+
         private SteamGuardAccount currentAccount = null;
         private SteamGuardAccount[] allAccounts;
         private List<string> updatedSessions = new List<string>();
         private Manifest manifest;
 
-        private bool checkAllAccounts;
+        private bool PopupNewConfPerCheckAllAccounts;
 
         private long steamTime = 0;
         private long currentSteamChunk = 0;
@@ -34,7 +39,7 @@ namespace Steam_Desktop_Authenticator
 
 
         // Form event handlers
-
+        
         private void MainForm_Shown(object sender, EventArgs e)
         {
             this.labelVersion.Text = String.Format("v{0}", Application.ProductVersion);
@@ -50,16 +55,14 @@ namespace Steam_Desktop_Authenticator
             if (manifest.Encrypted)
             {
                 passKey = manifest.PromptForPassKey();
-                if(passKey == null)
+                if (passKey == null)
                 {
                     Application.Exit();
                 }
 
-                btnManageEncryption.Text = "Manage Encryption";
             }
             else
             {
-                btnManageEncryption.Text = "Setup Encryption";
             }
 
             btnManageEncryption.Enabled = manifest.Entries.Count > 0;
@@ -67,25 +70,40 @@ namespace Steam_Desktop_Authenticator
             loadSettings();
             loadAccountsList();
 
-            checkForUpdates();
+            if (Settings_AutoCheckForUpdates == true) { checkForUpdates(); }
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+
             trayIcon.Icon = this.Icon;
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
-            if (this.WindowState == FormWindowState.Minimized)
+            if (Settings_MinimiseToSystemTray == "minimise")
             {
-                this.Hide();
+                if (this.WindowState == FormWindowState.Minimized)
+                {
+                    this.Hide();
+                }
             }
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Application.Exit();
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                if (Settings_MinimiseToSystemTray == "close")
+                {
+                    this.Hide();
+                    e.Cancel = true;
+                }
+            }
+            else
+            {
+                Application.Exit();
+            }
         }
 
 
@@ -116,6 +134,21 @@ namespace Steam_Desktop_Authenticator
                 }
             }
         }
+
+        private void btnTradeConfirmationsList_Click(object sender, EventArgs e)
+        {
+            if (currentAccount == null)
+            {
+                MessageBox.Show("No account selected");
+                return;
+            }
+            else
+            {
+                ConfirmationForm confirmations = new ConfirmationForm(currentAccount);
+                confirmations.ShowDialog();
+            }
+        }
+
 
         private void btnManageEncryption_Click(object sender, EventArgs e)
         {
@@ -193,7 +226,10 @@ namespace Steam_Desktop_Authenticator
 
         private void btnCopy_Click(object sender, EventArgs e)
         {
-            Clipboard.SetText(txtLoginToken.Text);
+            if (txtLoginToken.Text != "")
+            {
+                Clipboard.SetText(txtLoginToken.Text);
+            }
         }
 
 
@@ -222,6 +258,7 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
+
         private void menuLoginAgain_Click(object sender, EventArgs e)
         {
             LoginForm mLoginForm = new LoginForm();
@@ -230,10 +267,11 @@ namespace Steam_Desktop_Authenticator
             mLoginForm.ShowDialog();
         }
 
+
         private void menuImportMaFile_Click(object sender, EventArgs e)
         {
-            ImportAccountForm currentImport_maFile_Form = new ImportAccountForm();
-            currentImport_maFile_Form.ShowDialog();
+            ImportAccountForm Import_Account_Form = new ImportAccountForm();
+            Import_Account_Form.ShowDialog();
             loadAccountsList();
         }
 
@@ -306,12 +344,16 @@ namespace Steam_Desktop_Authenticator
 
         private async void menuRefreshSession_Click(object sender, EventArgs e)
         {
-            bool status = await currentAccount.RefreshSessionAsync();
-            if(status == true)
+            bool status = false;
+            try {
+                status = await currentAccount.RefreshSessionAsync();
+            }catch(Exception){ }
+
+            if (status == true)
             {
                 MessageBox.Show("Your session has been refreshed.", "Session refresh", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 manifest.SaveAccount(currentAccount, manifest.Encrypted, passKey);
-            } 
+            }
             else
             {
                 MessageBox.Show("Failed to refresh your session.\nTry again soon.", "Session refresh", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -392,8 +434,13 @@ namespace Steam_Desktop_Authenticator
         private async void timerSteamGuard_Tick(object sender, EventArgs e)
         {
             lblStatus.Text = "Aligning time with Steam...";
-            steamTime = await TimeAligner.GetSteamTimeAsync();
-            lblStatus.Text = "";
+            try{
+                steamTime = await TimeAligner.GetSteamTimeAsync();
+                lblStatus.Text = "";
+            }
+            catch (Exception){
+                lblStatus.Text = "Aligning time with Steam > Failed";
+            }
 
             currentSteamChunk = steamTime / 30L;
             int secondsUntilChange = (int)(steamTime - (currentSteamChunk * 30L));
@@ -405,13 +452,13 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
-        private async void timerTradesPopup_Tick(object sender, EventArgs e)
+        private async void Settings_PopupNewConf_Tick(object sender, EventArgs e)
         {
             if (currentAccount == null || popupFrm.Visible) return;
 
             List<Confirmation> confs = new List<Confirmation>();
             SteamGuardAccount[] accs =
-                checkAllAccounts ? allAccounts : new SteamGuardAccount[] { currentAccount };
+            PopupNewConfPerCheckAllAccounts ? allAccounts : new SteamGuardAccount[] { currentAccount };
 
             try
             {
@@ -449,6 +496,7 @@ namespace Steam_Desktop_Authenticator
                 popupFrm.Account = currentAccount;
                 txtLoginToken.Text = currentAccount.GenerateSteamGuardCodeForTime(steamTime);
                 groupAccount.Text = "Account: " + currentAccount.AccountName;
+                accountToolStripMenuItem.Text = "Account: " + currentAccount.AccountName;
             }
         }
 
@@ -465,6 +513,26 @@ namespace Steam_Desktop_Authenticator
             trayAccountList.Items.Clear();
             trayAccountList.SelectedIndex = -1;
 
+
+            if (manifest.Encrypted)
+            {
+                btnManageEncryption.Text = "Manage Encryption";
+
+                importAccountToolStripMenuItem.Enabled = false;
+                importAccountToolStripMenuItem.Text = "Import Account - Disable the Encryption First";
+            }
+            else
+            {
+                btnManageEncryption.Text = "Setup Encryption";
+
+                importAccountToolStripMenuItem.Enabled = true;
+                importAccountToolStripMenuItem.Text = "Import Account";
+            }
+
+            btnManageEncryption.Enabled = manifest.Entries.Count > 0;
+
+
+
             allAccounts = manifest.GetAllAccounts(passKey);
 
             if (allAccounts.Length > 0)
@@ -479,7 +547,8 @@ namespace Steam_Desktop_Authenticator
                 listAccounts.SelectedIndex = 0;
                 trayAccountList.SelectedIndex = 0;
             }
-            menuDeactivateAuthenticator.Enabled = btnTradeConfirmations.Enabled = allAccounts.Length > 0;
+            menuDeactivateAuthenticator.Enabled = btnTradeConfirmations.Enabled = btnTradeConfirmationsList.Enabled = menuLoginAgain.Enabled = menuRefreshSession.Enabled = menuRemoveAccountFromManifest.Enabled = menuDeactivateAuthenticator.Enabled = allAccounts.Length > 0;
+
         }
 
         /// <summary>
@@ -490,7 +559,7 @@ namespace Steam_Desktop_Authenticator
         {
             await UpdateSession(currentAccount);
         }
-        
+
         private async Task UpdateSession(SteamGuardAccount account)
         {
             if (account == null) return;
@@ -498,12 +567,19 @@ namespace Steam_Desktop_Authenticator
 
             lblStatus.Text = "Refreshing session...";
             btnTradeConfirmations.Enabled = false;
+            btnTradeConfirmationsList.Enabled = false;
+            labelDisableListClick.Visible = true;
 
-            await currentAccount.RefreshSessionAsync();
+            try{
+                await currentAccount.RefreshSessionAsync();
+            }catch (Exception) { }
+
             updatedSessions.Add(account.AccountName);
 
             lblStatus.Text = "";
             btnTradeConfirmations.Enabled = true;
+            btnTradeConfirmationsList.Enabled = true;
+            labelDisableListClick.Visible = false;
         }
 
         private void listAccounts_KeyDown(object sender, KeyEventArgs e)
@@ -571,9 +647,134 @@ namespace Steam_Desktop_Authenticator
 
         private void loadSettings()
         {
-            timerTradesPopup.Enabled = manifest.PeriodicChecking;
-            timerTradesPopup.Interval = manifest.PeriodicCheckingInterval * 1000;
+            Settings_MinimiseToSystemTray = manifest.MinimiseToSystemTray;
+            Settings_PopupNewConf.Enabled = manifest.PopupNewConfPeriodicChecking;
+            Settings_PopupNewConf.Interval = manifest.PopupNewConfPerCheckingInterval * 1000;
+            Settings_ShowConfirmationListButton = manifest.ShowConfirmationListButton;
+            Settings_AutoCheckForUpdates = manifest.AutoCheckForUpdates;
+
+            // apply settings
+            //-------------------------
+
+            // Quit btn under x
+            if (Settings_MinimiseToSystemTray == "close")
+            {
+                quitUnderXToolStripMenuItem.Visible = true;
+            }
+            else
+            {
+                quitUnderXToolStripMenuItem.Visible = false;
+            }
+            if (Settings_MinimiseToSystemTray == "hide")
+            {
+                trayIcon.Visible = false;
+            }
+            else
+            {
+                trayIcon.Visible = true;
+            }
+
+            // Show/Hide Confirmations List btn - update GUI
+            if (Settings_ShowConfirmationListButton == true)
+            {
+                // 
+                // MainForm
+                // 
+                this.ClientSize = new System.Drawing.Size(325, 427);
+                this.MinimumSize = new System.Drawing.Size(341, 465);
+                // 
+                // groupAccount
+                // 
+                this.groupAccount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                | System.Windows.Forms.AnchorStyles.Right)));
+                this.groupAccount.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+                this.groupAccount.Location = new System.Drawing.Point(9, 143);
+                this.groupAccount.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
+                this.groupAccount.Size = new System.Drawing.Size(307, 94);
+                // 
+                // btnTradeConfirmations
+                // 
+                this.btnTradeConfirmations.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                | System.Windows.Forms.AnchorStyles.Right)));
+                this.btnTradeConfirmations.Font = new System.Drawing.Font("Segoe UI", 9.25F);
+                this.btnTradeConfirmations.Location = new System.Drawing.Point(7, 16);
+                this.btnTradeConfirmations.Size = new System.Drawing.Size(293, 32);
+                this.btnTradeConfirmations.Text = "View Trade Confirmations in Browser";
+                // 
+                // btnTradeConfirmationsList
+                // 
+                this.btnTradeConfirmationsList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                | System.Windows.Forms.AnchorStyles.Right)));
+                this.btnTradeConfirmationsList.Font = new System.Drawing.Font("Segoe UI", 9.25F);
+                this.btnTradeConfirmationsList.Location = new System.Drawing.Point(7, 54);
+                this.btnTradeConfirmationsList.Size = new System.Drawing.Size(293, 32);
+                this.btnTradeConfirmationsList.Visible = true;
+                // 
+                // listAccounts
+                // 
+                this.listAccounts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                | System.Windows.Forms.AnchorStyles.Left)
+                | System.Windows.Forms.AnchorStyles.Right)));
+                this.listAccounts.Location = new System.Drawing.Point(9, 244);
+                this.listAccounts.Size = new System.Drawing.Size(307, 134);
+                // 
+                // labelDisableListClick
+                // 
+                this.labelDisableListClick.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                | System.Windows.Forms.AnchorStyles.Left)
+                | System.Windows.Forms.AnchorStyles.Right)));
+                this.labelDisableListClick.Location = new System.Drawing.Point(10, 245);
+                this.labelDisableListClick.Size = new System.Drawing.Size(305, 132);
+            }
+            else
+            {
+                // 
+                // MainForm
+                // 
+                this.ClientSize = new System.Drawing.Size(325, 427);
+                this.MinimumSize = new System.Drawing.Size(341, 465);
+                // 
+                // groupAccount
+                // 
+                this.groupAccount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                | System.Windows.Forms.AnchorStyles.Right)));
+                this.groupAccount.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+                this.groupAccount.Location = new System.Drawing.Point(9, 143);
+                this.groupAccount.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
+                this.groupAccount.Size = new System.Drawing.Size(307, 56);
+                // 
+                // btnTradeConfirmations
+                // 
+                this.btnTradeConfirmations.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                | System.Windows.Forms.AnchorStyles.Right)));
+                this.btnTradeConfirmations.Font = new System.Drawing.Font("Segoe UI", 9.25F);
+                this.btnTradeConfirmations.Location = new System.Drawing.Point(7, 16);
+                this.btnTradeConfirmations.Size = new System.Drawing.Size(293, 32);
+                this.btnTradeConfirmations.Text = "View Trade Confirmations";
+                // 
+                // btnTradeConfirmationsList
+                // 
+                this.btnTradeConfirmationsList.Visible = false;
+                // 
+                // listAccounts
+                // 
+                this.listAccounts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                | System.Windows.Forms.AnchorStyles.Left)
+                | System.Windows.Forms.AnchorStyles.Right)));
+                this.listAccounts.Location = new System.Drawing.Point(9, 205);
+                this.listAccounts.Size = new System.Drawing.Size(307, 173);
+                // 
+                // labelDisableListClick
+                // 
+                this.labelDisableListClick.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                | System.Windows.Forms.AnchorStyles.Left)
+                | System.Windows.Forms.AnchorStyles.Right)));
+                this.labelDisableListClick.Location = new System.Drawing.Point(10, 206);
+                this.labelDisableListClick.Size = new System.Drawing.Size(305, 171);
+            }
+
         }
+
 
         // Logic for version checking
         private Version newVersion = null;
