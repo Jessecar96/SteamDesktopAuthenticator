@@ -421,13 +421,13 @@ namespace Steam_Desktop_Authenticator
                 {
                     try
                     {
-                        Confirmation[] tmp = currentAccount.FetchConfirmations();
+                        Confirmation[] tmp = await currentAccount.FetchConfirmationsAsync();
                         confs.AddRange(tmp);
                     }
                     catch (SteamGuardAccount.WGTokenInvalidException)
                     {
                         lblStatus.Text = "Refreshing session";
-                        currentAccount.RefreshSession(); //Don't save it to the HDD, of course. We'd need their encryption passkey again.
+                        await currentAccount.RefreshSessionAsync(); //Don't save it to the HDD, of course. We'd need their encryption passkey again.
                         lblStatus.Text = "";
                     }
                 }
