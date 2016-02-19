@@ -50,7 +50,7 @@ namespace Steam_Desktop_Authenticator
             if (manifest.Encrypted)
             {
                 passKey = manifest.PromptForPassKey();
-                if(passKey == null)
+                if (passKey == null)
                 {
                     Application.Exit();
                 }
@@ -307,11 +307,11 @@ namespace Steam_Desktop_Authenticator
         private async void menuRefreshSession_Click(object sender, EventArgs e)
         {
             bool status = await currentAccount.RefreshSessionAsync();
-            if(status == true)
+            if (status == true)
             {
                 MessageBox.Show("Your session has been refreshed.", "Session refresh", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 manifest.SaveAccount(currentAccount, manifest.Encrypted, passKey);
-            } 
+            }
             else
             {
                 MessageBox.Show("Failed to refresh your session.\nTry again soon.", "Session refresh", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -419,8 +419,17 @@ namespace Steam_Desktop_Authenticator
 
                 foreach (var item in accs)
                 {
-                    Confirmation[] tmp = await currentAccount.FetchConfirmationsAsync();
-                    confs.AddRange(tmp);
+                    try
+                    {
+                        Confirmation[] tmp = currentAccount.FetchConfirmations();
+                        confs.AddRange(tmp);
+                    }
+                    catch (SteamGuardAccount.WGTokenInvalidException)
+                    {
+                        lblStatus.Text = "Refreshing session";
+                        currentAccount.RefreshSession(); //Don't save it to the HDD, of course. We'd need their encryption passkey again.
+                        lblStatus.Text = "";
+                    }
                 }
 
                 lblStatus.Text = "";
@@ -490,7 +499,7 @@ namespace Steam_Desktop_Authenticator
         {
             await UpdateSession(currentAccount);
         }
-        
+
         private async Task UpdateSession(SteamGuardAccount account)
         {
             if (account == null) return;
