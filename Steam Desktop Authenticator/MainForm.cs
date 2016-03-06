@@ -276,7 +276,7 @@ namespace Steam_Desktop_Authenticator
             if (scheme != 0)
             {
                 string confCode = currentAccount.GenerateSteamGuardCode();
-                InputForm confirmationDialog = new InputForm(String.Format("Remvoing Steam Guard from {0}. Enter this confirmation code: {1}", currentAccount.AccountName, confCode));
+                InputForm confirmationDialog = new InputForm(String.Format("Removing Steam Guard from {0}. Enter this confirmation code: {1}", currentAccount.AccountName, confCode));
                 confirmationDialog.ShowDialog();
 
                 if (confirmationDialog.Canceled)
