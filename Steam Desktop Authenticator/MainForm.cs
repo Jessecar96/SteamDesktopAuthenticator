@@ -98,9 +98,14 @@ namespace Steam_Desktop_Authenticator
             this.loadAccountsList();
         }
 
-        private void btnTradeConfirmations_Click(object sender, EventArgs e)
+        private async void btnTradeConfirmations_Click(object sender, EventArgs e)
         {
             if (currentAccount == null) return;
+
+            string oText = btnTradeConfirmations.Text;
+            btnTradeConfirmations.Text = "Loading...";
+            await currentAccount.RefreshSessionAsync();
+            btnTradeConfirmations.Text = oText;
 
             try
             {
@@ -358,7 +363,7 @@ namespace Steam_Desktop_Authenticator
 
         // Misc UI handlers
 
-        private async void listAccounts_SelectedValueChanged(object sender, EventArgs e)
+        private void listAccounts_SelectedValueChanged(object sender, EventArgs e)
         {
             for (int i = 0; i < allAccounts.Length; i++)
             {
@@ -368,7 +373,6 @@ namespace Steam_Desktop_Authenticator
                     trayAccountList.Text = account.AccountName;
                     currentAccount = account;
                     loadAccountInfo();
-                    await UpdateCurrentSession();
                     break;
                 }
             }
