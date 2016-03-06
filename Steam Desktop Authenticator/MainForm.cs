@@ -586,6 +586,7 @@ namespace Steam_Desktop_Authenticator
         {
             timerTradesPopup.Enabled = manifest.PeriodicChecking;
             timerTradesPopup.Interval = manifest.PeriodicCheckingInterval * 1000;
+            checkAllAccounts = manifest.CheckAllAccounts;
         }
 
         // Logic for version checking
