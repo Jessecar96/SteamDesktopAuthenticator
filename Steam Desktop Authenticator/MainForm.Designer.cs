@@ -162,7 +162,7 @@
             this.btnTradeConfirmations.Name = "btnTradeConfirmations";
             this.btnTradeConfirmations.Size = new System.Drawing.Size(315, 31);
             this.btnTradeConfirmations.TabIndex = 4;
-            this.btnTradeConfirmations.Text = "View Trade Confirmations";
+            this.btnTradeConfirmations.Text = "View Confirmations";
             this.btnTradeConfirmations.UseVisualStyleBackColor = true;
             this.btnTradeConfirmations.Click += new System.EventHandler(this.btnTradeConfirmations_Click);
             // 

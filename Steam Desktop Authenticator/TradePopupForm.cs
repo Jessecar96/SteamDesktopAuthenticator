@@ -29,7 +29,7 @@ namespace Steam_Desktop_Authenticator
             set { acc = value; lblAccount.Text = acc.AccountName; }
         }
 
-        public Confirmation[] Confirmation
+        public Confirmation[] Confirmations
         {
             get { return confirms.ToArray(); }
             set { confirms = new List<Confirmation>(value); }
@@ -93,7 +93,7 @@ namespace Steam_Desktop_Authenticator
             }
             else
             {
-                lblDesc.Text = confirms[0].ConfirmationDescription;
+                lblDesc.Text = confirms[0].Description;
             }
         }
 

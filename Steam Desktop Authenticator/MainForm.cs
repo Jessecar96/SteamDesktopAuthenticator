@@ -17,8 +17,6 @@ namespace Steam_Desktop_Authenticator
         private List<string> updatedSessions = new List<string>();
         private Manifest manifest;
 
-        private bool checkAllAccounts;
-
         private long steamTime = 0;
         private long currentSteamChunk = 0;
         private string passKey = null;
@@ -415,18 +413,26 @@ namespace Steam_Desktop_Authenticator
 
             List<Confirmation> confs = new List<Confirmation>();
             SteamGuardAccount[] accs =
-                checkAllAccounts ? allAccounts : new SteamGuardAccount[] { currentAccount };
+                manifest.CheckAllAccounts ? allAccounts : new SteamGuardAccount[] { currentAccount };
 
             try
             {
                 lblStatus.Text = "Checking confirmations...";
 
-                foreach (var item in accs)
+                foreach (var acc in accs)
                 {
                     try
                     {
                         Confirmation[] tmp = await currentAccount.FetchConfirmationsAsync();
-                        confs.AddRange(tmp);
+                        foreach(var conf in tmp)
+                        {
+                            if (conf.ConfType == Confirmation.ConfirmationType.MarketSellTransaction && manifest.AutoConfirmMarketTransactions)
+                                acc.AcceptConfirmation(conf);
+                            else if (conf.ConfType == Confirmation.ConfirmationType.Trade && manifest.AutoConfirmTrades)
+                                acc.AcceptConfirmation(conf);
+                            else
+                                confs.Add(conf);
+                        }
                     }
                     catch (SteamGuardAccount.WGTokenInvalidException)
                     {
@@ -440,7 +446,7 @@ namespace Steam_Desktop_Authenticator
 
                 if (confs.Count == 0) return;
 
-                popupFrm.Confirmation = confs.ToArray();
+                popupFrm.Confirmations = confs.ToArray();
                 popupFrm.Popup();
             }
             catch (SteamGuardAccount.WGTokenInvalidException)
@@ -586,7 +592,6 @@ namespace Steam_Desktop_Authenticator
         {
             timerTradesPopup.Enabled = manifest.PeriodicChecking;
             timerTradesPopup.Interval = manifest.PeriodicCheckingInterval * 1000;
-            checkAllAccounts = manifest.CheckAllAccounts;
         }
 
         // Logic for version checking

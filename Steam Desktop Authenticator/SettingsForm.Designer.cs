@@ -34,6 +34,8 @@
             this.numPeriodicInterval = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.chkCheckAll = new System.Windows.Forms.CheckBox();
+            this.chkConfirmMarket = new System.Windows.Forms.CheckBox();
+            this.chkConfirmTrades = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numPeriodicInterval)).BeginInit();
             this.SuspendLayout();
             // 
@@ -46,13 +48,14 @@
             this.chkPeriodicChecking.TabIndex = 0;
             this.chkPeriodicChecking.Text = "Periodically check for new confirmations\r\nand show a popup when they arrive";
             this.chkPeriodicChecking.UseVisualStyleBackColor = true;
+            this.chkPeriodicChecking.CheckedChanged += new System.EventHandler(this.chkPeriodicChecking_CheckedChanged);
             // 
             // btnSave
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSave.Location = new System.Drawing.Point(12, 135);
+            this.btnSave.Location = new System.Drawing.Point(12, 152);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(224, 38);
             this.btnSave.TabIndex = 1;
@@ -96,11 +99,35 @@
             this.chkCheckAll.Text = "Check all accounts for confirmations";
             this.chkCheckAll.UseVisualStyleBackColor = true;
             // 
+            // chkConfirmMarket
+            // 
+            this.chkConfirmMarket.AutoSize = true;
+            this.chkConfirmMarket.Location = new System.Drawing.Point(12, 104);
+            this.chkConfirmMarket.Name = "chkConfirmMarket";
+            this.chkConfirmMarket.Size = new System.Drawing.Size(198, 17);
+            this.chkConfirmMarket.TabIndex = 5;
+            this.chkConfirmMarket.Text = "Auto-confirm market transactions";
+            this.chkConfirmMarket.UseVisualStyleBackColor = true;
+            this.chkConfirmMarket.CheckedChanged += new System.EventHandler(this.chkConfirmMarket_CheckedChanged);
+            // 
+            // chkConfirmTrades
+            // 
+            this.chkConfirmTrades.AutoSize = true;
+            this.chkConfirmTrades.Location = new System.Drawing.Point(12, 127);
+            this.chkConfirmTrades.Name = "chkConfirmTrades";
+            this.chkConfirmTrades.Size = new System.Drawing.Size(129, 17);
+            this.chkConfirmTrades.TabIndex = 6;
+            this.chkConfirmTrades.Text = "Auto-confirm trades";
+            this.chkConfirmTrades.UseVisualStyleBackColor = true;
+            this.chkConfirmTrades.CheckedChanged += new System.EventHandler(this.chkConfirmTrades_CheckedChanged);
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(244, 185);
+            this.ClientSize = new System.Drawing.Size(244, 202);
+            this.Controls.Add(this.chkConfirmTrades);
+            this.Controls.Add(this.chkConfirmMarket);
             this.Controls.Add(this.chkCheckAll);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.numPeriodicInterval);
@@ -126,5 +153,7 @@
         private System.Windows.Forms.NumericUpDown numPeriodicInterval;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox chkCheckAll;
+        private System.Windows.Forms.CheckBox chkConfirmMarket;
+        private System.Windows.Forms.CheckBox chkConfirmTrades;
     }
 }

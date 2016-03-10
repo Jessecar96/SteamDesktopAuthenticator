@@ -30,6 +30,12 @@ namespace Steam_Desktop_Authenticator
         [JsonProperty("periodic_checking_checkall")]
         public bool CheckAllAccounts { get; set; } = false;
 
+        [JsonProperty("auto_confirm_market_transactions")]
+        public bool AutoConfirmMarketTransactions { get; set; } = false;
+
+        [JsonProperty("auto_confirm_trades")]
+        public bool AutoConfirmTrades { get; set; } = false;
+
         private static Manifest _manifest { get; set; }
 
         public static string GetExecutableDir()
@@ -91,6 +97,8 @@ namespace Steam_Desktop_Authenticator
             newManifest.Encrypted = false;
             newManifest.PeriodicCheckingInterval = 5;
             newManifest.PeriodicChecking = false;
+            newManifest.AutoConfirmMarketTransactions = false;
+            newManifest.AutoConfirmTrades = false;
             newManifest.Entries = new List<ManifestEntry>();
             newManifest.FirstRun = true;
 
