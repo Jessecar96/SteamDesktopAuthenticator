@@ -65,13 +65,15 @@ namespace Steam_Desktop_Authenticator
             loadSettings();
             
             //Startup start Auto-confirm Securely
-            if (manifest.PopupConfirmationPeriodicChecking == true)
+            if (manifest.PeriodicChecking == true)
             {
-                if (manifest.AutoConfirmTrades == true || manifest.AutoConfirmMarketTransactions == true) {
+                if (manifest.AutoConfirmTrades == true || manifest.AutoConfirmMarketTransactions == true)
+                {
 
                     bool EnableAutoConfirm_TradesAndMarket_Securely_atStartup = Manifest.PromptForSecureActvationAutoConfirm("startup_confirmation");
 
-                    if (EnableAutoConfirm_TradesAndMarket_Securely_atStartup == true) { 
+                    if (EnableAutoConfirm_TradesAndMarket_Securely_atStartup == true)
+                    {
                         if (manifest.AutoConfirmTrades == true)
                         {
                             Manifest.AutoConfirm_IsStartedSecurely("set", true, "trade");
