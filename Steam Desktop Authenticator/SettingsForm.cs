@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 
 namespace Steam_Desktop_Authenticator
@@ -20,6 +20,7 @@ namespace Steam_Desktop_Authenticator
             chkCheckAll.Checked = manifest.CheckAllAccounts;
             chkConfirmMarket.Checked = manifest.AutoConfirmMarketTransactions;
             chkConfirmTrades.Checked = manifest.AutoConfirmTrades;
+            chkAppCanRunMultipleTimes.Checked = manifest.AppCanBeStartedMultipleTimes;
 
             SetControlsEnabledState(chkPeriodicChecking.Checked);
 
@@ -49,6 +50,7 @@ namespace Steam_Desktop_Authenticator
             manifest.CheckAllAccounts = chkCheckAll.Checked;
             manifest.AutoConfirmMarketTransactions = chkConfirmMarket.Checked;
             manifest.AutoConfirmTrades = chkConfirmTrades.Checked;
+            manifest.AppCanBeStartedMultipleTimes = chkAppCanRunMultipleTimes.Checked;
             manifest.Save();
             this.Close();
         }
