@@ -30,34 +30,38 @@ namespace Steam_Desktop_Authenticator
         [STAThread]
         static void Main()
         {
-            // Activate Old Process Window - Part 2
-            // If another instance is already running, activate it and exit - Part 2
-            try
-            {
-                Process currentProc = Process.GetCurrentProcess();
-                foreach (Process proc in Process.GetProcessesByName(currentProc.ProcessName))
-                {
-                    if (proc.Id != currentProc.Id)
-                    {
-                        IntPtr firstInstance = FindWindow(null, "Steam Desktop Authenticator");
-                        ShowWindow(firstInstance, 1);
-                        SetForegroundWindow(firstInstance);
+            Manifest man = Manifest.GetManifest();
 
-                        return;   // Exit application
+            if (man.AppCanBeStartedMultipleTimes == false)
+            {
+                // Activate Old Process Window - Part 2
+                // If another instance is already running, activate it and exit - Part 2
+                try
+                {
+                    Process currentProc = Process.GetCurrentProcess();
+                    foreach (Process proc in Process.GetProcessesByName(currentProc.ProcessName))
+                    {
+                        if (proc.Id != currentProc.Id)
+                        {
+                            IntPtr firstInstance = FindWindow(null, "Steam Desktop Authenticator");
+                            ShowWindow(firstInstance, 1);
+                            SetForegroundWindow(firstInstance);
+
+                            return;   // Exit application
+                        }
                     }
                 }
+                catch (Exception)
+                {
+                    return;
+                }
             }
-            catch (Exception)
-            {
-                return;
-            }
-
 
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Manifest man = Manifest.GetManifest();
+            
             if(man.FirstRun)
             {
                 // Install VC++ Redist and wait
