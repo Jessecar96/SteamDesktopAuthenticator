@@ -87,9 +87,16 @@ namespace Steam_Desktop_Authenticator
                 {
                     TotalRentryTimes_AutoConfirm_Passkey++;
 
-					string AutoConfirm_Passkey = SecureStartAutoConfirm();
+                    string AutoConfirm_Passkey = SecureStartAutoConfirm();
+
+                    string AutoConfirmInfo = "";
+                    var manifest = Manifest.GetManifest();
+                    if (manifest.AutoConfirmTrades == true) { AutoConfirmInfo = " Trades"; }
+                    if (manifest.AutoConfirmMarketTransactions == true) {
+                        if (AutoConfirmInfo == "") { AutoConfirmInfo = " Market"; } else { AutoConfirmInfo = " Trades and Market"; }
+                    }
 					
-                    InputForm AutoConfirm_passKeyForm = new InputForm("To activate Auto-Confirm please enter:\n" + AutoConfirm_Passkey, true);
+                    InputForm AutoConfirm_passKeyForm = new InputForm("To activate Auto-Confirm" + AutoConfirmInfo + " enter:\n" + AutoConfirm_Passkey, true);
                     AutoConfirm_passKeyForm.ShowDialog();
                     if (!AutoConfirm_passKeyForm.Canceled)
                     {
@@ -120,7 +127,7 @@ namespace Steam_Desktop_Authenticator
             {
 				string AutoConfirm_Passkey = SecureStartAutoConfirm();
 				
-                InputForm AutoConfirm_passKeyForm = new InputForm("To activate Auto-Confirm please enter:\n" + AutoConfirm_Passkey, true);
+                InputForm AutoConfirm_passKeyForm = new InputForm("To activate Auto-Confirm enter:\n" + AutoConfirm_Passkey, true);
                 AutoConfirm_passKeyForm.ShowDialog();
                 if (!AutoConfirm_passKeyForm.Canceled)
                 {
