@@ -30,9 +30,9 @@ namespace Steam_Desktop_Authenticator
         [STAThread]
         static void Main()
         {
-            Manifest man = Manifest.GetManifest();
+            Manifest manifest_app = Manifest.GetManifest();
 
-            if (man.AppCanBeStartedMultipleTimes == false)
+            if (manifest_app.AppCanBeStartedMultipleTimes == false)
             {
                 // Activate Old Process Window - Part 2
                 // If another instance is already running, activate it and exit - Part 2
@@ -62,12 +62,12 @@ namespace Steam_Desktop_Authenticator
             Application.SetCompatibleTextRenderingDefault(false);
 
             
-            if(man.FirstRun)
+            if(manifest_app.FirstRun)
             {
                 // Install VC++ Redist and wait
                 new InstallRedistribForm().ShowDialog();
 
-                if (man.Entries.Count > 0)
+                if (manifest_app.Entries.Count > 0)
                 {
                     // Already has accounts, just run
                     Application.Run(new MainForm());
