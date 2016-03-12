@@ -7,7 +7,9 @@ namespace Steam_Desktop_Authenticator
     {
         Manifest manifest;
         bool fullyLoaded = false;
-
+        bool Read_AutoConfirmTrades_IsStartedSecurely = false;
+        bool Read_AutoConfirmMarket_IsStartedSecurely = false;
+        
         public SettingsForm()
         {
             InitializeComponent();
@@ -18,8 +20,25 @@ namespace Steam_Desktop_Authenticator
             chkPeriodicChecking.Checked = manifest.PeriodicChecking;
             numPeriodicInterval.Value = manifest.PeriodicCheckingInterval;
             chkCheckAll.Checked = manifest.CheckAllAccounts;
-            chkConfirmMarket.Checked = manifest.AutoConfirmMarketTransactions;
-            chkConfirmTrades.Checked = manifest.AutoConfirmTrades;
+
+            // set Auto Confirm
+            Read_AutoConfirmTrades_IsStartedSecurely = Manifest.AutoConfirm_IsStartedSecurely("read", false, "trades");
+            if (Read_AutoConfirmTrades_IsStartedSecurely == true)
+            {
+                chkConfirmTrades.Checked = manifest.AutoConfirmTrades;
+            }
+            else {
+                chkConfirmTrades.Checked = false;
+            }
+
+            Read_AutoConfirmMarket_IsStartedSecurely = Manifest.AutoConfirm_IsStartedSecurely("read", false, "market");
+            if (Read_AutoConfirmMarket_IsStartedSecurely == true)
+            {
+                chkConfirmMarket.Checked = manifest.AutoConfirmMarketTransactions;
+            }
+            else {
+                chkConfirmMarket.Checked = false;
+            }
 
             SetControlsEnabledState(chkPeriodicChecking.Checked);
 
@@ -31,14 +50,17 @@ namespace Steam_Desktop_Authenticator
             numPeriodicInterval.Enabled = chkCheckAll.Enabled = chkConfirmMarket.Enabled = chkConfirmTrades.Enabled = enabled;
         }
 
-        private void ShowWarning(CheckBox affectedBox)
+        private bool ShowWarning()
         {
-            if (!fullyLoaded) return;
+            if (!fullyLoaded) { return false; };
 
             var result = MessageBox.Show("Warning: enabling this will severely reduce the security of your items! Use of this option is at your own risk. Would you like to continue?", "Warning!", MessageBoxButtons.YesNo);
-            if(result == DialogResult.No)
+            if (result == DialogResult.Yes)
             {
-                affectedBox.Checked = false;
+                return true;
+            }
+            else {
+                return false;
             }
         }
 
@@ -47,8 +69,28 @@ namespace Steam_Desktop_Authenticator
             manifest.PeriodicChecking = chkPeriodicChecking.Checked;
             manifest.PeriodicCheckingInterval = (int)numPeriodicInterval.Value;
             manifest.CheckAllAccounts = chkCheckAll.Checked;
-            manifest.AutoConfirmMarketTransactions = chkConfirmMarket.Checked;
-            manifest.AutoConfirmTrades = chkConfirmTrades.Checked;
+
+            // Auto Confirm
+            if (chkConfirmTrades.Checked == true)
+            {
+                Manifest.AutoConfirm_IsStartedSecurely("set", true, "trades");
+                manifest.AutoConfirmTrades = chkConfirmTrades.Checked;
+            }
+            else
+            {
+                manifest.AutoConfirmTrades = chkConfirmTrades.Checked;
+            }
+
+            if (chkConfirmMarket.Checked == true)
+            {
+                Manifest.AutoConfirm_IsStartedSecurely("set", true, "market");
+                manifest.AutoConfirmMarketTransactions = chkConfirmMarket.Checked;
+            }
+            else
+            {
+                manifest.AutoConfirmMarketTransactions = chkConfirmMarket.Checked;
+            }
+
             manifest.Save();
             this.Close();
         }
@@ -60,14 +102,62 @@ namespace Steam_Desktop_Authenticator
 
         private void chkConfirmMarket_CheckedChanged(object sender, EventArgs e)
         {
-            if(chkConfirmMarket.Checked)
-                ShowWarning(chkConfirmMarket);
+            if (fullyLoaded)
+            {
+                if (chkConfirmMarket.Checked)
+                {
+                    bool EnableAutoConfirm_Market_Warning = ShowWarning();
+
+                    if (EnableAutoConfirm_Market_Warning == true)
+                    {
+                        bool EnableAutoConfirm_Market_Securely_atStartup = Manifest.PromptForSecureActvationAutoConfirm("settings_change");
+                        if (EnableAutoConfirm_Market_Securely_atStartup == true)
+                        {
+                            Manifest.AutoConfirm_IsStartedSecurely("set", true, "market");
+                            manifest.AutoConfirmMarketTransactions = chkConfirmMarket.Checked;
+                        }
+                        else
+                        {
+                            manifest.AutoConfirmMarketTransactions = false;
+                            chkConfirmMarket.Checked = false;
+                        }
+                    }
+                    else {
+                        chkConfirmMarket.Checked = false;
+                    }
+                }
+            }
         }
 
         private void chkConfirmTrades_CheckedChanged(object sender, EventArgs e)
         {
-            if(chkConfirmTrades.Checked)
-                ShowWarning(chkConfirmTrades);
+            if (fullyLoaded)
+            {
+                if (chkConfirmTrades.Checked)
+                {
+                    bool EnableAutoConfirm_Trades_Warning = ShowWarning();
+
+                    if (EnableAutoConfirm_Trades_Warning == true)
+                    {
+                        bool EnableAutoConfirm_Trades_Securely_atStartup = Manifest.PromptForSecureActvationAutoConfirm("settings_change");
+                        if (EnableAutoConfirm_Trades_Securely_atStartup == true)
+                        {
+                            Manifest.AutoConfirm_IsStartedSecurely("set", true, "trades");
+                            manifest.AutoConfirmTrades = chkConfirmTrades.Checked;
+                        }
+                        else
+                        {
+                            manifest.AutoConfirmTrades = false;
+                            chkConfirmTrades.Checked = false;
+                        }
+                    }
+                    else {
+                        chkConfirmTrades.Checked = false;
+                    }
+                }
+            }
         }
+        
+        
     }
 }
