@@ -65,29 +65,47 @@ namespace Steam_Desktop_Authenticator
             loadSettings();
             
             //Startup start Auto-confirm Securely
-            if (manifest.PeriodicChecking == true)
+            #region Startup Auto-confirms
+            int StartupMode = 1; // 1= user, secure startup // 2 = auto start, unsecure start for Auto Confirm (for bots - set value 2 and recompile) 
+
+            if (StartupMode == 1)
             {
-                if (manifest.AutoConfirmTrades == true || manifest.AutoConfirmMarketTransactions == true)
+                if (manifest.PeriodicChecking == true)
                 {
-
-                    bool EnableAutoConfirm_TradesAndMarket_Securely_atStartup = Manifest.PromptForSecureActvationAutoConfirm("startup_confirmation");
-
-                    if (EnableAutoConfirm_TradesAndMarket_Securely_atStartup == true)
+                    if (manifest.AutoConfirmTrades == true || manifest.AutoConfirmMarketTransactions == true)
                     {
-                        if (manifest.AutoConfirmTrades == true)
+
+                        bool EnableAutoConfirm_TradesAndMarket_Securely_atStartup = Manifest.PromptForSecureActvationAutoConfirm("startup_confirmation");
+
+                        if (EnableAutoConfirm_TradesAndMarket_Securely_atStartup == true)
                         {
-                            Manifest.AutoConfirm_IsStartedSecurely("set", true, "trade");
-                        }
-                        if (manifest.AutoConfirmMarketTransactions == true)
-                        {
-                            Manifest.AutoConfirm_IsStartedSecurely("set", true, "market");
+                            if (manifest.AutoConfirmTrades == true)
+                            {
+                                Manifest.AutoConfirm_IsStartedSecurely("set", true, "trade");
+                            }
+                            if (manifest.AutoConfirmMarketTransactions == true)
+                            {
+                                Manifest.AutoConfirm_IsStartedSecurely("set", true, "market");
+                            }
                         }
                     }
                 }
             }
+
+            if (StartupMode == 2)
+            {
+                if (manifest.AutoConfirmTrades == true)
+                {
+                    Manifest.AutoConfirm_IsStartedSecurely("set", true, "trade");
+                }
+                if (manifest.AutoConfirmMarketTransactions == true)
+                {
+                    Manifest.AutoConfirm_IsStartedSecurely("set", true, "market");
+                }
+            }
+            #endregion //Startup Auto-confirms
             
             loadAccountsList();
-
             checkForUpdates();
         }
 
