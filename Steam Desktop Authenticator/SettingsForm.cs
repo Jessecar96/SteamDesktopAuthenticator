@@ -132,7 +132,17 @@ namespace Steam_Desktop_Authenticator
 
                     if (EnableAutoConfirm_Market_Warning == true)
                     {
-                        bool EnableAutoConfirm_Market_Securely_atStartup = Manifest.PromptForSecureActvationAutoConfirm("settings_change");
+                        bool EnableAutoConfirm_Market_Securely_atStartup = false;
+                        if (manifest.Encrypted)
+                        {
+                            // secure
+                            EnableAutoConfirm_Market_Securely_atStartup = Manifest.PromptForSecureActvationAutoConfirm("settings_change");
+                        }
+                        else {
+                            // unsecure
+                            EnableAutoConfirm_Market_Securely_atStartup = true;
+                        }
+
                         if (EnableAutoConfirm_Market_Securely_atStartup == true)
                         {
                             Manifest.AutoConfirm_IsStartedSecurely("set", true, "market");
@@ -161,7 +171,17 @@ namespace Steam_Desktop_Authenticator
 
                     if (EnableAutoConfirm_Trades_Warning == true)
                     {
-                        bool EnableAutoConfirm_Trades_Securely_atStartup = Manifest.PromptForSecureActvationAutoConfirm("settings_change");
+                        bool EnableAutoConfirm_Trades_Securely_atStartup = false;
+                        if (manifest.Encrypted)
+                        {
+                            // secure
+                            EnableAutoConfirm_Trades_Securely_atStartup = Manifest.PromptForSecureActvationAutoConfirm("settings_change");
+                        }
+                        else {
+                            // unsecure
+                            EnableAutoConfirm_Trades_Securely_atStartup = true;
+                        }
+
                         if (EnableAutoConfirm_Trades_Securely_atStartup == true)
                         {
                             Manifest.AutoConfirm_IsStartedSecurely("set", true, "trades");
