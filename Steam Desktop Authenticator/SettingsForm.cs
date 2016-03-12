@@ -21,8 +21,22 @@ namespace Steam_Desktop_Authenticator
             numPeriodicInterval.Value = manifest.PeriodicCheckingInterval;
             chkCheckAll.Checked = manifest.CheckAllAccounts;
 
-            // set Auto Confirm
-            Read_AutoConfirmTrades_IsStartedSecurely = Manifest.AutoConfirm_IsStartedSecurely("read", false, "trades");
+
+
+
+
+
+
+            // set Auto Confirm Trades
+            if (manifest.Encrypted)
+            {
+                /*secure*/
+                Read_AutoConfirmTrades_IsStartedSecurely = Manifest.AutoConfirm_IsStartedSecurely("read", false, "trades");
+            }
+            else {
+                /*unsecure*/
+                Read_AutoConfirmTrades_IsStartedSecurely = true;
+            }
             if (Read_AutoConfirmTrades_IsStartedSecurely == true)
             {
                 chkConfirmTrades.Checked = manifest.AutoConfirmTrades;
@@ -31,7 +45,14 @@ namespace Steam_Desktop_Authenticator
                 chkConfirmTrades.Checked = false;
             }
 
-            Read_AutoConfirmMarket_IsStartedSecurely = Manifest.AutoConfirm_IsStartedSecurely("read", false, "market");
+            // set Auto Confirm Market
+            if (manifest.Encrypted) {
+                /*secure*/
+                Read_AutoConfirmMarket_IsStartedSecurely = Manifest.AutoConfirm_IsStartedSecurely("read", false, "market");
+            } else {
+                /*unsecure*/
+                Read_AutoConfirmMarket_IsStartedSecurely = true;
+            }
             if (Read_AutoConfirmMarket_IsStartedSecurely == true)
             {
                 chkConfirmMarket.Checked = manifest.AutoConfirmMarketTransactions;
@@ -39,6 +60,7 @@ namespace Steam_Desktop_Authenticator
             else {
                 chkConfirmMarket.Checked = false;
             }
+            
 
             SetControlsEnabledState(chkPeriodicChecking.Checked);
 
