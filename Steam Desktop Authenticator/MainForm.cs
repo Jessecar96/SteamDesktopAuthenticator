@@ -66,8 +66,10 @@ namespace Steam_Desktop_Authenticator
             
             //Startup start Auto-confirm Securely
             #region Startup Auto-confirms
-            int StartupMode = 1; // 1= user, secure startup // 2 = auto start, unsecure start for Auto Confirm (for bots - set value 2 and recompile) 
-
+            int StartupMode = 1; 
+            
+            if (manifest.Encrypted) { StartupMode = 1; /*secure*/ } else { StartupMode = 2; /*unsecure*/  }
+            
             if (StartupMode == 1)
             {
                 if (manifest.PeriodicChecking == true)
