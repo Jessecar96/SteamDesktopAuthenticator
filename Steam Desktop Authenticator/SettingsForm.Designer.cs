@@ -1,4 +1,4 @@
-﻿namespace Steam_Desktop_Authenticator
+namespace Steam_Desktop_Authenticator
 {
     partial class SettingsForm
     {
@@ -36,6 +36,7 @@
             this.chkCheckAll = new System.Windows.Forms.CheckBox();
             this.chkConfirmMarket = new System.Windows.Forms.CheckBox();
             this.chkConfirmTrades = new System.Windows.Forms.CheckBox();
+            this.chkAppCanRunMultipleTimes = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numPeriodicInterval)).BeginInit();
             this.SuspendLayout();
             // 
@@ -55,7 +56,7 @@
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSave.Location = new System.Drawing.Point(12, 152);
+            this.btnSave.Location = new System.Drawing.Point(12, 189);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(224, 38);
             this.btnSave.TabIndex = 1;
@@ -121,11 +122,22 @@
             this.chkConfirmTrades.UseVisualStyleBackColor = true;
             this.chkConfirmTrades.CheckedChanged += new System.EventHandler(this.chkConfirmTrades_CheckedChanged);
             // 
+            // chkAppCanRunMultipleTimes
+            // 
+            this.chkAppCanRunMultipleTimes.AutoSize = true;
+            this.chkAppCanRunMultipleTimes.Location = new System.Drawing.Point(12, 164);
+            this.chkAppCanRunMultipleTimes.Name = "chkAppCanRunMultipleTimes";
+            this.chkAppCanRunMultipleTimes.Size = new System.Drawing.Size(218, 17);
+            this.chkAppCanRunMultipleTimes.TabIndex = 7;
+            this.chkAppCanRunMultipleTimes.Text = "The app can be started multiple times";
+            this.chkAppCanRunMultipleTimes.UseVisualStyleBackColor = true;
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(244, 202);
+            this.ClientSize = new System.Drawing.Size(244, 239);
+            this.Controls.Add(this.chkAppCanRunMultipleTimes);
             this.Controls.Add(this.chkConfirmTrades);
             this.Controls.Add(this.chkConfirmMarket);
             this.Controls.Add(this.chkCheckAll);
@@ -155,5 +167,6 @@
         private System.Windows.Forms.CheckBox chkCheckAll;
         private System.Windows.Forms.CheckBox chkConfirmMarket;
         private System.Windows.Forms.CheckBox chkConfirmTrades;
+        private System.Windows.Forms.CheckBox chkAppCanRunMultipleTimes;
     }
 }
