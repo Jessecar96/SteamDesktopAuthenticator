@@ -463,7 +463,6 @@ namespace Steam_Desktop_Authenticator
             {
                 lblStatus.Text = "Checking Confirmations Failed";
             }
-            }
         }
 
 
