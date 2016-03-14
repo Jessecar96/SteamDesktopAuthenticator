@@ -427,11 +427,17 @@ namespace Steam_Desktop_Authenticator
                         foreach(var conf in tmp)
                         {
                             if (conf.ConfType == Confirmation.ConfirmationType.MarketSellTransaction && manifest.AutoConfirmMarketTransactions)
-                                acc.AcceptConfirmation(conf);
-                            else if (conf.ConfType == Confirmation.ConfirmationType.Trade && manifest.AutoConfirmTrades)
-                                acc.AcceptConfirmation(conf);
-                            else
-                                confs.Add(conf);
+                                {
+                                    acc.AcceptConfirmation(conf);
+                                else if (conf.ConfType == Confirmation.ConfirmationType.Trade && manifest.AutoConfirmTrades)
+                                    {
+                                        acc.AcceptConfirmation(conf);
+                                    else if (!manifest.AutoConfirmTrades && !manifest.AutoConfirmMarketTransactions)
+                                        {
+                                            confs.Add(conf);
+                                        }
+                                    }
+                                }
                         }
                     }
                     catch (SteamGuardAccount.WGTokenInvalidException)
@@ -452,6 +458,11 @@ namespace Steam_Desktop_Authenticator
             catch (SteamGuardAccount.WGTokenInvalidException)
             {
                 lblStatus.Text = "";
+            }
+            catch
+            {
+                lblStatus.Text = "Checking Confirmations Failed";
+            }
             }
         }
 
