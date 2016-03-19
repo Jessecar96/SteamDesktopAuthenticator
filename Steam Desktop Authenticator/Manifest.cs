@@ -45,11 +45,9 @@ namespace Steam_Desktop_Authenticator
 
         public static string SecureStartAutoConfirm()
         {
-            // random lenght
-                Random r = new Random();
-                int length = r.Next(4, 6);
             // random string
-                 const string chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789"; // removed similar characters: I O i l o 0 1
+            	int length = 3;
+                const string chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789"; // removed similar characters: I O i l o 0 1
                 var random = new Random();
                 string RandomSecureString = new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
 
