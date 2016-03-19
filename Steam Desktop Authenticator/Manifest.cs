@@ -43,6 +43,111 @@ namespace Steam_Desktop_Authenticator
             return Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
         }
 
+        public static string SecureStartAutoConfirm()
+        {
+            // random string
+            	int length = 3;
+                const string chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789"; // removed similar characters: I O i l o 0 1
+                var random = new Random();
+                string RandomSecureString = new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
+
+            return RandomSecureString;
+        }
+
+        public static bool AutoConfirmTrades_IsStartedSecurely_Data = false;
+        public static bool AutoConfirMarketm_IsStartedSecurely_Data = false;
+        public static bool AutoConfirm_IsStartedSecurely(string Function = "",  bool ChangeStatus = false, string PartTradesOrMarket = "")
+        {
+            bool Status_AutoConfirmTrades = false;
+            if (Function == "read")
+            {
+                if (PartTradesOrMarket == "trades") { Status_AutoConfirmTrades = AutoConfirmTrades_IsStartedSecurely_Data; }
+                if (PartTradesOrMarket == "market") { Status_AutoConfirmTrades = AutoConfirMarketm_IsStartedSecurely_Data; }
+            }
+            else if (Function == "set")
+            {
+                if (PartTradesOrMarket == "trades") { AutoConfirmTrades_IsStartedSecurely_Data = ChangeStatus; }
+                if (PartTradesOrMarket == "market") { AutoConfirMarketm_IsStartedSecurely_Data = ChangeStatus; }
+            }
+
+            return Status_AutoConfirmTrades;
+        }
+
+        public static bool PromptForSecureActvationAutoConfirm(string UseFormFor)
+        {
+            bool AutoConfirm_passKeyValid = false;
+
+            // Confirm at Startup
+            if (UseFormFor == "startup_confirmation")
+            {
+                int TotalRentryTimes_AutoConfirm_Passkey = 0;
+                while (!AutoConfirm_passKeyValid && 3 > TotalRentryTimes_AutoConfirm_Passkey)
+                {
+                    TotalRentryTimes_AutoConfirm_Passkey++;
+
+                    string AutoConfirm_Passkey = SecureStartAutoConfirm();
+
+                    string AutoConfirmInfo = "";
+                    var manifest = Manifest.GetManifest();
+                    if (manifest.AutoConfirmTrades == true) { AutoConfirmInfo = " Trades"; }
+                    if (manifest.AutoConfirmMarketTransactions == true) {
+                        if (AutoConfirmInfo == "") { AutoConfirmInfo = " Market"; } else { AutoConfirmInfo = " Trades and Market"; }
+                    }
+					
+                    InputForm AutoConfirm_passKeyForm = new InputForm("To activate Auto-Confirm" + AutoConfirmInfo + " enter:\n" + AutoConfirm_Passkey, true);
+                    AutoConfirm_passKeyForm.ShowDialog();
+                    if (!AutoConfirm_passKeyForm.Canceled)
+                    {
+                        if (AutoConfirm_passKeyForm.txtBox.Text.ToLower() == AutoConfirm_Passkey.ToLower())
+                        {
+                            AutoConfirm_passKeyValid = true;
+                        }
+                        else {
+                            if (TotalRentryTimes_AutoConfirm_Passkey == 3)
+                            {
+                                MessageBox.Show("Auto-Confirm Passkey is invalid.\nAuto-Confirm is now disabled! Confirmation Popups are enabled!");
+                            }
+                            else {
+                                MessageBox.Show("Auto-Confirm Passkey is invalid.");
+                            }
+                        }
+                    }
+                    else
+                    {
+						MessageBox.Show("Auto-Confirm Passkey is invalid.\nAuto-Confirm is now disabled! Confirmation Popups are enabled!");
+                        return false;
+                    }
+                }
+            }
+
+            // Confirm at settings Change
+            if (UseFormFor == "settings_change")
+            {
+				string AutoConfirm_Passkey = SecureStartAutoConfirm();
+				
+                InputForm AutoConfirm_passKeyForm = new InputForm("To activate Auto-Confirm enter:\n" + AutoConfirm_Passkey, true);
+                AutoConfirm_passKeyForm.ShowDialog();
+                if (!AutoConfirm_passKeyForm.Canceled)
+                {
+                    if (AutoConfirm_passKeyForm.txtBox.Text.ToLower() == AutoConfirm_Passkey.ToLower())
+                    {
+                        AutoConfirm_passKeyValid = true;
+                    }
+                    else {
+                        MessageBox.Show("Auto-Confirm Passkey is invalid.");
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            // return
+            return AutoConfirm_passKeyValid;
+        }
+        
+
         public static Manifest GetManifest(bool forceLoad = false)
         {
             // Check if already staticly loaded

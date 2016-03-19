@@ -63,8 +63,51 @@ namespace Steam_Desktop_Authenticator
             btnManageEncryption.Enabled = manifest.Entries.Count > 0;
 
             loadSettings();
-            loadAccountsList();
+            
+            //Startup start Auto-confirm Securely
+            #region Startup Auto-confirms
+            int StartupMode = 1; 
+            
+            if (manifest.Encrypted) { StartupMode = 1; /*secure*/ } else { StartupMode = 2; /*unsecure*/  }
+            
+            if (StartupMode == 1)
+            {
+                if (manifest.PeriodicChecking == true)
+                {
+                    if (manifest.AutoConfirmTrades == true || manifest.AutoConfirmMarketTransactions == true)
+                    {
 
+                        bool EnableAutoConfirm_TradesAndMarket_Securely_atStartup = Manifest.PromptForSecureActvationAutoConfirm("startup_confirmation");
+
+                        if (EnableAutoConfirm_TradesAndMarket_Securely_atStartup == true)
+                        {
+                            if (manifest.AutoConfirmTrades == true)
+                            {
+                                Manifest.AutoConfirm_IsStartedSecurely("set", true, "trade");
+                            }
+                            if (manifest.AutoConfirmMarketTransactions == true)
+                            {
+                                Manifest.AutoConfirm_IsStartedSecurely("set", true, "market");
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (StartupMode == 2)
+            {
+                if (manifest.AutoConfirmTrades == true)
+                {
+                    Manifest.AutoConfirm_IsStartedSecurely("set", true, "trade");
+                }
+                if (manifest.AutoConfirmMarketTransactions == true)
+                {
+                    Manifest.AutoConfirm_IsStartedSecurely("set", true, "market");
+                }
+            }
+            #endregion //Startup Auto-confirms
+            
+            loadAccountsList();
             checkForUpdates();
         }
 
@@ -418,7 +461,9 @@ namespace Steam_Desktop_Authenticator
             try
             {
                 lblStatus.Text = "Checking confirmations...";
-
+                bool GetStatus_AutoConfirmSecurely_Trades = Manifest.AutoConfirm_IsStartedSecurely("read", false, "trades");
+				bool GetStatus_AutoConfirmSecurely_Market = Manifest.AutoConfirm_IsStartedSecurely("read", false, "market");
+                
                 foreach (var acc in accs)
                 {
                     try
@@ -426,9 +471,9 @@ namespace Steam_Desktop_Authenticator
                         Confirmation[] tmp = await currentAccount.FetchConfirmationsAsync();
                         foreach(var conf in tmp)
                         {
-                            if (conf.ConfType == Confirmation.ConfirmationType.MarketSellTransaction && manifest.AutoConfirmMarketTransactions)
+                            if (conf.ConfType == Confirmation.ConfirmationType.MarketSellTransaction && GetStatus_AutoConfirmSecurely_Market)
                                 acc.AcceptConfirmation(conf);
-                            else if (conf.ConfType == Confirmation.ConfirmationType.Trade && manifest.AutoConfirmTrades)
+                            else if (conf.ConfType == Confirmation.ConfirmationType.Trade && GetStatus_AutoConfirmSecurely_Trades)
                                 acc.AcceptConfirmation(conf);
                             else
                                 confs.Add(conf);
