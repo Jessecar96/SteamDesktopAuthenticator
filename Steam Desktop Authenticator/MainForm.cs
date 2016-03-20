@@ -50,7 +50,7 @@ namespace Steam_Desktop_Authenticator
                 passKey = manifest.PromptForPassKey();
                 if (passKey == null)
                 {
-                    Application.Exit();
+                    Environment.Exit(0);
                 }
 
                 btnManageEncryption.Text = "Manage Encryption";
