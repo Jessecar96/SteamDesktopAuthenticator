@@ -74,7 +74,7 @@ namespace Steam_Desktop_Authenticator
                         // get details
                         success('{2}');
                     }}
-                }}", steamAccount.GenerateConfirmationQueryParams("allow"), steamAccount.GenerateConfirmationQueryParams("allow"), urlParams);
+                }}", steamAccount.GenerateConfirmationQueryParams("allow"), steamAccount.GenerateConfirmationQueryParams("cancel"), urlParams);
                 browser.ExecuteScriptAsync(script);
             }
         }
