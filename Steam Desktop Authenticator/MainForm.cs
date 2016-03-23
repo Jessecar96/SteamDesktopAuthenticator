@@ -424,7 +424,7 @@ namespace Steam_Desktop_Authenticator
                     try
                     {
                         Confirmation[] tmp = await currentAccount.FetchConfirmationsAsync();
-                        foreach(var conf in tmp)
+                        foreach (var conf in tmp)
                         {
                             if (conf.ConfType == Confirmation.ConfirmationType.MarketSellTransaction && manifest.AutoConfirmMarketTransactions)
                                 acc.AcceptConfirmation(conf);
@@ -439,6 +439,9 @@ namespace Steam_Desktop_Authenticator
                         lblStatus.Text = "Refreshing session";
                         await currentAccount.RefreshSessionAsync(); //Don't save it to the HDD, of course. We'd need their encryption passkey again.
                         lblStatus.Text = "";
+                    }
+                    catch (WebException)
+                    {
                     }
                 }
 
