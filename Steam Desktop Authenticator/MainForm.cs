@@ -412,6 +412,7 @@ namespace Steam_Desktop_Authenticator
             if (currentAccount == null || popupFrm.Visible) return;
 
             List<Confirmation> confs = new List<Confirmation>();
+            List<ConfirmationsUseOnlyOnce> confsUseOnlyOnce = new List<ConfirmationsUseOnlyOnce>();
             SteamGuardAccount[] accs =
                 manifest.CheckAllAccounts ? allAccounts : new SteamGuardAccount[] { currentAccount };
 
@@ -426,13 +427,17 @@ namespace Steam_Desktop_Authenticator
                         Confirmation[] tmp = await currentAccount.FetchConfirmationsAsync();
                         foreach(var conf in tmp)
                         {
-                            if (conf.ConfType == Confirmation.ConfirmationType.MarketSellTransaction && manifest.AutoConfirmMarketTransactions){
-                                acc.AcceptConfirmation(conf);
-                            }else if (conf.ConfType == Confirmation.ConfirmationType.Trade && manifest.AutoConfirmTrades){
-                                acc.AcceptConfirmation(conf);
-                            }else{
-                                bool AlreadyExistsInPopupList = confs.Exists(item => item.Description == conf.Description && item.ID == conf.ID && item.Key == conf.Key);
-                                if (!AlreadyExistsInPopupList) { confs.Add(conf); }
+                            bool AlreadyUsedConf = confsUseOnlyOnce.Exists(item => item.Description == conf.Description && item.ID == conf.ID && item.Key == conf.Key);
+                            if (!AlreadyUsedConf) { 
+                                confsUseOnlyOnce.Add(conf); 
+                                
+                                if (conf.ConfType == Confirmation.ConfirmationType.MarketSellTransaction && manifest.AutoConfirmMarketTransactions){
+                                    acc.AcceptConfirmation(conf);
+                                }else if (conf.ConfType == Confirmation.ConfirmationType.Trade && manifest.AutoConfirmTrades){
+                                    acc.AcceptConfirmation(conf);
+                                }else{
+                                    confs.Add(conf);
+                                }
                             }
                         }
                     }
