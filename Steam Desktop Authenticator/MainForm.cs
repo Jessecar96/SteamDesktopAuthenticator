@@ -426,12 +426,14 @@ namespace Steam_Desktop_Authenticator
                         Confirmation[] tmp = await currentAccount.FetchConfirmationsAsync();
                         foreach (var conf in tmp)
                         {
-                            if (conf.ConfType == Confirmation.ConfirmationType.MarketSellTransaction && manifest.AutoConfirmMarketTransactions)
+                            if (conf.ConfType == Confirmation.ConfirmationType.MarketSellTransaction && manifest.AutoConfirmMarketTransactions){
                                 acc.AcceptConfirmation(conf);
-                            else if (conf.ConfType == Confirmation.ConfirmationType.Trade && manifest.AutoConfirmTrades)
+                            }else if (conf.ConfType == Confirmation.ConfirmationType.Trade && manifest.AutoConfirmTrades){
                                 acc.AcceptConfirmation(conf);
-                            else
-                                confs.Add(conf);
+                            }else{
+                                bool AlreadyExistsInPopupList = confs.Exists(item => item.Description == conf.Description && item.ID == conf.ID && item.Key == conf.Key);
+                                if (!AlreadyExistsInPopupList) { confs.Add(conf); }
+                            }
                         }
                     }
                     catch (SteamGuardAccount.WGTokenInvalidException)
