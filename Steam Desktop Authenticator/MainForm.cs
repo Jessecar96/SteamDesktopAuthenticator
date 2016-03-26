@@ -412,7 +412,7 @@ namespace Steam_Desktop_Authenticator
             if (currentAccount == null || popupFrm.Visible) return;
 
             List<Confirmation> confs = new List<Confirmation>();
-            List<ConfirmationsUseOnlyOnce> confsUseOnlyOnce = new List<ConfirmationsUseOnlyOnce>();
+            List<Confirmation> confsUseOnlyOnce = new List<Confirmation>();
             SteamGuardAccount[] accs =
                 manifest.CheckAllAccounts ? allAccounts : new SteamGuardAccount[] { currentAccount };
 
