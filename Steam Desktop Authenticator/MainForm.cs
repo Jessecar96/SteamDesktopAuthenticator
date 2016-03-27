@@ -409,7 +409,9 @@ namespace Steam_Desktop_Authenticator
 
         private async void timerTradesPopup_Tick(object sender, EventArgs e)
         {
-            if (currentAccount == null || popupFrm.Visible) return;
+            timerTradesPopup_Tick.Stop();
+            
+            if (currentAccount == null || popupFrm.Visible){ timerTradesPopup_Tick.Start(); return; }
 
             List<Confirmation> confs = new List<Confirmation>();
             SteamGuardAccount[] accs =
@@ -444,7 +446,7 @@ namespace Steam_Desktop_Authenticator
 
                 lblStatus.Text = "";
 
-                if (confs.Count == 0) return;
+                if (confs.Count == 0) { timerTradesPopup_Tick.Start(); return; }
 
                 popupFrm.Confirmations = confs.ToArray();
                 popupFrm.Popup();
@@ -453,6 +455,8 @@ namespace Steam_Desktop_Authenticator
             {
                 lblStatus.Text = "";
             }
+            
+            timerTradesPopup_Tick.Start();
         }
 
 
