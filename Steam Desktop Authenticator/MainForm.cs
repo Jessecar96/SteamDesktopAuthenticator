@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Net;
 using Newtonsoft.Json;
+using System.Threading;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -16,6 +17,7 @@ namespace Steam_Desktop_Authenticator
         private SteamGuardAccount[] allAccounts;
         private List<string> updatedSessions = new List<string>();
         private Manifest manifest;
+        private static SemaphoreSlim confirmationsSemaphore = new SemaphoreSlim(1,1);
 
         private long steamTime = 0;
         private long currentSteamChunk = 0;
@@ -24,12 +26,10 @@ namespace Steam_Desktop_Authenticator
         // Forms
         private TradePopupForm popupFrm = new TradePopupForm();
 
-
         public MainForm()
         {
             InitializeComponent();
         }
-
 
         // Form event handlers
 
@@ -91,8 +91,8 @@ namespace Steam_Desktop_Authenticator
 
         private void btnSteamLogin_Click(object sender, EventArgs e)
         {
-            LoginForm mLoginForm = new LoginForm();
-            mLoginForm.ShowDialog();
+            var loginForm = new LoginForm();
+            loginForm.ShowDialog();
             this.loadAccountsList();
         }
 
@@ -102,7 +102,7 @@ namespace Steam_Desktop_Authenticator
 
             string oText = btnTradeConfirmations.Text;
             btnTradeConfirmations.Text = "Loading...";
-            await currentAccount.RefreshSessionAsync();
+            await RefreshAccountSession(currentAccount);
             btnTradeConfirmations.Text = oText;
 
             try
@@ -227,10 +227,7 @@ namespace Steam_Desktop_Authenticator
 
         private void menuLoginAgain_Click(object sender, EventArgs e)
         {
-            LoginForm mLoginForm = new LoginForm();
-            mLoginForm.androidAccount = currentAccount;
-            mLoginForm.refreshLogin = true;
-            mLoginForm.ShowDialog();
+            this.PromptRefreshLogin(currentAccount);
         }
 
         private void menuImportMaFile_Click(object sender, EventArgs e)
@@ -309,7 +306,7 @@ namespace Steam_Desktop_Authenticator
 
         private async void menuRefreshSession_Click(object sender, EventArgs e)
         {
-            bool status = await currentAccount.RefreshSessionAsync();
+            bool status = await RefreshAccountSession(currentAccount);
             if (status == true)
             {
                 MessageBox.Show("Your session has been refreshed.", "Session refresh", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -321,9 +318,7 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
-
         // Tray menu handlers
-
         private void trayIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             trayRestore_Click(sender, EventArgs.Empty);
@@ -360,7 +355,6 @@ namespace Steam_Desktop_Authenticator
 
 
         // Misc UI handlers
-
         private void listAccounts_SelectedValueChanged(object sender, EventArgs e)
         {
             for (int i = 0; i < allAccounts.Length; i++)
@@ -410,6 +404,10 @@ namespace Steam_Desktop_Authenticator
         private async void timerTradesPopup_Tick(object sender, EventArgs e)
         {
             if (currentAccount == null || popupFrm.Visible) return;
+            if (!confirmationsSemaphore.Wait(0))
+            {
+                return; //Only one thread may access this critical section at once. Mutex is a bad choice here because it'll cause a pileup of threads.
+            }
 
             List<Confirmation> confs = new List<Confirmation>();
             SteamGuardAccount[] accs =
@@ -418,7 +416,7 @@ namespace Steam_Desktop_Authenticator
             try
             {
                 lblStatus.Text = "Checking confirmations...";
-
+                
                 foreach (var acc in accs)
                 {
                     try
@@ -440,26 +438,73 @@ namespace Steam_Desktop_Authenticator
                         await currentAccount.RefreshSessionAsync(); //Don't save it to the HDD, of course. We'd need their encryption passkey again.
                         lblStatus.Text = "";
                     }
+                    catch (SteamGuardAccount.WGTokenExpiredException)
+                    {
+                        //Prompt to relogin
+                        PromptRefreshLogin(currentAccount);
+                        break; //Don't bombard a user with login refresh requests if they have multiple accounts. Give them a few seconds to disable the autocheck option if they want.
+                    }
                     catch (WebException)
                     {
+
                     }
                 }
 
                 lblStatus.Text = "";
 
-                if (confs.Count == 0) return;
-
-                popupFrm.Confirmations = confs.ToArray();
-                popupFrm.Popup();
+                if (confs.Count > 0)
+                {
+                    popupFrm.Confirmations = confs.ToArray();
+                    popupFrm.Popup();
+                }
             }
             catch (SteamGuardAccount.WGTokenInvalidException)
             {
                 lblStatus.Text = "";
             }
+
+            confirmationsSemaphore.Release();
         }
 
 
         // Other methods
+
+        /// <summary>
+        /// Refresh this account's session data using their OAuth Token
+        /// </summary>
+        /// <param name="account">The account to refresh</param>
+        /// <param name="attemptRefreshLogin">Whether or not to prompt the user to re-login if their OAuth token is expired.</param>
+        /// <returns></returns>
+        private async Task<bool> RefreshAccountSession(SteamGuardAccount account, bool attemptRefreshLogin = true)
+        {
+            if (account == null) return false;
+
+            PromptRefreshLogin(currentAccount);
+
+            try
+            {
+                bool refreshed = await account.RefreshSessionAsync();
+                return refreshed; //No exception thrown means that we either successfully refreshed the session or there was a different issue preventing us from doing so.
+            }
+            catch (SteamGuardAccount.WGTokenExpiredException)
+            {
+                if (!attemptRefreshLogin) return false;
+
+                PromptRefreshLogin(account);
+
+                return await RefreshAccountSession(account, false);
+            }
+        }
+
+        /// <summary>
+        /// Display a login form to the user to refresh their OAuth Token
+        /// </summary>
+        /// <param name="account">The account to refresh</param>
+        private void PromptRefreshLogin(SteamGuardAccount account)
+        {
+            var loginForm = new LoginForm(LoginForm.LoginType.Refresh, account);
+            loginForm.ShowDialog();
+        }
 
         /// <summary>
         /// Load UI with the current account info, this is run every second
@@ -502,30 +547,6 @@ namespace Steam_Desktop_Authenticator
                 trayAccountList.SelectedIndex = 0;
             }
             menuDeactivateAuthenticator.Enabled = btnTradeConfirmations.Enabled = allAccounts.Length > 0;
-        }
-
-        /// <summary>
-        /// Reload the session of the current account
-        /// </summary>
-        /// <returns></returns>
-        private async Task UpdateCurrentSession()
-        {
-            await UpdateSession(currentAccount);
-        }
-
-        private async Task UpdateSession(SteamGuardAccount account)
-        {
-            if (account == null) return;
-            if (updatedSessions.Contains(account.AccountName)) return;
-
-            lblStatus.Text = "Refreshing session...";
-            btnTradeConfirmations.Enabled = false;
-
-            await currentAccount.RefreshSessionAsync();
-            updatedSessions.Add(account.AccountName);
-
-            lblStatus.Text = "";
-            btnTradeConfirmations.Enabled = true;
         }
 
         private void listAccounts_KeyDown(object sender, KeyEventArgs e)

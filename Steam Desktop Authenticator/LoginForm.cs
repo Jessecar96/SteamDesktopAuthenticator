@@ -6,15 +6,25 @@ namespace Steam_Desktop_Authenticator
 {
     public partial class LoginForm : Form
     {
-
-        public UserLogin userLogin;
         public SteamGuardAccount androidAccount;
-        public bool refreshLogin = false;
-        public bool loginFromAndroid = false;
+        public LoginType LoginReason;
 
-        public LoginForm(bool forceAndroidImport = false)
+        public LoginForm(LoginType loginReason = LoginType.Initial, SteamGuardAccount account = null)
         {
             InitializeComponent();
+            this.LoginReason = loginReason;
+            this.androidAccount = account;
+
+            if (this.LoginReason != LoginType.Initial)
+            {
+                txtUsername.Text = account.AccountName;
+                txtUsername.Enabled = false;
+            }
+
+            if(this.LoginReason == LoginType.Refresh)
+            {
+                labelLoginExplanation.Text = "Your Steam credentials have expired. For trade and market confirmations to work properly, please login again.";
+            }
         }
 
         public void SetUsername(string username)
@@ -39,18 +49,18 @@ namespace Steam_Desktop_Authenticator
             string username = txtUsername.Text;
             string password = txtPassword.Text;
 
-            if (loginFromAndroid)
+            if (LoginReason == LoginType.Android)
             {
                 FinishExtract(username, password);
                 return;
             }
-            else if (refreshLogin)
+            else if (LoginReason == LoginType.Refresh)
             {
                 RefreshLogin(username, password);
                 return;
             }
 
-            userLogin = new UserLogin(username, password);
+            var userLogin = new UserLogin(username, password);
             LoginResult response = LoginResult.BadCredentials;
 
             while ((response = userLogin.DoLogin()) != LoginResult.LoginOkay)
@@ -258,18 +268,6 @@ namespace Steam_Desktop_Authenticator
             {
                 switch (response)
                 {
-                    case LoginResult.NeedEmail:
-                        InputForm emailForm = new InputForm("Enter the Steam Guard code sent to your email:");
-                        emailForm.ShowDialog();
-                        if (emailForm.Canceled)
-                        {
-                            this.Close();
-                            return;
-                        }
-
-                        mUserLogin.EmailCode = emailForm.txtBox.Text;
-                        break;
-
                     case LoginResult.NeedCaptcha:
                         CaptchaForm captchaForm = new CaptchaForm(mUserLogin.CaptchaGID);
                         captchaForm.ShowDialog();
@@ -436,6 +434,13 @@ namespace Steam_Desktop_Authenticator
             {
                 txtUsername.Text = androidAccount.AccountName;
             }
+        }
+
+        public enum LoginType
+        {
+            Initial,
+            Android,
+            Refresh
         }
     }
 }

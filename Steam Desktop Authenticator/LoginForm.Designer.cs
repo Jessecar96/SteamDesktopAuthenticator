@@ -34,7 +34,7 @@
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.btnSteamLogin = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
+            this.labelLoginExplanation = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -87,14 +87,14 @@
             this.btnSteamLogin.UseVisualStyleBackColor = true;
             this.btnSteamLogin.Click += new System.EventHandler(this.btnSteamLogin_Click);
             // 
-            // label3
+            // labelLoginExplanation
             // 
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(15, 98);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(306, 46);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "This will activate Steam Desktop Authenticator on your Steam account. This requir" +
+            this.labelLoginExplanation.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelLoginExplanation.Location = new System.Drawing.Point(15, 98);
+            this.labelLoginExplanation.Name = "labelLoginExplanation";
+            this.labelLoginExplanation.Size = new System.Drawing.Size(306, 46);
+            this.labelLoginExplanation.TabIndex = 5;
+            this.labelLoginExplanation.Text = "This will activate Steam Desktop Authenticator on your Steam account. This requir" +
     "es a phone number that can receive SMS.";
             // 
             // LoginForm
@@ -103,7 +103,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(346, 193);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.labelLoginExplanation);
             this.Controls.Add(this.btnSteamLogin);
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.label2);
@@ -131,6 +131,6 @@
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnSteamLogin;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelLoginExplanation;
     }
 }

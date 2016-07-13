@@ -87,10 +87,7 @@ namespace Steam_Desktop_Authenticator
         private void LoginAccount()
         {
             MessageBox.Show("Account extracted succesfully! Please login to it.");
-            LoginForm login = new LoginForm();
-            login.androidAccount = steamAccount;
-            login.loginFromAndroid = true;
-            login.SetUsername(steamAccount.AccountName);
+            LoginForm login = new LoginForm(LoginForm.LoginType.Android, steamAccount);
             login.ShowDialog();
             this.Close();
         }
