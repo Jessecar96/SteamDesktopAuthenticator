@@ -479,8 +479,6 @@ namespace Steam_Desktop_Authenticator
         {
             if (account == null) return false;
 
-            PromptRefreshLogin(currentAccount);
-
             try
             {
                 bool refreshed = await account.RefreshSessionAsync();
