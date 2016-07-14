@@ -17,7 +17,7 @@ namespace Steam_Desktop_Authenticator
         private SteamGuardAccount[] allAccounts;
         private List<string> updatedSessions = new List<string>();
         private Manifest manifest;
-        private static SemaphoreSlim confirmationsSemaphore = new SemaphoreSlim(1,1);
+        private static SemaphoreSlim confirmationsSemaphore = new SemaphoreSlim(1, 1);
 
         private long steamTime = 0;
         private long currentSteamChunk = 0;
@@ -410,13 +410,15 @@ namespace Steam_Desktop_Authenticator
             }
 
             List<Confirmation> confs = new List<Confirmation>();
+            Dictionary<SteamGuardAccount, List<Confirmation>> autoAcceptConfirmations = new Dictionary<SteamGuardAccount, List<Confirmation>>();
+
             SteamGuardAccount[] accs =
                 manifest.CheckAllAccounts ? allAccounts : new SteamGuardAccount[] { currentAccount };
 
             try
             {
                 lblStatus.Text = "Checking confirmations...";
-                
+
                 foreach (var acc in accs)
                 {
                     try
@@ -424,10 +426,13 @@ namespace Steam_Desktop_Authenticator
                         Confirmation[] tmp = await currentAccount.FetchConfirmationsAsync();
                         foreach (var conf in tmp)
                         {
-                            if (conf.ConfType == Confirmation.ConfirmationType.MarketSellTransaction && manifest.AutoConfirmMarketTransactions)
-                                acc.AcceptConfirmation(conf);
-                            else if (conf.ConfType == Confirmation.ConfirmationType.Trade && manifest.AutoConfirmTrades)
-                                acc.AcceptConfirmation(conf);
+                            if ((conf.ConfType == Confirmation.ConfirmationType.MarketSellTransaction && manifest.AutoConfirmMarketTransactions) ||
+                                (conf.ConfType == Confirmation.ConfirmationType.Trade && manifest.AutoConfirmTrades))
+                            {
+                                if (!autoAcceptConfirmations.ContainsKey(acc))
+                                    autoAcceptConfirmations[acc] = new List<Confirmation>();
+                                autoAcceptConfirmations[acc].Add(conf);
+                            }
                             else
                                 confs.Add(conf);
                         }
@@ -457,6 +462,14 @@ namespace Steam_Desktop_Authenticator
                     popupFrm.Confirmations = confs.ToArray();
                     popupFrm.Popup();
                 }
+                if (autoAcceptConfirmations.Count > 0)
+                {
+                    foreach(var acc in autoAcceptConfirmations.Keys)
+                    {
+                        var confirmations = autoAcceptConfirmations[acc].ToArray();
+                        acc.AcceptMultipleConfirmations(confirmations);
+                    }
+                }
             }
             catch (SteamGuardAccount.WGTokenInvalidException)
             {
@@ -465,7 +478,6 @@ namespace Steam_Desktop_Authenticator
 
             confirmationsSemaphore.Release();
         }
-
 
         // Other methods
 
