@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -107,7 +108,14 @@ namespace Steam_Desktop_Authenticator
                 return null;
             acc = JsonConvert.DeserializeObject<SteamGuardAccount>(json);
             acc.DeviceID = GetDeviceID(root);
-
+            
+            if (acc.DeviceID == null)
+            {
+                OnPhoneBridgeError("failed to read the UUID (device id)");
+                //acc.DeviceID = "";
+                acc = null;
+            }
+            
             return acc;
         }
 
@@ -122,18 +130,18 @@ namespace Steam_Desktop_Authenticator
         private string GetDeviceID(bool root)
         {
             OnOutputLog("Extracting Device ID");
-            string id = "ERROR";
+            string id = null;
             ManualResetEventSlim mre = new ManualResetEventSlim();
             DataReceivedEventHandler f1 = (sender, e) =>
             {
                 if (e.Data.Contains(">@") || e.Data == "") return;
-                if (e.Data.TrimStart().StartsWith("<string"))
-                {
-                    string d = e.Data.Trim();
-                    int i = d.IndexOf("android");
-                    id = d.Substring(23, (d.Length - i) - 9);
-                }
-                if (e.Data == "Done")
+                
+                Regex rx = new Regex(@"<string[^>]*\s+name=" + "\"uuidKey\"" + @"[^>]*>[\s\t\r\n]*(android:.+)[\s\t\r\n]*<\/string>", RegexOptions.IgnoreCase);
+                Match m = rx.Match(e.Data);
+                if (m.Success) { id = m.Groups[1].Value; }
+                
+                //this need more test,but also is not necessary
+                //if (e.Data.TrimEnd(' ', '\t', '\n', '\r').EndsWith("Done"))
                     mre.Set();
             };
 
