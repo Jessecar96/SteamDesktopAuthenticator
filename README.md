@@ -42,3 +42,11 @@ If you did not follow the directions and did not write your revocation code down
  - Refresh your account's session via the main form
 
 If your problem doesn't appear on the list or none of the solutions worked, submit an issue on the issue tracker. When posting logs in an issue, please upload it to some site like [Pastebin](http://www.pastebin.com).
+
+## Building on linux
+- First, you will need to install the `mono` and `monodevelop` packages, usually available from your standard package repository.
+- Open monodevelop and select File -> Open. Navigate to the folder where you cloned this program to and open the file "Steam Desktop Authenticator/Steam Desktop Authenticator.sln"
+- If you initialized submodules correctly, you should see two tree hirarchies on the left side of the screen, one labeled **SteamDesktopAuthenticator** and the other **SteamAuth**. (If you didn't, an error will be displayed; go update them!) For both of them, select "Packages", right click on "Newtonsoft.Json", and click update. Remember to do this for **both SteamDesktopAuthenticator and SteamAuth**
+- Select Project->Active Configuration->Release (this will make this application run faster)
+- Select Build->Build All. The package should now build successfully.
+- The resulting executable and files will be in "Steam Desktop Authenticator/bin/Release"
