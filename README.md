@@ -38,8 +38,8 @@ If you did not follow the directions and did not write your revocation code down
 [How to use SDA on multiple computers.](https://github.com/Jessecar96/SteamDesktopAuthenticator/wiki/Using-SDA-on-multiple-computers)
 
 ## Troubleshooting
-- **Trade confirmation list is completely blank**
- - Refresh your account's session via the main form
+- **Trade confirmation list is just white or a blank screen**
+ - First open the "Selected Account" menu, then click "Force session refresh". If it still doesn't work after that, open the "Selected Account" menu again, then click "Login again" and login to your Steam account.
 
 If your problem doesn't appear on the list or none of the solutions worked, submit an issue on the issue tracker. When posting logs in an issue, please upload it to some site like [Pastebin](http://www.pastebin.com).
 
