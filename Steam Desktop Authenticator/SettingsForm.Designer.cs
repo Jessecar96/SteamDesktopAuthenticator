@@ -36,6 +36,8 @@
             this.chkCheckAll = new System.Windows.Forms.CheckBox();
             this.chkConfirmMarket = new System.Windows.Forms.CheckBox();
             this.chkConfirmTrades = new System.Windows.Forms.CheckBox();
+            this.chkStartup = new System.Windows.Forms.CheckBox();
+            this.chkStartMin = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numPeriodicInterval)).BeginInit();
             this.SuspendLayout();
             // 
@@ -55,7 +57,7 @@
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSave.Location = new System.Drawing.Point(12, 152);
+            this.btnSave.Location = new System.Drawing.Point(12, 201);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(224, 38);
             this.btnSave.TabIndex = 1;
@@ -121,11 +123,34 @@
             this.chkConfirmTrades.UseVisualStyleBackColor = true;
             this.chkConfirmTrades.CheckedChanged += new System.EventHandler(this.chkConfirmTrades_CheckedChanged);
             // 
+            // chkStartup
+            // 
+            this.chkStartup.AutoSize = true;
+            this.chkStartup.Location = new System.Drawing.Point(12, 150);
+            this.chkStartup.Name = "chkStartup";
+            this.chkStartup.Size = new System.Drawing.Size(154, 17);
+            this.chkStartup.TabIndex = 7;
+            this.chkStartup.Text = "Run on windows startup";
+            this.chkStartup.UseVisualStyleBackColor = true;
+            // 
+            // chkStartMin
+            // 
+            this.chkStartMin.AutoSize = true;
+            this.chkStartMin.Enabled = false;
+            this.chkStartMin.Location = new System.Drawing.Point(27, 173);
+            this.chkStartMin.Name = "chkStartMin";
+            this.chkStartMin.Size = new System.Drawing.Size(105, 17);
+            this.chkStartMin.TabIndex = 8;
+            this.chkStartMin.Text = "Start minimized";
+            this.chkStartMin.UseVisualStyleBackColor = true;
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(244, 202);
+            this.ClientSize = new System.Drawing.Size(244, 251);
+            this.Controls.Add(this.chkStartMin);
+            this.Controls.Add(this.chkStartup);
             this.Controls.Add(this.chkConfirmTrades);
             this.Controls.Add(this.chkConfirmMarket);
             this.Controls.Add(this.chkCheckAll);
@@ -155,5 +180,7 @@
         private System.Windows.Forms.CheckBox chkCheckAll;
         private System.Windows.Forms.CheckBox chkConfirmMarket;
         private System.Windows.Forms.CheckBox chkConfirmTrades;
+        private System.Windows.Forms.CheckBox chkStartup;
+        private System.Windows.Forms.CheckBox chkStartMin;
     }
 }
