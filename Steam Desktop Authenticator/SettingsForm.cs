@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Windows.Forms;
 
 namespace Steam_Desktop_Authenticator
@@ -7,6 +8,17 @@ namespace Steam_Desktop_Authenticator
     {
         Manifest manifest;
         bool fullyLoaded = false;
+
+        bool startupEnabled;
+        RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+
+        private string StartupLine
+        {
+            get
+            {
+                return "\"" + Application.ExecutablePath + "\" -startup";
+            }
+        }
 
         public SettingsForm()
         {
@@ -24,6 +36,11 @@ namespace Steam_Desktop_Authenticator
             SetControlsEnabledState(chkPeriodicChecking.Checked);
 
             fullyLoaded = true;
+
+            startupEnabled = rkApp.GetValue("SDA")?.ToString() == StartupLine;
+            chkStartup.Checked = startupEnabled;
+            chkStartMin.Enabled = startupEnabled;
+            chkStartMin.Checked = manifest.StartupMinimized;
         }
 
         private void SetControlsEnabledState(bool enabled)
@@ -49,7 +66,18 @@ namespace Steam_Desktop_Authenticator
             manifest.CheckAllAccounts = chkCheckAll.Checked;
             manifest.AutoConfirmMarketTransactions = chkConfirmMarket.Checked;
             manifest.AutoConfirmTrades = chkConfirmTrades.Checked;
+            manifest.StartupMinimized = chkStartMin.Checked;
             manifest.Save();
+
+            if (chkStartup.Checked && !startupEnabled)
+            {
+                rkApp.SetValue("SDA", StartupLine);
+            }
+            else if (!chkStartup.Checked && startupEnabled)
+            {
+                rkApp.DeleteValue("SDA", false);
+            }
+
             this.Close();
         }
 
@@ -68,6 +96,11 @@ namespace Steam_Desktop_Authenticator
         {
             if(chkConfirmTrades.Checked)
                 ShowWarning(chkConfirmTrades);
+        }
+
+        private void chkStartup_CheckedChanged(object sender, EventArgs e)
+        {
+            chkStartMin.Enabled = chkStartup.Checked;
         }
     }
 }

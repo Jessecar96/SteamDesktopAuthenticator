@@ -132,6 +132,7 @@
             this.chkStartup.TabIndex = 7;
             this.chkStartup.Text = "Run on windows startup";
             this.chkStartup.UseVisualStyleBackColor = true;
+            this.chkStartup.CheckedChanged += new System.EventHandler(this.chkStartup_CheckedChanged);
             // 
             // chkStartMin
             // 
