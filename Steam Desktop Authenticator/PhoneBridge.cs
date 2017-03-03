@@ -150,7 +150,7 @@ namespace Steam_Desktop_Authenticator
             console.OutputDataReceived += f1;
 
             if (root)
-                ExecuteCommand("adb shell \"cat /data/data/$STEAMAPP/shared_prefs/steam.uuid.xml\" & echo Done");
+                ExecuteCommand("adb shell \"su -c 'cat /data/data/$STEAMAPP/shared_prefs/steam.uuid.xml'\" & echo Done");
             else
                 ExecuteCommand("adb shell \"cat /sdcard/steamauth/apps/$STEAMAPP/sp/steam.uuid.xml\" & echo Done");
             mre.Wait();

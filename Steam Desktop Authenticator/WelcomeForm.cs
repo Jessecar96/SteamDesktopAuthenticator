@@ -106,5 +106,20 @@ namespace Steam_Desktop_Authenticator
                 showMainForm();
             }
         }
+
+        private void btnWinAuthImport_Click(object sender, EventArgs e)
+        {
+            int oldEntries = man.Entries.Count;
+
+            new ImportWinAuthForm().ShowDialog();
+
+            if (man.Entries.Count > oldEntries)
+            {
+                // Mark as not first run anymore
+                man.FirstRun = false;
+                man.Save();
+                showMainForm();
+            }
+        }
     }
 }

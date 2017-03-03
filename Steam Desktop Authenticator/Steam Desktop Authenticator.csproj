@@ -109,6 +109,10 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -146,6 +150,12 @@
     </Compile>
     <Compile Include="ImportAccountForm.Designer.cs">
       <DependentUpon>ImportAccountForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ImportWinAuthForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImportWinAuthForm.Designer.cs">
+      <DependentUpon>ImportWinAuthForm.cs</DependentUpon>
     </Compile>
     <Compile Include="InputForm.cs">
       <SubType>Form</SubType>
@@ -213,6 +223,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ImportAccountForm.resx">
       <DependentUpon>ImportAccountForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImportWinAuthForm.resx">
+      <DependentUpon>ImportWinAuthForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InputForm.resx">
       <DependentUpon>InputForm.cs</DependentUpon>

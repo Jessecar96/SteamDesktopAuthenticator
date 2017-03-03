@@ -685,5 +685,10 @@ namespace Steam_Desktop_Authenticator
                 MessageBox.Show("Failed to check for updates.");
             }
         }
+
+        private void menuImportWinAuth_Click(object sender, EventArgs e)
+        {
+            new ImportWinAuthForm().ShowDialog();
+        }
     }
 }

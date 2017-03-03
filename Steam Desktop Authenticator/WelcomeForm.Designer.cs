@@ -34,6 +34,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnAndroidImport = new System.Windows.Forms.Button();
             this.btnJustStart = new System.Windows.Forms.Button();
+            this.btnWinAuthImport = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -83,7 +84,7 @@
             // btnJustStart
             // 
             this.btnJustStart.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnJustStart.Location = new System.Drawing.Point(12, 248);
+            this.btnJustStart.Location = new System.Drawing.Point(12, 305);
             this.btnJustStart.Name = "btnJustStart";
             this.btnJustStart.Size = new System.Drawing.Size(366, 51);
             this.btnJustStart.TabIndex = 4;
@@ -91,11 +92,23 @@
             this.btnJustStart.UseVisualStyleBackColor = true;
             this.btnJustStart.Click += new System.EventHandler(this.btnJustStart_Click);
             // 
+            // btnWinAuthImport
+            // 
+            this.btnWinAuthImport.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnWinAuthImport.Location = new System.Drawing.Point(12, 248);
+            this.btnWinAuthImport.Name = "btnWinAuthImport";
+            this.btnWinAuthImport.Size = new System.Drawing.Size(366, 51);
+            this.btnWinAuthImport.TabIndex = 5;
+            this.btnWinAuthImport.Text = "I have a WinAuth export file and want to import its account(s).";
+            this.btnWinAuthImport.UseVisualStyleBackColor = true;
+            this.btnWinAuthImport.Click += new System.EventHandler(this.btnWinAuthImport_Click);
+            // 
             // WelcomeForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(390, 313);
+            this.ClientSize = new System.Drawing.Size(390, 369);
+            this.Controls.Add(this.btnWinAuthImport);
             this.Controls.Add(this.btnJustStart);
             this.Controls.Add(this.btnAndroidImport);
             this.Controls.Add(this.label2);
@@ -119,5 +132,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnAndroidImport;
         private System.Windows.Forms.Button btnJustStart;
+        private System.Windows.Forms.Button btnWinAuthImport;
     }
 }
