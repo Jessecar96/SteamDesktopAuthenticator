@@ -107,7 +107,7 @@ namespace Steam_Desktop_Authenticator
 
             if (json == null)
                 return null;
-            acc = JsonConvert.DeserializeObject<SteamGuardAccount>(json);
+            acc = JsonConvert.DeserializeObject<SteamGuardAccount>(json, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
             acc.DeviceID = GetDeviceID(root);
 
             return acc;
