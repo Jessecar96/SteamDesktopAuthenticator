@@ -12,6 +12,9 @@ namespace Steam_Desktop_Authenticator
 {
     public class Manifest
     {
+        [JsonProperty("app_can_be_started_multiple_times")]
+        public bool AppCanBeStartedMultipleTimes { get; set; } = false;
+        
         [JsonProperty("encrypted")]
         public bool Encrypted { get; set; }
 
@@ -94,6 +97,7 @@ namespace Steam_Desktop_Authenticator
         {
             // No directory means no manifest file anyways.
             Manifest newManifest = new Manifest();
+            newManifest.AppCanBeStartedMultipleTimes = false;
             newManifest.Encrypted = false;
             newManifest.PeriodicCheckingInterval = 5;
             newManifest.PeriodicChecking = false;
