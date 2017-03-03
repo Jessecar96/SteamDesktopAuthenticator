@@ -36,6 +36,9 @@ namespace Steam_Desktop_Authenticator
         [JsonProperty("auto_confirm_trades")]
         public bool AutoConfirmTrades { get; set; } = false;
 
+        [JsonProperty("startup_min")]
+        public bool StartupMinimized { get; set; } = true;
+
         private static Manifest _manifest { get; set; }
 
         public static string GetExecutableDir()

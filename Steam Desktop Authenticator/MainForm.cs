@@ -35,6 +35,11 @@ namespace Steam_Desktop_Authenticator
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
+            if (Program.winStartup)
+            {
+                this.Hide();
+            }
+
             this.labelVersion.Text = String.Format("v{0}", Application.ProductVersion);
             this.manifest = Manifest.GetManifest();
 
@@ -71,6 +76,12 @@ namespace Steam_Desktop_Authenticator
         private void MainForm_Load(object sender, EventArgs e)
         {
             trayIcon.Icon = this.Icon;
+
+            if (Program.winStartup)
+            {
+                //Minimize on load so it doesn't blink
+                this.WindowState = FormWindowState.Minimized;
+            }
         }
 
         private void MainForm_Resize(object sender, EventArgs e)

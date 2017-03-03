@@ -10,6 +10,8 @@ namespace Steam_Desktop_Authenticator
 {
     static class Program
     {
+        public static bool winStartup;
+
         public static Process PriorProcess()
         // Returns a System.Diagnostics.Process pointing to
         // a pre-existing process with the same name as the
@@ -38,7 +40,7 @@ namespace Steam_Desktop_Authenticator
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             // run the program only once
             if (PriorProcess() != null)
@@ -47,11 +49,16 @@ namespace Steam_Desktop_Authenticator
                 return;
             }
 
+            bool startup = args.Length > 0 && args[0] == "-startup";
+            
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
             Manifest man = Manifest.GetManifest();
-            if(man.FirstRun)
+
+            winStartup = startup && man.StartupMinimized;
+
+            if (man.FirstRun)
             {
                 // Install VC++ Redist and wait
                 new InstallRedistribForm().ShowDialog();
