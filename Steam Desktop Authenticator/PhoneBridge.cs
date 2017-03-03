@@ -99,8 +99,10 @@ namespace Steam_Desktop_Authenticator
                 OnOutputLog("Using root method");
                 json = PullJson(id);
             } else {
-                OnOutputLog("Using no-root method");
-                json = PullJsonNoRoot(id);
+                OnOutputLog("Steam has blocked the non-root method of copying data from their app.");
+                OnOutputLog("Your phone must now be rooted to use this.");
+                json = null;
+                //json = PullJsonNoRoot(id);
             }
 
             if (json == null)
