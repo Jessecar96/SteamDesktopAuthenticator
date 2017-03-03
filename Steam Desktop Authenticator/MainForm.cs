@@ -314,7 +314,7 @@ namespace Steam_Desktop_Authenticator
             }
             else
             {
-                MessageBox.Show("Failed to refresh your session.\nTry again soon.", "Session refresh", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Failed to refresh your session.\nTry using the \"Login again\" option.", "Session refresh", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
