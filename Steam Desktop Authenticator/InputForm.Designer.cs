@@ -42,21 +42,21 @@
             this.labelText.ForeColor = System.Drawing.SystemColors.ControlText;
             this.labelText.Location = new System.Drawing.Point(12, 9);
             this.labelText.Name = "labelText";
-            this.labelText.Size = new System.Drawing.Size(284, 38);
+            this.labelText.Size = new System.Drawing.Size(383, 159);
             this.labelText.TabIndex = 0;
             this.labelText.Text = "Sample Text~~~";
             // 
             // txtBox
             // 
             this.txtBox.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBox.Location = new System.Drawing.Point(15, 50);
+            this.txtBox.Location = new System.Drawing.Point(12, 171);
             this.txtBox.Name = "txtBox";
-            this.txtBox.Size = new System.Drawing.Size(281, 33);
+            this.txtBox.Size = new System.Drawing.Size(383, 33);
             this.txtBox.TabIndex = 1;
             // 
             // btnAccept
             // 
-            this.btnAccept.Location = new System.Drawing.Point(15, 89);
+            this.btnAccept.Location = new System.Drawing.Point(15, 210);
             this.btnAccept.Name = "btnAccept";
             this.btnAccept.Size = new System.Drawing.Size(98, 28);
             this.btnAccept.TabIndex = 2;
@@ -67,7 +67,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(119, 89);
+            this.btnCancel.Location = new System.Drawing.Point(297, 210);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(98, 28);
             this.btnCancel.TabIndex = 3;
@@ -81,7 +81,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(311, 131);
+            this.ClientSize = new System.Drawing.Size(407, 250);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnAccept);
             this.Controls.Add(this.txtBox);
