@@ -143,16 +143,13 @@ namespace Steam_Desktop_Authenticator
                 if (m.Success) { id = m.Groups[1].Value; }
                 
                 //this need more test,but also is not necessary
-                //if (e.Data.TrimEnd(' ', '\t', '\n', '\r').EndsWith("Done"))
+                if (e.Data.TrimEnd(' ', '\t', '\n', '\r').EndsWith("Done"))
                     mre.Set();
             };
 
             console.OutputDataReceived += f1;
-
-            if (root)
-                ExecuteCommand("adb shell \"cat /data/data/$STEAMAPP/shared_prefs/steam.uuid.xml\" & echo Done");
-            else
-                ExecuteCommand("adb shell \"cat /sdcard/steamauth/apps/$STEAMAPP/sp/steam.uuid.xml\" & echo Done");
+            
+            ExecuteCommand("adb shell \"su -c 'cat /data/data/$STEAMAPP/shared_prefs/steam.uuid.xml'\" & echo Done");
             mre.Wait();
 
             console.OutputDataReceived -= f1;
