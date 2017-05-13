@@ -31,6 +31,11 @@ namespace Steam_Desktop_Authenticator
             InitializeComponent();
         }
 
+        public void SetEncryptionKey(string key)
+        {
+            passKey = key;
+        }
+
         // Form event handlers
 
         private void MainForm_Shown(object sender, EventArgs e)
@@ -47,10 +52,13 @@ namespace Steam_Desktop_Authenticator
 
             if (manifest.Encrypted)
             {
-                passKey = manifest.PromptForPassKey();
                 if (passKey == null)
                 {
-                    Application.Exit();
+                    passKey = manifest.PromptForPassKey();
+                    if (passKey == null)
+                    {
+                        Application.Exit();
+                    }
                 }
 
                 btnManageEncryption.Text = "Manage Encryption";

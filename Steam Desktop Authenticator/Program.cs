@@ -5,9 +5,29 @@ using System.Security;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using CommandLine;
+using CommandLine.Text;
 
 namespace Steam_Desktop_Authenticator
 {
+
+    class Options
+    {
+        [Option('k', "encryption-key", Required = true,
+          HelpText = "Encryption key for manifest")]
+        public string EncryptionKey { get; set; }
+
+        [ParserState]
+        public IParserState LastParserState { get; set; }
+
+        [HelpOption]
+        public string GetUsage()
+        {
+            return HelpText.AutoBuild(this,
+              (HelpText current) => HelpText.DefaultParsingErrorsHandler(this, current));
+        }
+    }
+
     static class Program
     {
         public static Process PriorProcess()
@@ -38,7 +58,7 @@ namespace Steam_Desktop_Authenticator
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             // run the program only once
             if (PriorProcess() != null)
@@ -46,6 +66,10 @@ namespace Steam_Desktop_Authenticator
                 MessageBox.Show("Another instance of the app is already running.");
                 return;
             }
+
+            // Parse command line arguments
+            var options = new Options();
+            Parser.Default.ParseArguments(args, options);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -59,7 +83,9 @@ namespace Steam_Desktop_Authenticator
                 if (man.Entries.Count > 0)
                 {
                     // Already has accounts, just run
-                    Application.Run(new MainForm());
+                    MainForm mf = new MainForm();
+                    mf.SetEncryptionKey(options.EncryptionKey);
+                    Application.Run(mf);
                 }
                 else
                 {
@@ -69,7 +95,9 @@ namespace Steam_Desktop_Authenticator
             }
             else
             {
-                Application.Run(new MainForm());
+                MainForm mf = new MainForm();
+                mf.SetEncryptionKey(options.EncryptionKey);
+                Application.Run(mf);
             }
         }
     }
