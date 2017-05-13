@@ -21,7 +21,7 @@ namespace Steam_Desktop_Authenticator
                 txtUsername.Enabled = false;
             }
 
-            if(this.LoginReason == LoginType.Refresh)
+            if (this.LoginReason == LoginType.Refresh)
             {
                 labelLoginExplanation.Text = "Your Steam credentials have expired. For trade and market confirmations to work properly, please login again.";
             }

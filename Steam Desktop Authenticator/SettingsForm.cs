@@ -36,7 +36,7 @@ namespace Steam_Desktop_Authenticator
             if (!fullyLoaded) return;
 
             var result = MessageBox.Show("Warning: enabling this will severely reduce the security of your items! Use of this option is at your own risk. Would you like to continue?", "Warning!", MessageBoxButtons.YesNo);
-            if(result == DialogResult.No)
+            if (result == DialogResult.No)
             {
                 affectedBox.Checked = false;
             }
@@ -60,13 +60,13 @@ namespace Steam_Desktop_Authenticator
 
         private void chkConfirmMarket_CheckedChanged(object sender, EventArgs e)
         {
-            if(chkConfirmMarket.Checked)
+            if (chkConfirmMarket.Checked)
                 ShowWarning(chkConfirmMarket);
         }
 
         private void chkConfirmTrades_CheckedChanged(object sender, EventArgs e)
         {
-            if(chkConfirmTrades.Checked)
+            if (chkConfirmTrades.Checked)
                 ShowWarning(chkConfirmTrades);
         }
     }

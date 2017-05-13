@@ -47,7 +47,7 @@ namespace Steam_Desktop_Authenticator
                     // User selected the root install dir
                     pathToCopy = path + "/maFiles";
                 }
-                else if(File.Exists(path + "/manifest.json"))
+                else if (File.Exists(path + "/manifest.json"))
                 {
                     // User selected the maFiles dir
                     pathToCopy = path;
@@ -83,7 +83,7 @@ namespace Steam_Desktop_Authenticator
                 MessageBox.Show("All accounts and settings have been imported! Press OK to continue.", "Import accounts", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 showMainForm();
             }
-            
+
         }
 
         private void showMainForm()

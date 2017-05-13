@@ -11,7 +11,7 @@ namespace Steam_Desktop_Authenticator
     {
         public void Dispose()
         {
-            
+
         }
 
         public bool Visit(Cookie cookie, int count, int total, ref bool deleteCookie)

@@ -71,7 +71,7 @@ namespace Steam_Desktop_Authenticator
                 bridge.ConnectWiFi(input.txtBox.Text);
             }
         }
-        
+
         private void Extract()
         {
             steamAccount = bridge.ExtractSteamGuardAccount(SelectedSteamID, SelectedSteamID != "*");
@@ -96,12 +96,12 @@ namespace Steam_Desktop_Authenticator
                         deviceIdForm.Close();
                     }
                     steamAccount.DeviceID = deviceIdForm.txtBox.Text;
-                    if(!string.IsNullOrEmpty(steamAccount.DeviceID))
+                    if (!string.IsNullOrEmpty(steamAccount.DeviceID))
                     {
                         Result = steamAccount;
                         Log("Account extracted succesfully!");
                         LoginAccount();
-                    }                   
+                    }
                 }
             }
         }

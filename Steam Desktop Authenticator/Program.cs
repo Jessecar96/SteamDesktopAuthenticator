@@ -79,7 +79,7 @@ namespace Steam_Desktop_Authenticator
             Application.SetCompatibleTextRenderingDefault(false);
 
             Manifest man = Manifest.GetManifest();
-            if(man.FirstRun)
+            if (man.FirstRun)
             {
                 // Install VC++ Redist and wait
                 new InstallRedistribForm().ShowDialog();

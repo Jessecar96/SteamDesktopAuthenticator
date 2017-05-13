@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Steam_Desktop_Authenticator
 {
-    public partial class CaptchaForm :Form
+    public partial class CaptchaForm : Form
     {
         public bool Canceled = false;
         public string CaptchaGID = "";
