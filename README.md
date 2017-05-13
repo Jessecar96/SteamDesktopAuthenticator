@@ -23,7 +23,7 @@ IF you lost your `maFiles` OR lost your encryption key, go [here](https://store.
 
 If you did not follow the directions and did not write your revocation code down, you're well and truly screwed. The only option is beg to [Steam Support](https://support.steampowered.com/) and say you lost your mobile authenticator and the revocation code.
 
-## Detailed setup instructions:
+## Detailed setup instructions
 - Download & Install [.NET Framework 4.5.2](http://go.microsoft.com/fwlink/?LinkId=397707) from the Microsoft website if you're using Windows 7. Windows 8 and above should do this automatically for you.
 - Visit [the releases page](https://github.com/Jessecar96/SteamDesktopAuthenticator/releases) and download the latest .zip (not the source code one).
 - Extract the files somewhere very safe on your computer. If you lose the files you can lose access to your Steam account.
@@ -36,6 +36,14 @@ If you did not follow the directions and did not write your revocation code down
 [How to update SDA.](https://github.com/Jessecar96/SteamDesktopAuthenticator/wiki/Updating)
 
 [How to use SDA on multiple computers.](https://github.com/Jessecar96/SteamDesktopAuthenticator/wiki/Using-SDA-on-multiple-computers)
+
+## Command line options
+```
+-k [encryption key]
+  Set your encryption key when opened
+-s
+  Auto-minimize to tray when opened
+```
 
 ## Troubleshooting
 - **Trade confirmation list is just white or a blank screen**
