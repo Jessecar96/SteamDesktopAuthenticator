@@ -99,7 +99,9 @@ namespace Steam_Desktop_Authenticator
             {
                 OnOutputLog("Using root method");
                 json = PullJson(id);
-            } else {
+            }
+            else
+            {
                 OnOutputLog("Steam has blocked the non-root method of copying data from their app.");
                 OnOutputLog("Your phone must now be rooted to use this.");
                 json = null;
@@ -110,14 +112,16 @@ namespace Steam_Desktop_Authenticator
                 return null;
             acc = JsonConvert.DeserializeObject<SteamGuardAccount>(json, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
             acc.DeviceID = GetDeviceID(root);
-            
+
             if (acc.DeviceID == null)
             {
-                OnPhoneBridgeError("failed to read the UUID (device id)");
-                //acc.DeviceID = "";
-                acc = null;
+                try
+                {
+                    OnPhoneBridgeError("failed to read the UUID (device id)");
+                }
+                catch (Exception) { }
             }
-            
+
             return acc;
         }
 
@@ -137,20 +141,20 @@ namespace Steam_Desktop_Authenticator
             DataReceivedEventHandler f1 = (sender, e) =>
             {
                 if (e.Data.Contains(">@") || e.Data == "") return;
-                
+
                 Regex rx = new Regex(@"<string[^>]*\s+name=" + "\"uuidKey\"" + @"[^>]*>[\s\t\r\n]*(android:.+)[\s\t\r\n]*<\/string>", RegexOptions.IgnoreCase);
                 Match m = rx.Match(e.Data);
                 if (m.Success) { id = m.Groups[1].Value; }
-                
+
                 //this need more test,but also is not necessary
                 //if (e.Data.TrimEnd(' ', '\t', '\n', '\r').EndsWith("Done"))
-                    mre.Set();
+                mre.Set();
             };
 
             console.OutputDataReceived += f1;
 
             if (root)
-                ExecuteCommand("adb shell \"cat /data/data/$STEAMAPP/shared_prefs/steam.uuid.xml\" & echo Done");
+                ExecuteCommand($"adb shell su -c 'sed -n 3p /data/data/$STEAMAPP/shared_prefs/steam.uuid.xml' & echo Done");
             else
                 ExecuteCommand("adb shell \"cat /sdcard/steamauth/apps/$STEAMAPP/sp/steam.uuid.xml\" & echo Done");
             mre.Wait();
@@ -266,7 +270,9 @@ namespace Steam_Desktop_Authenticator
             {
                 OnMoreThanOneAccount(new List<string>(files));
                 return null;
-            } else {
+            }
+            else
+            {
                 json = File.ReadAllText("steamguard/Steamguard-" + sid);
             }
 
