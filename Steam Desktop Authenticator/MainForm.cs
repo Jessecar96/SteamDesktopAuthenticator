@@ -196,10 +196,7 @@ namespace Steam_Desktop_Authenticator
 
         private void btnCopy_Click(object sender, EventArgs e)
         {
-            string text = txtLoginToken.Text;
-            if (String.IsNullOrEmpty(text))
-                return;
-            Clipboard.SetText(text);
+            CopyLoginToken();
         }
 
 
@@ -468,7 +465,7 @@ namespace Steam_Desktop_Authenticator
                 }
                 if (autoAcceptConfirmations.Count > 0)
                 {
-                    foreach(var acc in autoAcceptConfirmations.Keys)
+                    foreach (var acc in autoAcceptConfirmations.Keys)
                     {
                         var confirmations = autoAcceptConfirmations[acc].ToArray();
                         acc.AcceptMultipleConfirmations(confirmations);
@@ -484,6 +481,14 @@ namespace Steam_Desktop_Authenticator
         }
 
         // Other methods
+
+        private void CopyLoginToken()
+        {
+            string text = txtLoginToken.Text;
+            if (String.IsNullOrEmpty(text))
+                return;
+            Clipboard.SetText(text);
+        }
 
         /// <summary>
         /// Refresh this account's session data using their OAuth Token
@@ -686,6 +691,14 @@ namespace Steam_Desktop_Authenticator
             catch (Exception)
             {
                 MessageBox.Show("Failed to check for updates.");
+            }
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
+            {
+                CopyLoginToken();
             }
         }
     }
