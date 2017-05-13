@@ -8,7 +8,7 @@ using CefSharp;
 using System.Diagnostics;
 using System.IO;
 using Newtonsoft.Json;
-
+using System.Security.Cryptography.X509Certificates;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -88,11 +88,6 @@ namespace Steam_Desktop_Authenticator
             return false;
         }
 
-        void IRequestHandler.OnResourceRedirect(IWebBrowser browserControl, IBrowser browser, IFrame frame, IRequest request, ref string newUrl)
-        {
-
-        }
-
         bool IRequestHandler.OnProtocolExecution(IWebBrowser browserControl, IBrowser browser, string url)
         {
             return false;
@@ -108,5 +103,24 @@ namespace Steam_Desktop_Authenticator
             return false;
         }
 
+        public void OnResourceLoadComplete(IWebBrowser browserControl, IBrowser browser, IFrame frame, IRequest request, IResponse response, UrlRequestStatus status, long receivedContentLength)
+        {
+            
+        }
+
+        public IResponseFilter GetResourceResponseFilter(IWebBrowser browserControl, IBrowser browser, IFrame frame, IRequest request, IResponse response)
+        {
+            return new ResourceResponseFilter();
+        }
+
+        public bool OnSelectClientCertificate(IWebBrowser browserControl, IBrowser browser, bool isProxy, string host, int port, X509Certificate2Collection certificates, ISelectClientCertificateCallback callback)
+        {
+            return true;
+        }
+
+        public void OnResourceRedirect(IWebBrowser browserControl, IBrowser browser, IFrame frame, IRequest request, IResponse response, ref string newUrl)
+        {
+            
+        }
     }
 }
