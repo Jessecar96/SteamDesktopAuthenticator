@@ -196,7 +196,10 @@ namespace Steam_Desktop_Authenticator
 
         private void btnCopy_Click(object sender, EventArgs e)
         {
-            Clipboard.SetText(txtLoginToken.Text);
+            string text = txtLoginToken.Text;
+            if (String.IsNullOrEmpty(text))
+                return;
+            Clipboard.SetText(text);
         }
 
 
