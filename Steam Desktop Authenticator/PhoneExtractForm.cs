@@ -159,5 +159,10 @@ namespace Steam_Desktop_Authenticator
         {
             CheckDevice();
         }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/Jessecar96/SteamDesktopAuthenticator/wiki/Importing-account-from-an-Android-phone");
+        }
     }
 }

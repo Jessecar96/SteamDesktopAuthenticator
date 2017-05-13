@@ -120,15 +120,6 @@
   <metadata name="tCheckDevice.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="label2.Text" xml:space="preserve">
-    <value>1) Plug in your device with a USB cable.
-2) Go to Settings, then about phone.
-3) Tap "Build number" 10 times to enable developer options.
-4) Go back, and open "Developer options".
-5) Enable "USB Debugging".
-6) When prompted, tap "Allow" for debugging access.
-7) If prompted, tap "Allow" on the root access prompt.</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
