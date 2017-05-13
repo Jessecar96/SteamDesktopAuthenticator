@@ -22,6 +22,7 @@ namespace Steam_Desktop_Authenticator
         private long steamTime = 0;
         private long currentSteamChunk = 0;
         private string passKey = null;
+        private bool startSilent = false;
 
         // Forms
         private TradePopupForm popupFrm = new TradePopupForm();
@@ -34,6 +35,11 @@ namespace Steam_Desktop_Authenticator
         public void SetEncryptionKey(string key)
         {
             passKey = key;
+        }
+
+        public void StartSilent(bool silent)
+        {
+            startSilent = silent;
         }
 
         // Form event handlers
@@ -74,6 +80,11 @@ namespace Steam_Desktop_Authenticator
             loadAccountsList();
 
             checkForUpdates();
+
+            if (startSilent)
+            {
+                this.WindowState = FormWindowState.Minimized;
+            }
         }
 
         private void MainForm_Load(object sender, EventArgs e)

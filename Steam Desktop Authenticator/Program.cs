@@ -13,9 +13,13 @@ namespace Steam_Desktop_Authenticator
 
     class Options
     {
-        [Option('k', "encryption-key", Required = true,
+        [Option('k', "encryption-key", Required = false,
           HelpText = "Encryption key for manifest")]
         public string EncryptionKey { get; set; }
+
+        [Option('s', "silent", Required = false,
+          HelpText = "Start minimized")]
+        public bool Silent { get; set; }
 
         [ParserState]
         public IParserState LastParserState { get; set; }
@@ -85,6 +89,7 @@ namespace Steam_Desktop_Authenticator
                     // Already has accounts, just run
                     MainForm mf = new MainForm();
                     mf.SetEncryptionKey(options.EncryptionKey);
+                    mf.StartSilent(options.Silent);
                     Application.Run(mf);
                 }
                 else
@@ -97,6 +102,7 @@ namespace Steam_Desktop_Authenticator
             {
                 MainForm mf = new MainForm();
                 mf.SetEncryptionKey(options.EncryptionKey);
+                mf.StartSilent(options.Silent);
                 Application.Run(mf);
             }
         }
