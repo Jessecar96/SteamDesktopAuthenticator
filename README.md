@@ -28,7 +28,7 @@ If you did not follow the directions and did not write your revocation code down
 - Visit [the releases page](https://github.com/Jessecar96/SteamDesktopAuthenticator/releases) and download the latest .zip (not the source code one).
 - Extract the files somewhere very safe on your computer. If you lose the files you can lose access to your Steam account.
 - Run `Steam Desktop Authenticator.exe` and click the button to set up a new account.
-- Login to Steam and follow the instructions to set it up. **Note: you still need a phone that can receive SMS, you can get a free SMS enabled phone number from [Google Voice](https://www.google.com/voice) in the US**
+- Login to Steam and follow the instructions to set it up. **Note: you still need a mobile phone that can receive SMS.**
 - You may be asked to set up encryption, this is to make sure if someone gains access to your computer they can't steal your Steam account from this program. This is optional but highly recommended.
 - Select your account from the list to view the current login code, and click `Trade Confirmations` to see pending trade confirmations.
 - For your safety, remember to get Steam Guard backup codes! Follow [this link](https://store.steampowered.com/twofactor/manage) and click "Get Backup Codes," then print out that page and save it in a safe place. You can use these codes if you lose access to your authenticator.
