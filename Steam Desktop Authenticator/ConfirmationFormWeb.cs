@@ -76,7 +76,14 @@ namespace Steam_Desktop_Authenticator
                         success('{2}');
                     }}
                 }}", steamAccount.GenerateConfirmationQueryParams("allow"), steamAccount.GenerateConfirmationQueryParams("cancel"), urlParams);
-                browser.ExecuteScriptAsync(script);
+                try
+                {
+                    browser.ExecuteScriptAsync(script);
+                }
+                catch (Exception)
+                {
+                    Debug.WriteLine("Failed to execute script");
+                }
             }
         }
 
