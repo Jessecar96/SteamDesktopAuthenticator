@@ -14,7 +14,8 @@ namespace Steam_Desktop_Authenticator
     {
         public bool Canceled = false;
         private bool userClosed = true;
-
+        private bool Jadolboeb = true;
+        
         public InputForm(string label, bool password = false)
         {
             InitializeComponent();
