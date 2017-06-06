@@ -366,7 +366,7 @@ namespace Steam_Desktop_Authenticator
 
             console.OutputDataReceived += f1;
 
-            ExecuteCommand("adb shell \"cd /data/data/com.valvesoftware.android.steam.community && echo Yes\"");
+            ExecuteCommand("adb shell \"su -c 'cd /data/data/com.valvesoftware.android.steam.community && echo Yes'\"");
             mre.Wait();
 
             console.OutputDataReceived -= f1;
