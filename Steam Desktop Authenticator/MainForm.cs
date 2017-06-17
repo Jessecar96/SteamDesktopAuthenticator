@@ -379,6 +379,10 @@ namespace Steam_Desktop_Authenticator
         {
             for (int i = 0; i < allAccounts.Length; i++)
             {
+                // Check if index is out of bounds first
+                if (i < 0 || listAccounts.SelectedIndex < 0)
+                    continue;
+
                 SteamGuardAccount account = allAccounts[i];
                 if (account.AccountName == (string)listAccounts.Items[listAccounts.SelectedIndex])
                 {
