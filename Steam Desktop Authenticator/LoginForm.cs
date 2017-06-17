@@ -15,15 +15,23 @@ namespace Steam_Desktop_Authenticator
             this.LoginReason = loginReason;
             this.androidAccount = account;
 
-            if (this.LoginReason != LoginType.Initial)
+            try
             {
-                txtUsername.Text = account.AccountName;
-                txtUsername.Enabled = false;
-            }
+                if (this.LoginReason != LoginType.Initial)
+                {
+                    txtUsername.Text = account.AccountName;
+                    txtUsername.Enabled = false;
+                }
 
-            if (this.LoginReason == LoginType.Refresh)
+                if (this.LoginReason == LoginType.Refresh)
+                {
+                    labelLoginExplanation.Text = "Your Steam credentials have expired. For trade and market confirmations to work properly, please login again.";
+                }
+            }
+            catch (Exception)
             {
-                labelLoginExplanation.Text = "Your Steam credentials have expired. For trade and market confirmations to work properly, please login again.";
+                MessageBox.Show("Failed to find your account. Try closing and re-opening SDA.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
             }
         }
 
