@@ -1,14 +1,12 @@
-﻿using Newtonsoft.Json;
-using SteamAuth;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
+using Newtonsoft.Json;
+using SteamAuth;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -19,6 +17,8 @@ namespace Steam_Desktop_Authenticator
 
         private Process console;
         private ManualResetEvent mreOutput = new ManualResetEvent(false);
+
+        private int adbVersion;
 
         public delegate void BridgeOutput(string msg);
         public event BridgeOutput PhoneBridgeError;
@@ -76,6 +76,8 @@ namespace Steam_Desktop_Authenticator
             if (!skipChecks) AppendToLog("");
             InitConsole(); // Init the console
 
+            GetAdbVersion();
+            
             if (!skipChecks)
             {
                 OnOutputLog("Checking requirements...");
@@ -154,7 +156,7 @@ namespace Steam_Desktop_Authenticator
             console.OutputDataReceived += f1;
 
             if (root)
-                ExecuteCommand($"adb shell su -c 'sed -n 3p /data/data/$STEAMAPP/shared_prefs/steam.uuid.xml' & echo Done");
+                ExecuteCommand("adb shell su -c 'sed -n 3p /data/data/$STEAMAPP/shared_prefs/steam.uuid.xml' & echo Done");
             else
                 ExecuteCommand("adb shell \"cat /sdcard/steamauth/apps/$STEAMAPP/sp/steam.uuid.xml\" & echo Done");
             mre.Wait();
@@ -366,7 +368,12 @@ namespace Steam_Desktop_Authenticator
 
             console.OutputDataReceived += f1;
 
-            ExecuteCommand("adb shell \"su -c 'cd /data/data/com.valvesoftware.android.steam.community && echo Yes'\"");
+            if (UseLegacyAdbMethod()) {
+                ExecuteCommand("adb shell \"su -c 'cd /data/data/com.valvesoftware.android.steam.community && echo Yes'\"");
+            }
+            else {
+                ExecuteCommand("adb shell -n \"su -c 'cd /data/data/com.valvesoftware.android.steam.community && echo Yes'\"");
+            }
             mre.Wait();
 
             console.OutputDataReceived -= f1;
@@ -389,12 +396,51 @@ namespace Steam_Desktop_Authenticator
 
             console.OutputDataReceived += f1;
 
-            ExecuteCommand("adb shell su -c 'echo Yes'");
+            if (UseLegacyAdbMethod()) {
+                ExecuteCommand("adb shell su -c 'echo Yes'");
+            }
+            else {
+                ExecuteCommand("adb shell -n su -c 'echo Yes'");
+            }
+            
             mre.Wait();
 
             console.OutputDataReceived -= f1;
 
             return root;
+        }
+        
+        private void GetAdbVersion()
+        {
+            OnOutputLog("Checking ADB version");
+            string versionString = "";
+            ManualResetEventSlim mre = new ManualResetEventSlim();
+            DataReceivedEventHandler f1 = (sender, e) =>
+            {
+                if (e.Data.Contains(">@") || e.Data == "" || e.Data.Contains("Revision")) return;
+
+                versionString = new string(e.Data.ToCharArray().Where(char.IsDigit).ToArray());
+                mre.Set();
+            };
+
+            console.OutputDataReceived += f1;
+
+            ExecuteCommand("adb version");
+            mre.Wait();
+
+            console.OutputDataReceived -= f1;
+            
+            try {
+                adbVersion = int.Parse(versionString);
+                OnOutputLog("ADB version: " + adbVersion);
+            }
+            catch (Exception exception) {
+                OnOutputLog("Error getting ADB version");
+            }
+        }
+
+        private bool UseLegacyAdbMethod() {
+            return adbVersion < 1036;
         }
 
 
