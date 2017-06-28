@@ -75,8 +75,6 @@ namespace Steam_Desktop_Authenticator
         {
             if (!skipChecks) AppendToLog("");
             InitConsole(); // Init the console
-
-            GetAdbVersion();
             
             if (!skipChecks)
             {
@@ -89,24 +87,29 @@ namespace Steam_Desktop_Authenticator
                     return null;
                 }
             }
-
+            
+            CheckAdbVersion();
             bool root = IsRooted();
 
             //root = false; // DEBUG ///////////////////////
 
             SteamGuardAccount acc;
-            string json;
+            string json = null;
 
             if (root)
             {
-                OnOutputLog("Using root method");
-                json = PullJson(id);
+                if (!skipChecks && !SteamAppInstalled()) {
+                    OnPhoneBridgeError("Steam Community app not installed");
+                }
+                else {
+                    OnOutputLog("Using root method");
+                    json = PullJson(id); 
+                }
             }
             else
             {
                 OnOutputLog("Steam has blocked the non-root method of copying data from their app.");
                 OnOutputLog("Your phone must now be rooted to use this.");
-                json = null;
                 //json = PullJsonNoRoot(id);
             }
 
@@ -130,8 +133,7 @@ namespace Steam_Desktop_Authenticator
         private string ErrorsFound()
         {
             if (!CheckAdb()) return "ADB not found";
-            if (!DeviceUp()) return "Device not detected";
-            if (!SteamAppInstalled()) return "Steam Community app not installed";
+            if (!DeviceUp()) return "Device not detected"; 
             return "";
         }
 
@@ -410,7 +412,7 @@ namespace Steam_Desktop_Authenticator
             return root;
         }
         
-        private void GetAdbVersion()
+        private void CheckAdbVersion()
         {
             OnOutputLog("Checking ADB version");
             string versionString = "";
