@@ -58,3 +58,10 @@ If your problem doesn't appear on the list or none of the solutions worked, subm
 - Select Project->Active Configuration->Release (this will make this application run faster)
 - Select Build->Build All. The package should now build successfully.
 - The resulting executable and files will be in "Steam Desktop Authenticator/bin/Release"
+
+## Alternate Linux method
+- Start by going to the `releases` page of this repo and downloading the zip that contains all the files for the Windows version of SDA.
+- Extract the files to a folder somewhere on the computer.
+- Make sure you have the `mono` packaged installed. The `monodevelop` package is NOT required for this method.
+- Open Terminal to the folder that contains the EXE and run `mono 'Steam Desktop Authenticator.exe'`. This will open the EXE as if it were on Windows through Mono. Since the app is pretty lightweight, this command should work completely, and you should have all features available to you including the ability to import an old maFiles. 
+- You can also run it like this: `mono 'path/to/Steam Desktop Authenticator.exe`. Running it like that will enable you to put it in a launcher or shortcut to easily run it from a GUI.
