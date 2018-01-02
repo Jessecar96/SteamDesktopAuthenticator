@@ -10,10 +10,11 @@
 <h3 align="center">
   <a href="https://github.com/Jessecar96/SteamDesktopAuthenticator/releases/latest">Download here</a>
 </h3>
-<p align="center">
-<b>Clicking "Download ZIP" will not work!</b> This project uses git submodules so you must use git to download it properly.<br/>
-Using <a href="https://desktop.github.com/">GitHub Desktop</a> is an easy way to do that.
-</p>
+<h3 align="center">
+  <b>WARNING: Recently there have been fake versions of SDA floating around that will steal your Steam account. Never download SDA from any place other than this github repo, or compile it yourself!</b>
+</h3>
+
+**Clicking "Download ZIP" will not work!** This project uses git submodules so you must use git to download it properly. Using [GitHub Desktop](https://desktop.github.com/) is an easy way to do that.
 
 **DISCLAIMER: We provide no support for you when using Steam Desktop Authenticator! This project is run by community volunteers and is not affiliated with Steam or Scrap.TF. You use this program at your own risk, and accept the responsibility to make backups and prevent unauthorized access to your computer!**
 
