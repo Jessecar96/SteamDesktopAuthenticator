@@ -8,7 +8,7 @@
   <sup><b>We are not affiliated with Steam or Scrap.TF in any way!</b> This project is run by community volunteers.
 </p>
 <h3 align="center">
-  <b>WARNING: Recently there have been fake versions of SDA floating around that will steal your Steam account. Never download SDA from any place other than this github repo, or compile it yourself!</b>
+  <b>WARNING: Recently there have been fake versions of SDA floating around that will steal your Steam account. Never download SDA from any place other than this github repo!</b>
 </h3>
 <h3 align="center">
   <a href="https://github.com/Jessecar96/SteamDesktopAuthenticator/releases/latest">Download here</a>
