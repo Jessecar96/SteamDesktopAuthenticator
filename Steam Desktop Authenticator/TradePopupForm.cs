@@ -93,7 +93,8 @@ namespace Steam_Desktop_Authenticator
             }
             else
             {
-                lblDesc.Text = confirms[0].Description;
+                //TODO: Re-add confirmation description support to SteamAuth.
+                lblDesc.Text = "Confirmation";
             }
         }
 
