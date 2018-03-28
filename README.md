@@ -10,9 +10,11 @@
 <h3 align="center">
   <b>WARNING: Recently there have been fake versions of SDA floating around that will steal your Steam account. Never download SDA from any place other than this github repo!</b>
 </h3>
-<h3 align="center">
+<h3 align="center" style="margin-bottom:0">
   <a href="https://github.com/Jessecar96/SteamDesktopAuthenticator/releases/latest">Download here</a>
 </h3>
+<p align="center">Supports Windows 7 and up.</p>
+<br>
 
 **Clicking "Download ZIP" will not work!** This project uses git submodules so you must use git to download it properly. Using [GitHub Desktop](https://desktop.github.com/) is an easy way to do that.
 
@@ -25,7 +27,7 @@ IF you lost your `maFiles` OR lost your encryption key, go [here](https://store.
 If you did not follow the directions and did not write your revocation code down, you're well and truly screwed. The only option is beg to [Steam Support](https://support.steampowered.com/) and say you lost your mobile authenticator and the revocation code.
 
 ## Detailed setup instructions
-- Download & Install [.NET Framework 4.5.2](http://go.microsoft.com/fwlink/?LinkId=397707) from the Microsoft website if you're using Windows 7. Windows 8 and above should do this automatically for you.
+- Download & Install [.NET Framework 4.6.2](https://www.microsoft.com/net/download/dotnet-framework-runtime/net462) if you're using Windows 7. Windows 8 and above should do this automatically for you.
 - Visit [the releases page](https://github.com/Jessecar96/SteamDesktopAuthenticator/releases) and download the latest .zip (not the source code one).
 - Extract the files somewhere very safe on your computer. If you lose the files you can lose access to your Steam account.
 - Run `Steam Desktop Authenticator.exe` and click the button to set up a new account.
@@ -37,6 +39,7 @@ If you did not follow the directions and did not write your revocation code down
 [How to update SDA.](https://github.com/Jessecar96/SteamDesktopAuthenticator/wiki/Updating)
 
 [How to use SDA on multiple computers.](https://github.com/Jessecar96/SteamDesktopAuthenticator/wiki/Using-SDA-on-multiple-computers)
+
 
 ## Command line options
 ```
