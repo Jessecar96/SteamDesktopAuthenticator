@@ -75,12 +75,32 @@ namespace Steam_Desktop_Authenticator
                 }
 
                 // Set first run in manifest
-                man = Manifest.GetManifest(true);
-                man.FirstRun = false;
-                man.Save();
+                try
+                {
+                    man = Manifest.GetManifest(true);
+                    man.FirstRun = false;
+                    man.Save();
+                }
+                catch (ManifestParseException)
+                {
+                    // Manifest file was corrupted, generate a new one.
+                    try
+                    {
+                        MessageBox.Show("Your settings were unexpectedly corrupted and were reset to defaults.", "Steam Desktop Authenticator", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        man = Manifest.GenerateNewManifest(true);
+                    }
+                    catch (MaFileEncryptedException)
+                    {
+                        // An maFile was encrypted, we're fucked.
+                        MessageBox.Show("Sorry, but SDA was unable to recover your accounts since you used encryption.\nYou'll need to recover your Steam accounts by removing the authenticator.\nClick OK to view instructions.", "Steam Desktop Authenticator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        System.Diagnostics.Process.Start(@"https://github.com/Jessecar96/SteamDesktopAuthenticator/wiki/Help!-I'm-locked-out-of-my-account");
+                        this.Close();
+                        return;
+                    }
+                }
 
                 // All done!
-                MessageBox.Show("All accounts and settings have been imported! Press OK to continue.", "Import accounts", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("All accounts and settings have been imported! Click OK to continue.", "Import accounts", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 showMainForm();
             }
 

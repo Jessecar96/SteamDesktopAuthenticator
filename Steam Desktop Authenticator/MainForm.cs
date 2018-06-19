@@ -47,7 +47,15 @@ namespace Steam_Desktop_Authenticator
         private void MainForm_Shown(object sender, EventArgs e)
         {
             this.labelVersion.Text = String.Format("v{0}", Application.ProductVersion);
-            this.manifest = Manifest.GetManifest();
+            try
+            {
+                this.manifest = Manifest.GetManifest();
+            }
+            catch (ManifestParseException)
+            {
+                MessageBox.Show("Unable to read your settings. Try restating SDA.", "Steam Desktop Authenticator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+            }
 
             // Make sure we don't show that welcome dialog again
             this.manifest.FirstRun = false;

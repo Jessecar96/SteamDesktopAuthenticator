@@ -53,25 +53,24 @@ namespace Steam_Desktop_Authenticator
 
             // Find config dir and manifest file
             string maDir = Manifest.GetExecutableDir() + "/maFiles/";
-            string maFile = maDir + "manifest.json";
+            string manifestFile = maDir + "manifest.json";
 
             // If there's no config dir, create it
             if (!Directory.Exists(maDir))
             {
-                _manifest = _generateNewManifest();
+                _manifest = GenerateNewManifest(false);
                 return _manifest;
             }
 
-            // If there's no manifest, create it
-            if (!File.Exists(maFile))
+            // If there's no manifest, throw exception
+            if (!File.Exists(manifestFile))
             {
-                _manifest = _generateNewManifest(true);
-                return _manifest;
+                throw new ManifestParseException();
             }
 
             try
             {
-                string manifestContents = File.ReadAllText(maFile);
+                string manifestContents = File.ReadAllText(manifestFile);
                 _manifest = JsonConvert.DeserializeObject<Manifest>(manifestContents);
 
                 if (_manifest.Encrypted && _manifest.Entries.Count == 0)
@@ -86,11 +85,11 @@ namespace Steam_Desktop_Authenticator
             }
             catch (Exception)
             {
-                return null;
+                throw new ManifestParseException();
             }
         }
 
-        private static Manifest _generateNewManifest(bool scanDir = false)
+        public static Manifest GenerateNewManifest(bool scanDir = false)
         {
             // No directory means no manifest file anyways.
             Manifest newManifest = new Manifest();
@@ -128,6 +127,7 @@ namespace Steam_Desktop_Authenticator
                         }
                         catch (Exception)
                         {
+                            throw new MaFileEncryptedException();
                         }
                     }
 

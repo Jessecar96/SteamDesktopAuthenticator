@@ -157,6 +157,7 @@
     <Compile Include="LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MaFileEncryptedException.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -164,6 +165,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Manifest.cs" />
+    <Compile Include="ManifestParseException.cs" />
     <Compile Include="PhoneBridge.cs" />
     <Compile Include="PhoneExtractForm.cs">
       <SubType>Form</SubType>

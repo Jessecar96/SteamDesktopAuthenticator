@@ -78,7 +78,29 @@ namespace Steam_Desktop_Authenticator
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Manifest man = Manifest.GetManifest();
+            Manifest man;
+
+            try
+            {
+                man = Manifest.GetManifest();
+            }
+            catch (ManifestParseException)
+            {
+                // Manifest file was corrupted, generate a new one.
+                try
+                {
+                    MessageBox.Show("Your settings were unexpectedly corrupted and were reset to defaults.", "Steam Desktop Authenticator", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    man = Manifest.GenerateNewManifest(true);
+                }
+                catch (MaFileEncryptedException)
+                {
+                    // An maFile was encrypted, we're fucked.
+                    MessageBox.Show("Sorry, but SDA was unable to recover your accounts since you used encryption.\nYou'll need to recover your Steam accounts by removing the authenticator.\nClick OK to view instructions.", "Steam Desktop Authenticator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    System.Diagnostics.Process.Start(@"https://github.com/Jessecar96/SteamDesktopAuthenticator/wiki/Help!-I'm-locked-out-of-my-account");
+                    return;
+                }
+            }
+
             if (man.FirstRun)
             {
                 // Install VC++ Redist and wait
