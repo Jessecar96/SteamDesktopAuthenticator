@@ -421,7 +421,10 @@ namespace Steam_Desktop_Authenticator
             {
                 if (e.Data.Contains(">@") || e.Data == "" || e.Data.Contains("Revision")) return;
 
-                versionString = new string(e.Data.ToCharArray().Where(char.IsDigit).ToArray());
+                if(e.Data.Contains("Android Debug Bridge")) {
+                    versionString = new string(e.Data.ToCharArray().Where(char.IsDigit).ToArray());
+                }
+
                 mre.Set();
             };
 
