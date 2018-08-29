@@ -59,19 +59,16 @@ namespace Steam_Desktop_Authenticator
                     return;
                 }
 
-                // Copy the contents of the config dir to the new config dir
-                string currentPath = Manifest.GetExecutableDir();
-
                 // Create config dir if we don't have it
-                if (!Directory.Exists(currentPath + "/maFiles"))
+                if (!Directory.Exists(Manifest.MaDir))
                 {
-                    Directory.CreateDirectory(currentPath + "/maFiles");
+                    Directory.CreateDirectory(Manifest.MaDir);
                 }
 
                 // Copy all files from the old dir to the new one
                 foreach (string newPath in Directory.GetFiles(pathToCopy, "*.*", SearchOption.AllDirectories))
                 {
-                    File.Copy(newPath, newPath.Replace(pathToCopy, currentPath + "/maFiles"), true);
+                    File.Copy(newPath, newPath.Replace(pathToCopy, Manifest.MaDir), true);
                 }
 
                 // Set first run in manifest
