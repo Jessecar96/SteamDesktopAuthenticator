@@ -159,6 +159,10 @@ namespace Steam_Desktop_Authenticator
                         linker.PhoneNumber = null;
                         break;
 
+                    case AuthenticatorLinker.LinkResult.MustConfirmEmail:
+                        MessageBox.Show("Please check your email, and click the link Steam sent you before continuing.");
+                        break;
+
                     case AuthenticatorLinker.LinkResult.GeneralFailure:
                         MessageBox.Show("Error adding your phone number. Steam returned \"GeneralFailure\".");
                         this.Close();
