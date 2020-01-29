@@ -8,6 +8,8 @@ using System.Text.RegularExpressions;
 using System.Net;
 using Newtonsoft.Json;
 using System.Threading;
+using System.Drawing;
+using System.Linq;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -727,6 +729,19 @@ namespace Steam_Desktop_Authenticator
             if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
             {
                 CopyLoginToken();
+            }
+        }
+
+        private void panelButtons_SizeChanged(object sender, EventArgs e)
+        {
+            int totButtons = panelButtons.Controls.OfType<Button>().Count();
+
+            Point curPos = new Point(0, 0);
+            foreach (Button but in panelButtons.Controls.OfType<Button>())
+            {
+                but.Width = panelButtons.Width / totButtons;
+                but.Location = curPos;
+                curPos = new Point(curPos.X + but.Width, 0);
             }
         }
     }
