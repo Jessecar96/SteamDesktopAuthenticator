@@ -166,13 +166,6 @@
     </Compile>
     <Compile Include="Manifest.cs" />
     <Compile Include="ManifestParseException.cs" />
-    <Compile Include="PhoneBridge.cs" />
-    <Compile Include="PhoneExtractForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PhoneExtractForm.Designer.cs">
-      <DependentUpon>PhoneExtractForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceResponseFilter.cs" />
@@ -217,9 +210,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PhoneExtractForm.resx">
-      <DependentUpon>PhoneExtractForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>

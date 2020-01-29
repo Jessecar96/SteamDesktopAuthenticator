@@ -257,16 +257,10 @@ namespace Steam_Desktop_Authenticator
             this.PromptRefreshLogin(currentAccount);
         }
 
-        private void menuImportMaFile_Click(object sender, EventArgs e)
+        private void menuImportAccount_Click(object sender, EventArgs e)
         {
             ImportAccountForm currentImport_maFile_Form = new ImportAccountForm();
             currentImport_maFile_Form.ShowDialog();
-            loadAccountsList();
-        }
-
-        private void menuImportAndroid_Click(object sender, EventArgs e)
-        {
-            new PhoneExtractForm().ShowDialog();
             loadAccountsList();
         }
 

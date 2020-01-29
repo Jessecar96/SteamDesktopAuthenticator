@@ -45,9 +45,7 @@
             this.labelUpdate = new System.Windows.Forms.LinkLabel();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuImportMaFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuImportAndroid = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuImportAccount = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.menuQuit = new System.Windows.Forms.ToolStripMenuItem();
@@ -234,7 +232,7 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.importAccountToolStripMenuItem,
+            this.menuImportAccount,
             this.toolStripSeparator1,
             this.menuSettings,
             this.menuQuit});
@@ -242,45 +240,29 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
-            // importAccountToolStripMenuItem
+            // menuImportAccount
             // 
-            this.importAccountToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuImportMaFile,
-            this.menuImportAndroid});
-            this.importAccountToolStripMenuItem.Name = "importAccountToolStripMenuItem";
-            this.importAccountToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
-            this.importAccountToolStripMenuItem.Text = "Import Account";
-            // 
-            // menuImportMaFile
-            // 
-            this.menuImportMaFile.Name = "menuImportMaFile";
-            this.menuImportMaFile.Size = new System.Drawing.Size(186, 22);
-            this.menuImportMaFile.Text = "From maFile";
-            this.menuImportMaFile.Click += new System.EventHandler(this.menuImportMaFile_Click);
-            // 
-            // menuImportAndroid
-            // 
-            this.menuImportAndroid.Name = "menuImportAndroid";
-            this.menuImportAndroid.Size = new System.Drawing.Size(186, 22);
-            this.menuImportAndroid.Text = "From Android Device";
-            this.menuImportAndroid.Click += new System.EventHandler(this.menuImportAndroid_Click);
+            this.menuImportAccount.Name = "menuImportAccount";
+            this.menuImportAccount.Size = new System.Drawing.Size(180, 22);
+            this.menuImportAccount.Text = "Import Account";
+            this.menuImportAccount.Click += new System.EventHandler(this.menuImportAccount_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(155, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // menuSettings
             // 
             this.menuSettings.Name = "menuSettings";
-            this.menuSettings.Size = new System.Drawing.Size(158, 22);
+            this.menuSettings.Size = new System.Drawing.Size(180, 22);
             this.menuSettings.Text = "Settings";
             this.menuSettings.Click += new System.EventHandler(this.menuSettings_Click);
             // 
             // menuQuit
             // 
             this.menuQuit.Name = "menuQuit";
-            this.menuQuit.Size = new System.Drawing.Size(158, 22);
+            this.menuQuit.Size = new System.Drawing.Size(180, 22);
             this.menuQuit.Text = "Quit";
             this.menuQuit.Click += new System.EventHandler(this.menuQuit_Click);
             // 
@@ -504,9 +486,7 @@
         private System.Windows.Forms.ToolStripMenuItem trayQuit;
         private System.Windows.Forms.Timer timerTradesPopup;
         private System.Windows.Forms.ToolStripComboBox trayAccountList;
-        private System.Windows.Forms.ToolStripMenuItem importAccountToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem menuImportMaFile;
-        private System.Windows.Forms.ToolStripMenuItem menuImportAndroid;
+        private System.Windows.Forms.ToolStripMenuItem menuImportAccount;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.TextBox txtAccSearch;
         private System.Windows.Forms.Label label1;

@@ -32,7 +32,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnImportConfig = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.btnAndroidImport = new System.Windows.Forms.Button();
             this.btnJustStart = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -68,24 +67,12 @@
             this.label2.Text = "Select an item to get started:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnAndroidImport
-            // 
-            this.btnAndroidImport.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAndroidImport.Location = new System.Drawing.Point(12, 191);
-            this.btnAndroidImport.Name = "btnAndroidImport";
-            this.btnAndroidImport.Size = new System.Drawing.Size(366, 51);
-            this.btnAndroidImport.TabIndex = 3;
-            this.btnAndroidImport.Text = "I have an Android device and want to \r\nimport my Steam account(s) from the Steam " +
-    "app.";
-            this.btnAndroidImport.UseVisualStyleBackColor = true;
-            this.btnAndroidImport.Click += new System.EventHandler(this.btnAndroidImport_Click);
-            // 
             // btnJustStart
             // 
             this.btnJustStart.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnJustStart.Location = new System.Drawing.Point(12, 248);
+            this.btnJustStart.Location = new System.Drawing.Point(12, 191);
             this.btnJustStart.Name = "btnJustStart";
-            this.btnJustStart.Size = new System.Drawing.Size(366, 51);
+            this.btnJustStart.Size = new System.Drawing.Size(366, 52);
             this.btnJustStart.TabIndex = 4;
             this.btnJustStart.Text = "This is my first time and \r\nI just want to sign into my Steam Account(s).";
             this.btnJustStart.UseVisualStyleBackColor = true;
@@ -95,9 +82,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(390, 313);
+            this.ClientSize = new System.Drawing.Size(390, 255);
             this.Controls.Add(this.btnJustStart);
-            this.Controls.Add(this.btnAndroidImport);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnImportConfig);
             this.Controls.Add(this.label1);
@@ -117,7 +103,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnImportConfig;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btnAndroidImport;
         private System.Windows.Forms.Button btnJustStart;
     }
 }
