@@ -449,7 +449,7 @@ namespace Steam_Desktop_Authenticator
                 {
                     try
                     {
-                        Confirmation[] tmp = await currentAccount.FetchConfirmationsAsync();
+                        Confirmation[] tmp = await acc.FetchConfirmationsAsync();
                         foreach (var conf in tmp)
                         {
                             if ((conf.ConfType == Confirmation.ConfirmationType.MarketSellTransaction && manifest.AutoConfirmMarketTransactions) ||
@@ -466,13 +466,13 @@ namespace Steam_Desktop_Authenticator
                     catch (SteamGuardAccount.WGTokenInvalidException)
                     {
                         lblStatus.Text = "Refreshing session";
-                        await currentAccount.RefreshSessionAsync(); //Don't save it to the HDD, of course. We'd need their encryption passkey again.
+                        await acc.RefreshSessionAsync(); //Don't save it to the HDD, of course. We'd need their encryption passkey again.
                         lblStatus.Text = "";
                     }
                     catch (SteamGuardAccount.WGTokenExpiredException)
                     {
                         //Prompt to relogin
-                        PromptRefreshLogin(currentAccount);
+                        PromptRefreshLogin(acc);
                         break; //Don't bombard a user with login refresh requests if they have multiple accounts. Give them a few seconds to disable the autocheck option if they want.
                     }
                     catch (WebException)
