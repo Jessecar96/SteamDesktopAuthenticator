@@ -21,6 +21,10 @@ namespace Steam_Desktop_Authenticator
           HelpText = "Start minimized")]
         public bool Silent { get; set; }
 
+        [Option('d', "directory", Required = false,
+            HelpText = "Custom maFiles directory", DefaultValue = null)]
+        public string MaFilesDirectory { get; set; }
+
         [ParserState]
         public IParserState LastParserState { get; set; }
 
@@ -78,6 +82,7 @@ namespace Steam_Desktop_Authenticator
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            Manifest.MaDir = options.MaFilesDirectory;
             Manifest man;
 
             try
