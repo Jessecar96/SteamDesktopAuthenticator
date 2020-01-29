@@ -1,37 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using CommandLine;
-using CommandLine.Text;
 
 namespace Steam_Desktop_Authenticator
 {
-
-    class Options
-    {
-        [Option('k', "encryption-key", Required = false,
-          HelpText = "Encryption key for manifest")]
-        public string EncryptionKey { get; set; }
-
-        [Option('s', "silent", Required = false,
-          HelpText = "Start minimized")]
-        public bool Silent { get; set; }
-
-        [ParserState]
-        public IParserState LastParserState { get; set; }
-
-        [HelpOption]
-        public string GetUsage()
-        {
-            return HelpText.AutoBuild(this,
-              (HelpText current) => HelpText.DefaultParsingErrorsHandler(this, current));
-        }
-    }
-
     static class Program
     {
         public static Process PriorProcess()
@@ -72,7 +45,7 @@ namespace Steam_Desktop_Authenticator
             }
 
             // Parse command line arguments
-            var options = new Options();
+            var options = new CommandLineOptions();
             Parser.Default.ParseArguments(args, options);
 
             Application.EnableVisualStyles();
