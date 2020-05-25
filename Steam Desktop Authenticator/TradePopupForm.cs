@@ -16,6 +16,7 @@ namespace Steam_Desktop_Authenticator
         private SteamGuardAccount acc;
         private List<Confirmation> confirms = new List<Confirmation>();
         private bool deny2, accept2;
+        bool darkModeEnabled = new SettingsForm().darkModeEnabled;
 
         public TradePopupForm()
         {
@@ -38,6 +39,17 @@ namespace Steam_Desktop_Authenticator
         private void TradePopupForm_Load(object sender, EventArgs e)
         {
             this.Location = (Point)Size.Subtract(Screen.GetWorkingArea(this).Size, this.Size);
+
+            if (darkModeEnabled)
+            {
+                this.BackColor = Color.FromArgb(30, 32, 36);
+
+                lblAccount.ForeColor = Color.FromArgb(210, 210, 210);
+
+                lblDesc.ForeColor = Color.FromArgb(210, 210, 210);
+
+                lblStatus.ForeColor = Color.FromArgb(210, 210, 210);
+            }
         }
 
         private void btnAccept_Click(object sender, EventArgs e)

@@ -36,6 +36,9 @@ namespace Steam_Desktop_Authenticator
         [JsonProperty("auto_confirm_trades")]
         public bool AutoConfirmTrades { get; set; } = false;
 
+        [JsonProperty("enabled_dark_mode")]
+        public bool EnableDarkMode { get; set; } = false;
+
         private static Manifest _manifest { get; set; }
 
         public static string GetExecutableDir()
@@ -98,6 +101,7 @@ namespace Steam_Desktop_Authenticator
             newManifest.PeriodicChecking = false;
             newManifest.AutoConfirmMarketTransactions = false;
             newManifest.AutoConfirmTrades = false;
+            newManifest.EnableDarkMode = false;
             newManifest.Entries = new List<ManifestEntry>();
             newManifest.FirstRun = true;
 

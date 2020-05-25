@@ -12,6 +12,7 @@ namespace Steam_Desktop_Authenticator
 {
     public partial class InputForm : Form
     {
+        // is this form even used??
         public bool Canceled = false;
         private bool userClosed = true;
 

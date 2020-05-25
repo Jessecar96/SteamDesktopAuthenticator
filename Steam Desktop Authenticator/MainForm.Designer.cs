@@ -241,32 +241,42 @@
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
+            this.fileToolStripMenuItem.DropDownClosed += new System.EventHandler(this.fileToolStripMenuItem_DropDownClosed);
+            this.fileToolStripMenuItem.Click += new System.EventHandler(this.fileToolStripMenuItem_Click);
+            this.fileToolStripMenuItem.MouseEnter += new System.EventHandler(this.fileToolStripMenuItem_MouseEnter);
+            this.fileToolStripMenuItem.MouseLeave += new System.EventHandler(this.fileToolStripMenuItem_MouseLeave);
             // 
             // menuImportAccount
             // 
             this.menuImportAccount.Name = "menuImportAccount";
-            this.menuImportAccount.Size = new System.Drawing.Size(158, 22);
+            this.menuImportAccount.Size = new System.Drawing.Size(180, 22);
             this.menuImportAccount.Text = "Import Account";
             this.menuImportAccount.Click += new System.EventHandler(this.menuImportAccount_Click);
+            this.menuImportAccount.MouseEnter += new System.EventHandler(this.menuImportAccount_MouseEnter);
+            this.menuImportAccount.MouseLeave += new System.EventHandler(this.menuImportAccount_MouseLeave);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(155, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // menuSettings
             // 
             this.menuSettings.Name = "menuSettings";
-            this.menuSettings.Size = new System.Drawing.Size(158, 22);
+            this.menuSettings.Size = new System.Drawing.Size(180, 22);
             this.menuSettings.Text = "Settings";
             this.menuSettings.Click += new System.EventHandler(this.menuSettings_Click);
+            this.menuSettings.MouseEnter += new System.EventHandler(this.menuSettings_MouseEnter);
+            this.menuSettings.MouseLeave += new System.EventHandler(this.menuSettings_MouseLeave);
             // 
             // menuQuit
             // 
             this.menuQuit.Name = "menuQuit";
-            this.menuQuit.Size = new System.Drawing.Size(158, 22);
+            this.menuQuit.Size = new System.Drawing.Size(180, 22);
             this.menuQuit.Text = "Quit";
             this.menuQuit.Click += new System.EventHandler(this.menuQuit_Click);
+            this.menuQuit.MouseEnter += new System.EventHandler(this.menuQuit_MouseEnter);
+            this.menuQuit.MouseLeave += new System.EventHandler(this.menuQuit_MouseLeave);
             // 
             // accountToolStripMenuItem
             // 
@@ -279,6 +289,10 @@
             this.accountToolStripMenuItem.Name = "accountToolStripMenuItem";
             this.accountToolStripMenuItem.Size = new System.Drawing.Size(111, 20);
             this.accountToolStripMenuItem.Text = "Selected Account";
+            this.accountToolStripMenuItem.DropDownClosed += new System.EventHandler(this.accountToolStripMenuItem_DropDownClosed);
+            this.accountToolStripMenuItem.Click += new System.EventHandler(this.accountToolStripMenuItem_Click);
+            this.accountToolStripMenuItem.MouseEnter += new System.EventHandler(this.accountToolStripMenuItem_MouseEnter);
+            this.accountToolStripMenuItem.MouseLeave += new System.EventHandler(this.accountToolStripMenuItem_MouseLeave);
             // 
             // menuLoginAgain
             // 
@@ -286,6 +300,8 @@
             this.menuLoginAgain.Size = new System.Drawing.Size(205, 22);
             this.menuLoginAgain.Text = "Login again";
             this.menuLoginAgain.Click += new System.EventHandler(this.menuLoginAgain_Click);
+            this.menuLoginAgain.MouseEnter += new System.EventHandler(this.menuLoginAgain_MouseEnter);
+            this.menuLoginAgain.MouseLeave += new System.EventHandler(this.menuLoginAgain_MouseLeave);
             // 
             // menuRefreshSession
             // 
@@ -293,6 +309,8 @@
             this.menuRefreshSession.Size = new System.Drawing.Size(205, 22);
             this.menuRefreshSession.Text = "Force session refresh";
             this.menuRefreshSession.Click += new System.EventHandler(this.menuRefreshSession_Click);
+            this.menuRefreshSession.MouseEnter += new System.EventHandler(this.menuRefreshSession_MouseEnter);
+            this.menuRefreshSession.MouseLeave += new System.EventHandler(this.menuRefreshSession_MouseLeave);
             // 
             // toolStripSeparator4
             // 
@@ -305,6 +323,8 @@
             this.menuRemoveAccountFromManifest.Size = new System.Drawing.Size(205, 22);
             this.menuRemoveAccountFromManifest.Text = "Remove from manifest";
             this.menuRemoveAccountFromManifest.Click += new System.EventHandler(this.menuRemoveAccountFromManifest_Click);
+            this.menuRemoveAccountFromManifest.MouseEnter += new System.EventHandler(this.menuRemoveAccountFromManifest_MouseEnter);
+            this.menuRemoveAccountFromManifest.MouseLeave += new System.EventHandler(this.menuRemoveAccountFromManifest_MouseLeave);
             // 
             // menuDeactivateAuthenticator
             // 
@@ -312,6 +332,8 @@
             this.menuDeactivateAuthenticator.Size = new System.Drawing.Size(205, 22);
             this.menuDeactivateAuthenticator.Text = "Deactivate Authenticator";
             this.menuDeactivateAuthenticator.Click += new System.EventHandler(this.menuDeactivateAuthenticator_Click);
+            this.menuDeactivateAuthenticator.MouseEnter += new System.EventHandler(this.menuDeactivateAuthenticator_MouseEnter);
+            this.menuDeactivateAuthenticator.MouseLeave += new System.EventHandler(this.menuDeactivateAuthenticator_MouseLeave);
             // 
             // trayIcon
             // 
@@ -487,7 +509,6 @@
         private System.Windows.Forms.LinkLabel labelUpdate;
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem menuQuit;
         private System.Windows.Forms.ToolStripMenuItem accountToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem menuRemoveAccountFromManifest;
@@ -512,6 +533,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.Button btnCopy;
         private System.Windows.Forms.Panel panelButtons;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }
 

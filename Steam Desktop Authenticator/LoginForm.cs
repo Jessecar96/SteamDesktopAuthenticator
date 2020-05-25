@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Forms;
+using System.Drawing;
 using SteamAuth;
 
 namespace Steam_Desktop_Authenticator
@@ -8,6 +9,7 @@ namespace Steam_Desktop_Authenticator
     {
         public SteamGuardAccount account;
         public LoginType LoginReason;
+        bool darkModeEnabled = new SettingsForm().darkModeEnabled;
 
         public LoginForm(LoginType loginReason = LoginType.Initial, SteamGuardAccount account = null)
         {
@@ -367,6 +369,28 @@ namespace Steam_Desktop_Authenticator
             {
                 txtUsername.Text = account.AccountName;
             }
+
+            #region dark_mode_colors
+            if (darkModeEnabled)
+            {
+                this.BackColor = Color.FromArgb(30, 32, 36);
+
+                // username
+                label1.ForeColor = Color.FromArgb(210, 210, 210);
+
+                // password
+                label2.ForeColor = Color.FromArgb(210, 210, 210);
+
+                labelLoginExplanation.ForeColor = Color.FromArgb(210, 210, 210);
+
+                txtUsername.BackColor = Color.FromArgb(30, 32, 36);
+                txtUsername.ForeColor = Color.FromArgb(210, 210, 210);
+
+                txtPassword.BackColor = Color.FromArgb(30, 32, 36);
+                txtPassword.ForeColor = Color.FromArgb(210, 210, 210);
+            }
+
+            #endregion
         }
 
         public enum LoginType

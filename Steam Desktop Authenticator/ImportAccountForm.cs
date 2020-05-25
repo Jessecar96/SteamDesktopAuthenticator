@@ -17,6 +17,7 @@ namespace Steam_Desktop_Authenticator
     public partial class ImportAccountForm : Form
     {
         private Manifest mManifest;
+        bool darkModeEnabled = new SettingsForm().darkModeEnabled;
 
         public ImportAccountForm()
         {
@@ -243,6 +244,22 @@ namespace Steam_Desktop_Authenticator
             #endregion // Continue End
         }
 
+        private void ImportAccountForm_Load(object sender, EventArgs e)
+        {
+            if (darkModeEnabled)
+            {
+                this.BackColor = Color.FromArgb(30, 32, 36);
+                
+                labelText.ForeColor = Color.FromArgb(210, 210, 210);
+
+                txtBox.BackColor = Color.FromArgb(30, 32, 36);
+                txtBox.ForeColor = Color.FromArgb(210, 210, 210);
+
+                label1.ForeColor = Color.FromArgb(210, 210, 210);
+
+            }
+        }
+
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -251,6 +268,8 @@ namespace Steam_Desktop_Authenticator
         private void Import_maFile_Form_FormClosing(object sender, FormClosingEventArgs e)
         {
         }
+
+
     }
 
 

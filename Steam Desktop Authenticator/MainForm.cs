@@ -25,6 +25,7 @@ namespace Steam_Desktop_Authenticator
         private long currentSteamChunk = 0;
         private string passKey = null;
         private bool startSilent = false;
+        bool darkModeEnabled = new SettingsForm().darkModeEnabled;
 
         // Forms
         private TradePopupForm popupFrm = new TradePopupForm();
@@ -59,6 +60,7 @@ namespace Steam_Desktop_Authenticator
                 this.Close();
             }
 
+
             // Make sure we don't show that welcome dialog again
             this.manifest.FirstRun = false;
             this.manifest.Save();
@@ -87,6 +89,76 @@ namespace Steam_Desktop_Authenticator
             btnManageEncryption.Enabled = manifest.Entries.Count > 0;
 
             loadSettings();
+
+            #region dark_mode_color_changing
+            if (darkModeEnabled)
+            {
+                this.BackColor = Color.FromArgb(30, 32, 36);
+                // groupBox
+                groupBox1.BackColor = Color.FromArgb(30, 32, 36);
+                groupBox1.ForeColor = Color.FromArgb(210, 210, 210);
+
+                // groupAccount
+                groupAccount.BackColor = Color.FromArgb(30, 32, 36);
+                groupAccount.ForeColor = Color.FromArgb(210, 210, 210);
+
+                // txtLoginToken
+                txtLoginToken.BackColor = Color.FromArgb(30, 32, 36);
+                txtLoginToken.ForeColor = Color.FromArgb(210, 210, 210);
+
+                // btnCopy
+                btnCopy.ForeColor = Color.FromArgb(30, 32, 36);
+
+                // listAccounts
+                listAccounts.BackColor = Color.FromArgb(30, 32, 36);
+                listAccounts.ForeColor = Color.FromArgb(210, 210, 210);
+
+                // txtAccSearch
+                label1.ForeColor = Color.FromArgb(210, 210, 210);
+                txtAccSearch.ForeColor = Color.FromArgb(210, 210, 210);
+                txtAccSearch.BackColor = Color.FromArgb(30, 32, 36);
+
+                // lblStatus
+                lblStatus.BackColor = Color.FromArgb(30, 32, 36);
+                lblStatus.ForeColor = Color.FromArgb(210, 210, 210);
+
+                // menuStrip
+                menuStrip.BackColor = Color.FromArgb(30, 32, 36);
+                menuStrip.ForeColor = Color.FromArgb(210, 210, 210);
+
+                // fileToolStripMenuItem
+
+                // fileToolStripMenuItem options
+                menuImportAccount.BackColor = Color.FromArgb(30, 32, 36);
+                menuImportAccount.ForeColor = Color.FromArgb(210, 210, 210);
+
+                toolStripSeparator1.BackColor = Color.FromArgb(30, 32, 36);
+                toolStripSeparator1.ForeColor = Color.FromArgb(30, 32, 36);
+                
+                menuSettings.BackColor = Color.FromArgb(30, 32, 36);
+                menuSettings.ForeColor = Color.FromArgb(210, 210, 210);
+                
+                menuQuit.BackColor = Color.FromArgb(30, 32, 36);
+                menuQuit.ForeColor = Color.FromArgb(210, 210, 210);
+
+                // accountToolStripMenuItem
+
+                // accountToolStripMenuItem options
+                menuLoginAgain.BackColor = Color.FromArgb(30, 32, 36);
+                menuLoginAgain.ForeColor = Color.FromArgb(210, 210, 210);
+
+                menuRefreshSession.BackColor = Color.FromArgb(30, 32, 36);  
+                menuRefreshSession.ForeColor = Color.FromArgb(210, 210, 210);
+
+                menuRemoveAccountFromManifest.BackColor = Color.FromArgb(30, 32, 36);
+                menuRemoveAccountFromManifest.ForeColor = Color.FromArgb(210, 210, 210);
+
+                menuDeactivateAuthenticator.BackColor = Color.FromArgb(30, 32, 36);
+                menuDeactivateAuthenticator.ForeColor = Color.FromArgb(210, 210, 210);
+
+
+            }
+            #endregion
             loadAccountsList();
 
             checkForUpdates();
@@ -95,6 +167,9 @@ namespace Steam_Desktop_Authenticator
             {
                 this.WindowState = FormWindowState.Minimized;
             }
+
+            
+
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -744,5 +819,184 @@ namespace Steam_Desktop_Authenticator
                 curPos = new Point(curPos.X + but.Width, 0);
             }
         }
+
+
+        #region dark_mode_methods
+
+        // fileToolStripMenuItem
+
+        // honestly there's probably an easier way to do this
+        private void fileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            if (darkModeEnabled)
+            {
+                fileToolStripMenuItem.ForeColor = Color.Black;
+            }
+        }
+
+        private void fileToolStripMenuItem_DropDownClosed(object sender, EventArgs e)
+        {
+
+            if (darkModeEnabled)
+            {
+                fileToolStripMenuItem.ForeColor = Color.FromArgb(210, 210, 210);
+            }
+            else
+            {
+                fileToolStripMenuItem.ForeColor = Color.Black;
+            }
+        }
+
+        private void fileToolStripMenuItem_MouseEnter(object sender, EventArgs e)
+        {
+            fileToolStripMenuItem.ForeColor = Color.Black;
+        }
+        
+        private void fileToolStripMenuItem_MouseLeave(object sender, EventArgs e)
+        {
+
+            if (darkModeEnabled)
+            {
+                fileToolStripMenuItem.ForeColor = Color.FromArgb(210, 210, 210);
+            }
+        }
+
+        // children of fileToolStripMenuItem
+        private void menuImportAccount_MouseEnter(object sender, EventArgs e)
+        {
+            menuImportAccount.ForeColor = Color.Black;
+        }
+
+        private void menuImportAccount_MouseLeave(object sender, EventArgs e)
+        {
+            if (darkModeEnabled)
+            {
+                menuImportAccount.ForeColor = Color.FromArgb(210, 210, 210);
+            }
+        }
+
+        //
+        private void menuSettings_MouseEnter(object sender, EventArgs e)
+        {
+            menuSettings.ForeColor = Color.Black;
+        }
+
+        private void menuSettings_MouseLeave(object sender, EventArgs e)
+        {
+            if (darkModeEnabled)
+            {
+                menuSettings.ForeColor = Color.FromArgb(210, 210, 210);
+            }
+        }
+        
+        //
+        private void menuQuit_MouseEnter(object sender, EventArgs e)
+        {
+            menuQuit.ForeColor = Color.Black;
+        }
+
+        private void menuQuit_MouseLeave(object sender, EventArgs e)
+        {
+            if (darkModeEnabled)
+            {
+                menuQuit.ForeColor = Color.FromArgb(210, 210, 210);
+            }
+        }
+
+        // accountToolStripMenuItem
+
+        private void accountToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            if (darkModeEnabled)
+            {
+                accountToolStripMenuItem.ForeColor = Color.Black;
+            }
+        }
+
+        private void accountToolStripMenuItem_DropDownClosed(object sender, EventArgs e)
+        {
+
+            if (darkModeEnabled)
+            {
+                accountToolStripMenuItem.ForeColor = Color.FromArgb(210, 210, 210);
+            }
+            else
+            {
+                accountToolStripMenuItem.ForeColor = Color.Black;
+            }
+        }
+
+        private void accountToolStripMenuItem_MouseEnter(object sender, EventArgs e)
+        {
+            accountToolStripMenuItem.ForeColor = Color.Black;
+        }
+
+        private void accountToolStripMenuItem_MouseLeave(object sender, EventArgs e)
+        {
+
+            if (darkModeEnabled)
+            {
+                accountToolStripMenuItem.ForeColor = Color.FromArgb(210, 210, 210);
+            }
+        }
+
+
+        // children of accountToolStripMenuItem
+
+        private void menuLoginAgain_MouseEnter(object sender, EventArgs e)
+        {
+            menuLoginAgain.ForeColor = Color.Black;
+        }
+
+        private void menuLoginAgain_MouseLeave(object sender, EventArgs e)
+        {
+            if (darkModeEnabled)
+            {
+                menuLoginAgain.ForeColor = Color.FromArgb(210, 210, 210);
+            }
+        }
+
+        //
+        private void menuRefreshSession_MouseEnter(object sender, EventArgs e)
+        {
+            menuRefreshSession.ForeColor = Color.Black;
+        }
+
+        private void menuRefreshSession_MouseLeave(object sender, EventArgs e)
+        {
+            if (darkModeEnabled)
+            {
+                menuRefreshSession.ForeColor = Color.FromArgb(210, 210, 210);
+            }
+        }
+
+        //
+        private void menuRemoveAccountFromManifest_MouseEnter(object sender, EventArgs e)
+        {
+            menuRemoveAccountFromManifest.ForeColor = Color.Black;
+        }
+
+        private void menuRemoveAccountFromManifest_MouseLeave(object sender, EventArgs e)
+        {
+            if (darkModeEnabled)
+            {
+                menuRemoveAccountFromManifest.ForeColor = Color.FromArgb(210, 210, 210);
+            }
+        }
+
+        //
+        private void menuDeactivateAuthenticator_MouseEnter(object sender, EventArgs e)
+        {
+            menuDeactivateAuthenticator.ForeColor = Color.Black;
+        }
+
+        private void menuDeactivateAuthenticator_MouseLeave(object sender, EventArgs e)
+        {
+
+        }
+
+        #endregion
     }
 }
