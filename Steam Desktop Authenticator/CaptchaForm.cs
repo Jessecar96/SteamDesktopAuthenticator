@@ -15,6 +15,7 @@ namespace Steam_Desktop_Authenticator
         public bool Canceled = false;
         public string CaptchaGID = "";
         public string CaptchaURL = "";
+        bool darkModeEnabled = new SettingsForm().darkModeEnabled;
         public string CaptchaCode
         {
             get
@@ -29,6 +30,21 @@ namespace Steam_Desktop_Authenticator
             this.CaptchaURL = "https://steamcommunity.com/public/captcha.php?gid=" + GID;
             InitializeComponent();
             this.pictureBoxCaptcha.Load(CaptchaURL);
+        }
+
+        private void CaptchaForm_Load(object sender, EventArgs e)
+        {
+            if (darkModeEnabled)
+            {
+                this.BackColor = Color.FromArgb(30, 32, 36);
+
+                labelText.ForeColor = Color.FromArgb(210, 210, 210);
+
+                txtBox.BackColor = Color.FromArgb(30, 32, 36);
+                txtBox.ForeColor = Color.FromArgb(210, 210, 210);
+                // i can't actually see this in the app so I hope this doesn't break the picture
+                pictureBoxCaptcha.BackColor = Color.FromArgb(30, 32, 36);
+            }
         }
 
         private void btnAccept_Click(object sender, EventArgs e)

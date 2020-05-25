@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Steam_Desktop_Authenticator
@@ -7,6 +8,7 @@ namespace Steam_Desktop_Authenticator
     {
         Manifest manifest;
         bool fullyLoaded = false;
+        public bool darkModeEnabled => chkEnableDarkMode.Checked;
 
         public SettingsForm()
         {
@@ -20,6 +22,7 @@ namespace Steam_Desktop_Authenticator
             chkCheckAll.Checked = manifest.CheckAllAccounts;
             chkConfirmMarket.Checked = manifest.AutoConfirmMarketTransactions;
             chkConfirmTrades.Checked = manifest.AutoConfirmTrades;
+            chkEnableDarkMode.Checked = manifest.EnableDarkMode;
 
             SetControlsEnabledState(chkPeriodicChecking.Checked);
 
@@ -42,6 +45,34 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
+        private void SettingsForm_Load(object sender, EventArgs e)
+        {
+            if (darkModeEnabled)
+            {
+                this.BackColor = Color.FromArgb(30, 32, 36);
+
+                chkPeriodicChecking.ForeColor = Color.FromArgb(210, 210, 210);
+
+                label1.ForeColor = Color.FromArgb(210, 210, 210);
+                numPeriodicInterval.BackColor = Color.FromArgb(30, 32, 36);
+                numPeriodicInterval.ForeColor = Color.FromArgb(210, 210, 210);
+
+                chkCheckAll.ForeColor = Color.FromArgb(210, 210, 210);
+
+                chkConfirmMarket.ForeColor = Color.FromArgb(210, 210, 210);
+
+                chkConfirmTrades.ForeColor = Color.FromArgb(210, 210, 210);
+
+                chkEnableDarkMode.ForeColor = Color.FromArgb(210, 210, 210);
+
+            }
+            
+            
+        }
+
+
+
+        
         private void btnSave_Click(object sender, EventArgs e)
         {
             manifest.PeriodicChecking = chkPeriodicChecking.Checked;
@@ -49,6 +80,8 @@ namespace Steam_Desktop_Authenticator
             manifest.CheckAllAccounts = chkCheckAll.Checked;
             manifest.AutoConfirmMarketTransactions = chkConfirmMarket.Checked;
             manifest.AutoConfirmTrades = chkConfirmTrades.Checked;
+            manifest.EnableDarkMode = chkEnableDarkMode.Checked;
+            
             manifest.Save();
             this.Close();
         }
@@ -57,6 +90,8 @@ namespace Steam_Desktop_Authenticator
         {
             SetControlsEnabledState(chkPeriodicChecking.Checked);
         }
+
+
 
         private void chkConfirmMarket_CheckedChanged(object sender, EventArgs e)
         {
@@ -69,5 +104,14 @@ namespace Steam_Desktop_Authenticator
             if (chkConfirmTrades.Checked)
                 ShowWarning(chkConfirmTrades);
         }
+
+        private void chkEnabledDarkMode_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+
+
+
     }
 }
