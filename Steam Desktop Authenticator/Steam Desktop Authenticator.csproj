@@ -127,6 +127,7 @@
     <Compile Include="CaptchaForm.Designer.cs">
       <DependentUpon>CaptchaForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FolderSelectDialog.cs" />
     <Compile Include="ImportAccountForm.cs">
       <SubType>Form</SubType>
     </Compile>
