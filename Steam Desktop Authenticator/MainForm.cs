@@ -591,9 +591,6 @@ namespace Steam_Desktop_Authenticator
 
                 listAccounts.SelectedIndex = 0;
                 trayAccountList.SelectedIndex = 0;
-
-                listAccounts.Sorted = true;
-                trayAccountList.Sorted = true;
             }
             menuDeactivateAuthenticator.Enabled = btnTradeConfirmations.Enabled = allAccounts.Length > 0;
         }
