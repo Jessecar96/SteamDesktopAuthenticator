@@ -26,7 +26,7 @@
 
 IF you lost your `maFiles` OR lost your encryption key, go [here](https://store.steampowered.com/twofactor/manage) and click "Remove Authenticator" then enter your revocation code that you wrote down when you first added your account to SDA.
 
-If you did not follow the directions and did not write your revocation code down, you're well and truly screwed. The only option is beg to [Steam Support](https://support.steampowered.com/) and say you lost your mobile authenticator and the revocation code.
+If you did not follow the directions and did not write your revocation code down, you're well and truly screwed. The only option is beg to [Steam Support](https://support.steampowered.com/) and say you lost your mobile authenticator and the revocation code, and good luck with that if you haven't used a credit/debit card on a purchase.
 
 ## Detailed setup instructions
 - Download & Install [.NET Framework 4.6.2](https://www.microsoft.com/net/download/dotnet-framework-runtime/net462) if you're using Windows 7. Windows 8 and above should do this automatically for you.
