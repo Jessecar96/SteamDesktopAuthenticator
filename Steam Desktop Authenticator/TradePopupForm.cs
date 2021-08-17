@@ -1,12 +1,7 @@
 ﻿using SteamAuth;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Steam_Desktop_Authenticator
@@ -96,6 +91,12 @@ namespace Steam_Desktop_Authenticator
                 //TODO: Re-add confirmation description support to SteamAuth.
                 lblDesc.Text = "Confirmation";
             }
+        }
+
+        private void TradePopupForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            this.Hide();
         }
 
         public void Popup()
