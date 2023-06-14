@@ -51,7 +51,6 @@
             this.menuQuit = new System.Windows.Forms.ToolStripMenuItem();
             this.accountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuLoginAgain = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuRefreshSession = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.menuRemoveAccountFromManifest = new System.Windows.Forms.ToolStripMenuItem();
             this.menuDeactivateAuthenticator = new System.Windows.Forms.ToolStripMenuItem();
@@ -272,7 +271,6 @@
             // 
             this.accountToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuLoginAgain,
-            this.menuRefreshSession,
             this.toolStripSeparator4,
             this.menuRemoveAccountFromManifest,
             this.menuDeactivateAuthenticator});
@@ -286,13 +284,6 @@
             this.menuLoginAgain.Size = new System.Drawing.Size(205, 22);
             this.menuLoginAgain.Text = "Login again";
             this.menuLoginAgain.Click += new System.EventHandler(this.menuLoginAgain_Click);
-            // 
-            // menuRefreshSession
-            // 
-            this.menuRefreshSession.Name = "menuRefreshSession";
-            this.menuRefreshSession.Size = new System.Drawing.Size(205, 22);
-            this.menuRefreshSession.Text = "Force session refresh";
-            this.menuRefreshSession.Click += new System.EventHandler(this.menuRefreshSession_Click);
             // 
             // toolStripSeparator4
             // 
@@ -508,7 +499,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripMenuItem menuSettings;
         private System.Windows.Forms.ToolStripMenuItem menuDeactivateAuthenticator;
-        private System.Windows.Forms.ToolStripMenuItem menuRefreshSession;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.Button btnCopy;
         private System.Windows.Forms.Panel panelButtons;

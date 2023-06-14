@@ -46,14 +46,14 @@ namespace Steam_Desktop_Authenticator
         }
 
         CefReturnValue IRequestHandler.OnBeforeResourceLoad(IWebBrowser browserControl, IBrowser browser, IFrame frame, IRequest request, IRequestCallback callback)
-        {   
+        {
             // Check if the session is expired
             if (request.Url == "steammobile://lostauth")
             {
-                MessageBox.Show("Failed to load confirmations.\nTry using \"Force session refresh\" under the Selected Account menu.\nIf that doesn't work use the \"Login again\" option.", "Confirmations", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Failed to load confirmations.\nUse the \"Login again\" option under the \"Selected Account\" menu.", "Confirmations", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return CefReturnValue.Cancel;
             }
-            
+
             // For some reason, in order to set cookies manually using a hdeader you need to clear the real cookies every time :/
             Cef.GetGlobalCookieManager().VisitAllCookies(new DeleteAllCookiesVisitor());
 

@@ -125,13 +125,12 @@ namespace Steam_Desktop_Authenticator
             this.loadAccountsList();
         }
 
-        private async void btnTradeConfirmations_Click(object sender, EventArgs e)
+        private void btnTradeConfirmations_Click(object sender, EventArgs e)
         {
             if (currentAccount == null) return;
 
             string oText = btnTradeConfirmations.Text;
             btnTradeConfirmations.Text = "Loading...";
-            await RefreshAccountSession(currentAccount);
             btnTradeConfirmations.Text = oText;
 
             try
@@ -328,20 +327,6 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
-        private async void menuRefreshSession_Click(object sender, EventArgs e)
-        {
-            bool status = await RefreshAccountSession(currentAccount);
-            if (status == true)
-            {
-                MessageBox.Show("Your session has been refreshed.", "Session refresh", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                manifest.SaveAccount(currentAccount, manifest.Encrypted, passKey);
-            }
-            else
-            {
-                MessageBox.Show("Failed to refresh your session.\nTry using the \"Login again\" option.", "Session refresh", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
         // Tray menu handlers
         private void trayIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -467,9 +452,9 @@ namespace Steam_Desktop_Authenticator
                     }
                     catch (SteamGuardAccount.WGTokenInvalidException)
                     {
-                        lblStatus.Text = "Refreshing session";
-                        await acc.RefreshSessionAsync(); //Don't save it to the HDD, of course. We'd need their encryption passkey again.
-                        lblStatus.Text = "";
+                        //Prompt to relogin
+                        PromptRefreshLogin(acc);
+                        break;
                     }
                     catch (SteamGuardAccount.WGTokenExpiredException)
                     {
@@ -515,31 +500,6 @@ namespace Steam_Desktop_Authenticator
             if (String.IsNullOrEmpty(text))
                 return;
             Clipboard.SetText(text);
-        }
-
-        /// <summary>
-        /// Refresh this account's session data using their OAuth Token
-        /// </summary>
-        /// <param name="account">The account to refresh</param>
-        /// <param name="attemptRefreshLogin">Whether or not to prompt the user to re-login if their OAuth token is expired.</param>
-        /// <returns></returns>
-        private async Task<bool> RefreshAccountSession(SteamGuardAccount account, bool attemptRefreshLogin = true)
-        {
-            if (account == null) return false;
-
-            try
-            {
-                bool refreshed = await account.RefreshSessionAsync();
-                return refreshed; //No exception thrown means that we either successfully refreshed the session or there was a different issue preventing us from doing so.
-            }
-            catch (SteamGuardAccount.WGTokenExpiredException)
-            {
-                if (!attemptRefreshLogin) return false;
-
-                PromptRefreshLogin(account);
-
-                return await RefreshAccountSession(account, false);
-            }
         }
 
         /// <summary>
