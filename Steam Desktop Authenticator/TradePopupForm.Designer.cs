@@ -39,9 +39,9 @@
             // lblDesc
             // 
             this.lblDesc.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDesc.Location = new System.Drawing.Point(12, 23);
+            this.lblDesc.Location = new System.Drawing.Point(3, 23);
             this.lblDesc.Name = "lblDesc";
-            this.lblDesc.Size = new System.Drawing.Size(142, 38);
+            this.lblDesc.Size = new System.Drawing.Size(182, 38);
             this.lblDesc.TabIndex = 1;
             this.lblDesc.Text = "trade description";
             this.lblDesc.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -50,11 +50,11 @@
             // 
             this.btnDeny.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.btnDeny.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDeny.Location = new System.Drawing.Point(12, 87);
+            this.btnDeny.Location = new System.Drawing.Point(3, 87);
             this.btnDeny.Name = "btnDeny";
-            this.btnDeny.Size = new System.Drawing.Size(69, 32);
+            this.btnDeny.Size = new System.Drawing.Size(90, 32);
             this.btnDeny.TabIndex = 2;
-            this.btnDeny.Text = "Deny";
+            this.btnDeny.Text = "Отклонить";
             this.btnDeny.UseVisualStyleBackColor = false;
             this.btnDeny.Click += new System.EventHandler(this.btnDeny_Click);
             // 
@@ -62,20 +62,20 @@
             // 
             this.btnAccept.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.btnAccept.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAccept.Location = new System.Drawing.Point(87, 87);
+            this.btnAccept.Location = new System.Drawing.Point(99, 87);
             this.btnAccept.Name = "btnAccept";
-            this.btnAccept.Size = new System.Drawing.Size(67, 32);
+            this.btnAccept.Size = new System.Drawing.Size(86, 32);
             this.btnAccept.TabIndex = 2;
-            this.btnAccept.Text = "Accept";
+            this.btnAccept.Text = "Принять";
             this.btnAccept.UseVisualStyleBackColor = false;
             this.btnAccept.Click += new System.EventHandler(this.btnAccept_Click);
             // 
             // lblStatus
             // 
             this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatus.Location = new System.Drawing.Point(0, 61);
+            this.lblStatus.Location = new System.Drawing.Point(6, 61);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(166, 19);
+            this.lblStatus.Size = new System.Drawing.Size(179, 19);
             this.lblStatus.TabIndex = 3;
             this.lblStatus.Text = "status";
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -83,9 +83,9 @@
             // lblAccount
             // 
             this.lblAccount.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAccount.Location = new System.Drawing.Point(12, 0);
+            this.lblAccount.Location = new System.Drawing.Point(3, 0);
             this.lblAccount.Name = "lblAccount";
-            this.lblAccount.Size = new System.Drawing.Size(142, 23);
+            this.lblAccount.Size = new System.Drawing.Size(182, 23);
             this.lblAccount.TabIndex = 4;
             this.lblAccount.Text = "account name";
             this.lblAccount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -94,7 +94,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(166, 131);
+            this.ClientSize = new System.Drawing.Size(188, 131);
             this.Controls.Add(this.lblAccount);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.btnAccept);
@@ -104,7 +104,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TradePopupForm";
-            this.Text = "New confirmation";
+            this.Text = "Новое предложение";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.TradePopupForm_Load);
             this.ResumeLayout(false);

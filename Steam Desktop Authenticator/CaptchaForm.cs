@@ -42,5 +42,10 @@ namespace Steam_Desktop_Authenticator
             this.Canceled = true;
             this.Close();
         }
+
+        private void CaptchaForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -40,7 +40,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(289, 45);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Installing Visual C++ Redistributable 2013...";
+            this.label1.Text = "Установка Visual C++ Redistributable 2013...";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // progressBar1
@@ -63,7 +63,7 @@
             this.MaximizeBox = false;
             this.Name = "InstallRedistribForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Installing";
+            this.Text = "Установка";
             this.ResumeLayout(false);
 
         }

@@ -1,10 +1,38 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using CommandLine;
+using CommandLine.Text;
+using System.Net;
 
 namespace Steam_Desktop_Authenticator
 {
+
+    class Options
+    {
+        [Option('k', "encryption-key", Required = false,
+          HelpText = "Encryption key for manifest")]
+        public string EncryptionKey { get; set; }
+
+        [Option('s', "silent", Required = false,
+          HelpText = "Start minimized")]
+        public bool Silent { get; set; }
+
+        [ParserState]
+        public IParserState LastParserState { get; set; }
+
+        [HelpOption]
+        public string GetUsage()
+        {
+            return HelpText.AutoBuild(this,
+              (HelpText current) => HelpText.DefaultParsingErrorsHandler(this, current));
+        }
+    }
+
     static class Program
     {
         public static Process PriorProcess()
@@ -37,6 +65,8 @@ namespace Steam_Desktop_Authenticator
         [STAThread]
         static void Main(string[] args)
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
             // run the program only once
             if (PriorProcess() != null)
             {
@@ -45,39 +75,17 @@ namespace Steam_Desktop_Authenticator
             }
 
             // Parse command line arguments
-            var options = new CommandLineOptions();
+            var options = new Options();
             Parser.Default.ParseArguments(args, options);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Manifest man;
-
-            try
-            {
-                man = Manifest.GetManifest();
-            }
-            catch (ManifestParseException)
-            {
-                // Manifest file was corrupted, generate a new one.
-                try
-                {
-                    MessageBox.Show("Your settings were unexpectedly corrupted and were reset to defaults.", "Steam Desktop Authenticator", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    man = Manifest.GenerateNewManifest(true);
-                }
-                catch (MaFileEncryptedException)
-                {
-                    // An maFile was encrypted, we're fucked.
-                    MessageBox.Show("Sorry, but SDA was unable to recover your accounts since you used encryption.\nYou'll need to recover your Steam accounts by removing the authenticator.\nClick OK to view instructions.", "Steam Desktop Authenticator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    System.Diagnostics.Process.Start(@"https://github.com/Jessecar96/SteamDesktopAuthenticator/wiki/Help!-I'm-locked-out-of-my-account");
-                    return;
-                }
-            }
-
+            Manifest man = Manifest.GetManifest();
             if (man.FirstRun)
             {
                 // Install VC++ Redist and wait
-                new InstallRedistribForm().ShowDialog();
+                //new InstallRedistribForm().ShowDialog();
 
                 if (man.Entries.Count > 0)
                 {

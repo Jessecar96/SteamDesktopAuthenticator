@@ -55,7 +55,7 @@ namespace Steam_Desktop_Authenticator
 
             console.OutputDataReceived += (sender, e) =>
             {
-                if (e?.Data == null || e.Data.Contains(">@") || !OutputToConsole || e.Data == "") return;
+                if (e.Data.Contains(">@") || !OutputToConsole || e.Data == "") return;
                 if (OutputToConsole)
                     Console.WriteLine(e.Data);
                 if (OutputToLog)

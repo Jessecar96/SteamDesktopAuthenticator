@@ -1,28 +1,57 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Steam Desktop Authenticator", "Steam Desktop Authenticator.csproj", "{0F37C513-9AF4-42C8-9CE9-F9B3BFA55E4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamAuth", "..\lib\SteamAuth\SteamAuth\SteamAuth.csproj", "{5AD0934E-F6C4-4AE5-83AF-C788313B2A87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SteamAuth", "..\lib\SteamAuth\SteamAuth.csproj", "{008BD387-3FCA-48A4-899B-3BBF6B5946A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0F37C513-9AF4-42C8-9CE9-F9B3BFA55E4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F37C513-9AF4-42C8-9CE9-F9B3BFA55E4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F37C513-9AF4-42C8-9CE9-F9B3BFA55E4E}.Debug|x86.ActiveCfg = Debug|x86
 		{0F37C513-9AF4-42C8-9CE9-F9B3BFA55E4E}.Debug|x86.Build.0 = Debug|x86
+		{0F37C513-9AF4-42C8-9CE9-F9B3BFA55E4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F37C513-9AF4-42C8-9CE9-F9B3BFA55E4E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0F37C513-9AF4-42C8-9CE9-F9B3BFA55E4E}.Release|x86.ActiveCfg = Release|x86
 		{0F37C513-9AF4-42C8-9CE9-F9B3BFA55E4E}.Release|x86.Build.0 = Release|x86
-		{5AD0934E-F6C4-4AE5-83AF-C788313B2A87}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{5AD0934E-F6C4-4AE5-83AF-C788313B2A87}.Debug|x86.Build.0 = Debug|Any CPU
-		{5AD0934E-F6C4-4AE5-83AF-C788313B2A87}.Release|x86.ActiveCfg = Release|Any CPU
-		{5AD0934E-F6C4-4AE5-83AF-C788313B2A87}.Release|x86.Build.0 = Release|Any CPU
+		{008BD387-3FCA-48A4-899B-3BBF6B5946A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{008BD387-3FCA-48A4-899B-3BBF6B5946A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{008BD387-3FCA-48A4-899B-3BBF6B5946A2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{008BD387-3FCA-48A4-899B-3BBF6B5946A2}.Debug|x86.Build.0 = Debug|Any CPU
+		{008BD387-3FCA-48A4-899B-3BBF6B5946A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{008BD387-3FCA-48A4-899B-3BBF6B5946A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{008BD387-3FCA-48A4-899B-3BBF6B5946A2}.Release|x86.ActiveCfg = Release|Any CPU
+		{008BD387-3FCA-48A4-899B-3BBF6B5946A2}.Release|x86.Build.0 = Release|Any CPU
+		{62D64BCB-9031-4B92-9DDC-86EFE594F1AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62D64BCB-9031-4B92-9DDC-86EFE594F1AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62D64BCB-9031-4B92-9DDC-86EFE594F1AA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{62D64BCB-9031-4B92-9DDC-86EFE594F1AA}.Debug|x86.Build.0 = Debug|Any CPU
+		{62D64BCB-9031-4B92-9DDC-86EFE594F1AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62D64BCB-9031-4B92-9DDC-86EFE594F1AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62D64BCB-9031-4B92-9DDC-86EFE594F1AA}.Release|x86.ActiveCfg = Release|Any CPU
+		{62D64BCB-9031-4B92-9DDC-86EFE594F1AA}.Release|x86.Build.0 = Release|Any CPU
+		{D19A6783-73B4-426B-8036-AF58D2F85FE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D19A6783-73B4-426B-8036-AF58D2F85FE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D19A6783-73B4-426B-8036-AF58D2F85FE4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D19A6783-73B4-426B-8036-AF58D2F85FE4}.Debug|x86.Build.0 = Debug|Any CPU
+		{D19A6783-73B4-426B-8036-AF58D2F85FE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D19A6783-73B4-426B-8036-AF58D2F85FE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D19A6783-73B4-426B-8036-AF58D2F85FE4}.Release|x86.ActiveCfg = Release|Any CPU
+		{D19A6783-73B4-426B-8036-AF58D2F85FE4}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AD9D7302-D03B-4F7E-BF21-B89AE613E71E}
 	EndGlobalSection
 EndGlobal

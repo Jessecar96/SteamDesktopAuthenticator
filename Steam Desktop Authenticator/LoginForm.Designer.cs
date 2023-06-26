@@ -83,7 +83,7 @@
             this.btnSteamLogin.Name = "btnSteamLogin";
             this.btnSteamLogin.Size = new System.Drawing.Size(110, 33);
             this.btnSteamLogin.TabIndex = 4;
-            this.btnSteamLogin.Text = "Login";
+            this.btnSteamLogin.Text = "Войти";
             this.btnSteamLogin.UseVisualStyleBackColor = true;
             this.btnSteamLogin.Click += new System.EventHandler(this.btnSteamLogin_Click);
             // 
@@ -94,8 +94,8 @@
             this.labelLoginExplanation.Name = "labelLoginExplanation";
             this.labelLoginExplanation.Size = new System.Drawing.Size(306, 46);
             this.labelLoginExplanation.TabIndex = 5;
-            this.labelLoginExplanation.Text = "This will activate Steam Desktop Authenticator on your Steam account. This requir" +
-    "es a phone number that can receive SMS.";
+            this.labelLoginExplanation.Text = "Это активирует Steam Desktop Аутентификатор на вашем аккаунте. Для этого требуетс" +
+    "я номер телефона, который может принимать SMS.";
             // 
             // LoginForm
             // 

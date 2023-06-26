@@ -45,13 +45,13 @@ namespace Steam_Desktop_Authenticator
             if (!accept2)
             {
                 // Allow user to confirm first
-                lblStatus.Text = "Press Accept again to confirm";
+                lblStatus.Text = "Нажмите Принять еще раз для подтверждения";
                 btnAccept.BackColor = Color.FromArgb(128, 255, 128);
                 accept2 = true;
             }
             else
             {
-                lblStatus.Text = "Accepting...";
+                lblStatus.Text = "Принятие...";
                 acc.AcceptConfirmation(confirms[0]);
                 confirms.RemoveAt(0);
                 Reset();
@@ -62,13 +62,13 @@ namespace Steam_Desktop_Authenticator
         {
             if (!deny2)
             {
-                lblStatus.Text = "Press Deny again to confirm";
+                lblStatus.Text = "Нажмите Отклонить еще раз для подтверждения";
                 btnDeny.BackColor = Color.FromArgb(255, 255, 128);
                 deny2 = true;
             }
             else
             {
-                lblStatus.Text = "Denying...";
+                lblStatus.Text = "Отклонение...";
                 acc.DenyConfirmation(confirms[0]);
                 confirms.RemoveAt(0);
                 Reset();
@@ -82,9 +82,9 @@ namespace Steam_Desktop_Authenticator
             btnAccept.BackColor = Color.FromArgb(192, 255, 192);
             btnDeny.BackColor = Color.FromArgb(255, 255, 192);
 
-            btnAccept.Text = "Accept";
-            btnDeny.Text = "Deny";
-            lblAccount.Text = "";
+            btnAccept.Text = "Принять";
+            btnDeny.Text = "Отклонить";
+            lblAccount.Text = Account.AccountName;
             lblStatus.Text = "";
 
             if (confirms.Count == 0)
