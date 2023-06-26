@@ -1,8 +1,5 @@
-Download link: https://github.com/MakcStudio/SteamDesktopAuthenticator/releases/download/1.0.2.2/Release.1.0.2.2.zip
+IT JUST A FORK OF FIX
 
-Created with support from https://bot.csgo.com
-
----------------
 
 SDA fixed for the Steam update of 22.06.2023
 
