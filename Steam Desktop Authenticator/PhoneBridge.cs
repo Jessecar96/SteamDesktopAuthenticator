@@ -223,7 +223,7 @@ namespace Steam_Desktop_Authenticator
 
             if (json == null)
             {
-                OnOutputLog("An error occured while extracting files");
+                OnOutputLog("An error occurred while extracting files");
             }
 
             return json;
