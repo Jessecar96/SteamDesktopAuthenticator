@@ -1,16 +1,8 @@
 ﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Diagnostics;
 using CefSharp;
-using CefSharp.WinForms;
 using SteamAuth;
 using Newtonsoft.Json;
 using System.Net.Http;
@@ -51,45 +43,58 @@ namespace Steam_Desktop_Authenticator
         }
         private async Task LoadData()
         {
+            this.splitContainer1.Panel2.Controls.Clear();
+
             try
             {
                 var httpResponse = await httpClient.GetStringAsync(steamAccount.GenerateConfirmationURL());
 
                 var response = JsonConvert.DeserializeObject<ConfirmationsResponse>(httpResponse);
 
-                if (response.Success && response.Confirmations != null)
+                if (response.Success)
                 {
-                    // limpar painel antes de adicionar novos controles
-                    this.splitContainer1.Panel2.Controls.Clear();
-
-                    foreach (var confirmation in response.Confirmations)
+                    if(response.Confirmations != null && response.Confirmations.Length > 0)
                     {
-                        Panel panel = new Panel() { Dock = DockStyle.Top, Height = 100, BackColor= Color.LightSlateGray };
+                        foreach (var confirmation in response.Confirmations)
+                        {
+                            Panel panel = new Panel() { Dock = DockStyle.Top, Height = 100, BackColor = Color.LightSlateGray };
 
-                        PictureBox pictureBox = new PictureBox() { Width = 60, Height = 60, Location = new Point(20, 20), SizeMode = PictureBoxSizeMode.Zoom };
-                        pictureBox.Load(confirmation.Icon);
-                        panel.Controls.Add(pictureBox);
+                            PictureBox pictureBox = new PictureBox() { Width = 60, Height = 60, Location = new Point(20, 20), SizeMode = PictureBoxSizeMode.Zoom };
+                            pictureBox.Load(confirmation.Icon);
+                            panel.Controls.Add(pictureBox);
 
-                        Label nameLabel = new Label() { Text = confirmation.Headline, AutoSize = true, ForeColor = Color.Black, Location = new Point(90, 20) };
-                        panel.Controls.Add(nameLabel);
+                            Label nameLabel = new Label() { Text = confirmation.Headline, AutoSize = true, ForeColor = Color.Black, Location = new Point(90, 20) };
+                            panel.Controls.Add(nameLabel);
 
-                        ConfirmationButton acceptButton = new ConfirmationButton() { Text = confirmation.Accept, Location = new Point(90, 50), Confirmation = confirmation };
-                        acceptButton.Click += btnAccept_Click;
-                        panel.Controls.Add(acceptButton);
+                            ConfirmationButton acceptButton = new ConfirmationButton() { Text = confirmation.Accept, Location = new Point(90, 50), Confirmation = confirmation };
+                            acceptButton.Click += btnAccept_Click;
+                            panel.Controls.Add(acceptButton);
 
-                        ConfirmationButton cancelButton = new ConfirmationButton() { Text = confirmation.Cancel, Location = new Point(180, 50), Confirmation = confirmation };
-                        cancelButton.Click += btnCancel_Click;
-                        panel.Controls.Add(cancelButton);
+                            ConfirmationButton cancelButton = new ConfirmationButton() { Text = confirmation.Cancel, Location = new Point(180, 50), Confirmation = confirmation };
+                            cancelButton.Click += btnCancel_Click;
+                            panel.Controls.Add(cancelButton);
 
-                        Label summaryLabel = new Label() { Text = String.Join(", ", confirmation.Summary), AutoSize = true, ForeColor = Color.Black, Location = new Point(90, 80) };
-                        panel.Controls.Add(summaryLabel);
+                            Label summaryLabel = new Label() { Text = String.Join(", ", confirmation.Summary), AutoSize = true, ForeColor = Color.Black, Location = new Point(90, 80) };
+                            panel.Controls.Add(summaryLabel);
 
-                        this.splitContainer1.Panel2.Controls.Add(panel);
+                            this.splitContainer1.Panel2.Controls.Add(panel);
+                        }
                     }
+                    else
+                    {
+                        Label errorLabel = new Label() { Text = "Nothing to confirm/cancel", AutoSize = true, ForeColor = Color.Black, Location = new Point(150, 20) };
+                        this.splitContainer1.Panel2.Controls.Add(errorLabel);
+                    }
+                }
+                else
+                {
+                    Label errorLabel = new Label() { Text = "Your steam credentials probably expired, try to reauthenticate.", AutoSize = true, ForeColor = Color.Red, Location = new Point(20, 20) };
+                    this.splitContainer1.Panel2.Controls.Add(errorLabel);
                 }
             }catch(Exception ex)
             {
-
+                Label errorLabel = new Label() { Text = "Something went wrong: " + ex.Message, AutoSize = true, ForeColor = Color.Red, Location = new Point(20, 20) };
+                this.splitContainer1.Panel2.Controls.Add(errorLabel);
             }
         }
 
