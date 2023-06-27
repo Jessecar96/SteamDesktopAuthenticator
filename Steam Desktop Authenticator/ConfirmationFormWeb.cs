@@ -6,6 +6,7 @@ using CefSharp;
 using SteamAuth;
 using Newtonsoft.Json;
 using System.Net.Http;
+using System.Drawing.Drawing2D;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -14,7 +15,6 @@ namespace Steam_Desktop_Authenticator
         private readonly HttpClient httpClient;
         private string steamCookies;
         private SteamGuardAccount steamAccount;
-        private string tradeID;
 
         public ConfirmationFormWeb(SteamGuardAccount steamAccount)
         {
@@ -25,7 +25,7 @@ namespace Steam_Desktop_Authenticator
             CefSettings settings = new CefSettings();
             settings.PersistSessionCookies = false;
             settings.Locale = "en-US";
-            settings.UserAgent = "Mozilla/5.0 (Linux; Android 6.0; Nexus 6P Build/XXXXX; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/47.0.2526.68 Mobile Safari/537.36";
+            settings.UserAgent = "Mozilla/5.0 (Linux; U; Android 4.1.1; en-us; Google Nexus 4 - 4.1.1 - API 16 - 768x1280 Build/JRO03S) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30";
             steamCookies = String.Format("mobileClientVersion=0 (2.1.3); mobileClient=android; steamid={0}; steamLoginSecure={1}; Steam_Language=english; dob=;", steamAccount.Session.SteamID.ToString(), steamAccount.Session.SteamLoginSecure);
 
             if (!Cef.IsInitialized)
@@ -34,11 +34,11 @@ namespace Steam_Desktop_Authenticator
             }
 
             HttpClientHandler handler = new HttpClientHandler();
-            handler.UseCookies = false;
+            handler.UseCookies = settings.PersistSessionCookies;
 
             httpClient = new HttpClient(handler);
             httpClient.DefaultRequestHeaders.Add("Cookie", steamCookies);
-            httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 6P Build/XXXXX; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/47.0.2526.68 Mobile Safari/537.36");
+            httpClient.DefaultRequestHeaders.Add("User-Agent", settings.UserAgent);
             
         }
         private async Task LoadData()
@@ -57,24 +57,61 @@ namespace Steam_Desktop_Authenticator
                     {
                         foreach (var confirmation in response.Confirmations)
                         {
-                            Panel panel = new Panel() { Dock = DockStyle.Top, Height = 100, BackColor = Color.LightSlateGray };
+                            Panel panel = new Panel() { Dock = DockStyle.Top, Height = 120 };
+                            panel.Paint += (s, e) =>
+                            {
+                                using (LinearGradientBrush brush = new LinearGradientBrush(panel.ClientRectangle,
+                                                                                           Color.Black,
+                                                                                           Color.DarkCyan,
+                                                                                           90F))
+                                {
+                                    e.Graphics.FillRectangle(brush, panel.ClientRectangle);
+                                }
+                            };
 
                             PictureBox pictureBox = new PictureBox() { Width = 60, Height = 60, Location = new Point(20, 20), SizeMode = PictureBoxSizeMode.Zoom };
                             pictureBox.Load(confirmation.Icon);
                             panel.Controls.Add(pictureBox);
 
-                            Label nameLabel = new Label() { Text = confirmation.Headline, AutoSize = true, ForeColor = Color.Black, Location = new Point(90, 20) };
+                            Label nameLabel = new Label() { 
+                                Text = $"{confirmation.Headline}\n{confirmation.Creator.ToString()}",
+                                AutoSize = true,
+                                ForeColor = Color.Snow,
+                                Location = new Point(90, 20),
+                                BackColor = Color.Transparent
+                            };
                             panel.Controls.Add(nameLabel);
 
-                            ConfirmationButton acceptButton = new ConfirmationButton() { Text = confirmation.Accept, Location = new Point(90, 50), Confirmation = confirmation };
+                            ConfirmationButton acceptButton = new ConfirmationButton() { 
+                                Text = confirmation.Accept,
+                                Location = new Point(90, 50),
+                                FlatStyle = FlatStyle.Flat, 
+                                FlatAppearance = { BorderSize = 0 },
+                                BackColor = Color.Black,
+                                ForeColor = Color.Snow,
+                                Confirmation = confirmation 
+                            };
                             acceptButton.Click += btnAccept_Click;
                             panel.Controls.Add(acceptButton);
 
-                            ConfirmationButton cancelButton = new ConfirmationButton() { Text = confirmation.Cancel, Location = new Point(180, 50), Confirmation = confirmation };
+                            ConfirmationButton cancelButton = new ConfirmationButton() { 
+                                Text = confirmation.Cancel,
+                                Location = new Point(180, 50),
+                                FlatStyle = FlatStyle.Flat,
+                                FlatAppearance = { BorderSize = 0 },
+                                BackColor = Color.Black,
+                                ForeColor = Color.Snow,
+                                Confirmation = confirmation 
+                            };
                             cancelButton.Click += btnCancel_Click;
                             panel.Controls.Add(cancelButton);
 
-                            Label summaryLabel = new Label() { Text = String.Join(", ", confirmation.Summary), AutoSize = true, ForeColor = Color.Black, Location = new Point(90, 80) };
+                            Label summaryLabel = new Label() { 
+                                Text = String.Join("\n", confirmation.Summary),
+                                AutoSize = true,
+                                ForeColor = Color.Snow, Location = new Point(90, 80),
+                                BackColor = Color.Transparent
+                            };
                             panel.Controls.Add(summaryLabel);
 
                             this.splitContainer1.Panel2.Controls.Add(panel);
