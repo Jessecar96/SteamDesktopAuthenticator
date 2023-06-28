@@ -76,9 +76,6 @@ namespace Steam_Desktop_Authenticator
 
             if (man.FirstRun)
             {
-                // Install VC++ Redist and wait
-                new InstallRedistribForm().ShowDialog();
-
                 if (man.Entries.Count > 0)
                 {
                     // Already has accounts, just run
