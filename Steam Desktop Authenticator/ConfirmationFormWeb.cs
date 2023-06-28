@@ -120,7 +120,7 @@ namespace Steam_Desktop_Authenticator
             }
             catch (Exception ex)
             {
-                Label errorLabel = new Label() { Text = "Something went wrong: " + ex.Message, AutoSize = true, ForeColor = Color.Red, Location = new Point(20, 20) };
+                Label errorLabel = new Label() { Text = "Something went wrong:\n" + ex.Message, AutoSize = true, ForeColor = Color.Red, Location = new Point(20, 20) };
                 this.splitContainer1.Panel2.Controls.Add(errorLabel);
             }
         }
@@ -129,7 +129,7 @@ namespace Steam_Desktop_Authenticator
         {
             var button = (ConfirmationButton)sender;
             var confirmation = button.Confirmation;
-            bool result = steamAccount.AcceptConfirmation(confirmation);
+            bool result = await steamAccount.AcceptConfirmation(confirmation);
 
             await this.LoadData();
         }
@@ -138,7 +138,7 @@ namespace Steam_Desktop_Authenticator
         {
             var button = (ConfirmationButton)sender;
             var confirmation = button.Confirmation;
-            bool result = steamAccount.DenyConfirmation(confirmation);
+            bool result = await steamAccount.DenyConfirmation(confirmation);
 
             await this.LoadData();
         }

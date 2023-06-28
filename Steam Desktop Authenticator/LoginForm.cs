@@ -145,6 +145,7 @@ namespace Steam_Desktop_Authenticator
                 account.FullyEnrolled = true;
                 account.Session = sessionData;
                 HandleManifest(man, true);
+                this.Close();
                 return;
             }
 
