@@ -147,6 +147,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BrowserRequestHandler.cs" />
+    <Compile Include="ConfirmationButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ConfirmationFormWeb.cs">
       <SubType>Form</SubType>
     </Compile>
