@@ -98,15 +98,26 @@ namespace Steam_Desktop_Authenticator
                             //-------------------------------------------
                             #region Import maFile
                             SteamGuardAccount maFile = JsonConvert.DeserializeObject<SteamGuardAccount>(fileContents);
-                            if (maFile.Session.SteamID != 0)
+
+                            if (maFile.Session == null || maFile.Session.SteamID == 0 || maFile.Session.IsSessionExpired())
                             {
-                                mManifest.SaveAccount(maFile, false);
-                                MessageBox.Show("Account Imported!");
+                                // Have the user to relogin to steam to get a new session
+                                LoginForm loginForm = new LoginForm(LoginForm.LoginType.Import, maFile);
+                                loginForm.ShowDialog();
+
+                                if (loginForm.Session == null || loginForm.Session.SteamID == 0)
+                                {
+                                    MessageBox.Show("Login failed. Try to import this account again.", "Account Import", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    return;
+                                }
+
+                                // Save new session to the maFile
+                                maFile.Session = loginForm.Session;
                             }
-                            else
-                            {
-                                throw new Exception("Invalid SteamID");
-                            }
+
+                            // Save account
+                            mManifest.SaveAccount(maFile, false);
+                            MessageBox.Show("Account Imported!", "Account Import", MessageBoxButtons.OK);
                             #endregion
                         }
                         else
@@ -187,16 +198,25 @@ namespace Steam_Desktop_Authenticator
                                             string fileText = decryptedText;
 
                                             SteamGuardAccount maFile = JsonConvert.DeserializeObject<SteamGuardAccount>(fileText);
-                                            if (maFile.Session.SteamID != 0)
+                                            if (maFile.Session == null || maFile.Session.SteamID == 0 || maFile.Session.IsSessionExpired())
                                             {
-                                                mManifest.SaveAccount(maFile, false);
-                                                MessageBox.Show("Account Imported!\nYour Account in now Decrypted!");
-                                                //MainForm.loadAccountsList();
+                                                // Have the user to relogin to steam to get a new session
+                                                LoginForm loginForm = new LoginForm(LoginForm.LoginType.Import, maFile);
+                                                loginForm.ShowDialog();
+
+                                                if (loginForm.Session == null || loginForm.Session.SteamID == 0)
+                                                {
+                                                    MessageBox.Show("Login failed. Try to import this account again.", "Account Import", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                                    return;
+                                                }
+
+                                                // Save new session to the maFile
+                                                maFile.Session = loginForm.Session;
                                             }
-                                            else
-                                            {
-                                                MessageBox.Show("Invalid SteamID.\nImport Failed.");
-                                            }
+
+                                            // Save account
+                                            mManifest.SaveAccount(maFile, false);
+                                            MessageBox.Show("Account Imported!\nYour Account in now Decrypted!", "Account Import", MessageBoxButtons.OK);
                                         }
                                     }
                                     else
