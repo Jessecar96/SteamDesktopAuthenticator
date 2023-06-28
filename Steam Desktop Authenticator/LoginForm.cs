@@ -1,6 +1,10 @@
 using System;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using SteamAuth;
+using SteamKit2;
+using SteamKit2.Authentication;
+using SteamKit2.Internal;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -8,6 +12,7 @@ namespace Steam_Desktop_Authenticator
     {
         public SteamGuardAccount account;
         public LoginType LoginReason;
+        public SessionData Session;
 
         public LoginForm(LoginType loginReason = LoginType.Initial, SteamGuardAccount account = null)
         {
@@ -26,6 +31,10 @@ namespace Steam_Desktop_Authenticator
                 if (this.LoginReason == LoginType.Refresh)
                 {
                     labelLoginExplanation.Text = "Your Steam credentials have expired. For trade and market confirmations to work properly, please login again.";
+                }
+                else if (this.LoginReason == LoginType.Import)
+                {
+                    labelLoginExplanation.Text = "Please login to your Steam account import it.";
                 }
             }
             catch (Exception)
@@ -52,84 +61,119 @@ namespace Steam_Desktop_Authenticator
             return true;
         }
 
-        private void btnSteamLogin_Click(object sender, EventArgs e)
+        private void ResetLoginButton()
         {
+            btnSteamLogin.Enabled = true;
+            btnSteamLogin.Text = "Login";
+        }
+
+        private async void btnSteamLogin_Click(object sender, EventArgs e)
+        {
+            // Disable button while we login
+            btnSteamLogin.Enabled = false;
+            btnSteamLogin.Text = "Logging in...";
+
             string username = txtUsername.Text;
             string password = txtPassword.Text;
 
-            if (LoginReason == LoginType.Refresh)
+            // Start a new SteamClient instance
+            SteamClient steamClient = new SteamClient();
+
+            // Connect to Steam
+            steamClient.Connect();
+
+            // Really basic way to wait until Steam is connected
+            while (!steamClient.IsConnected)
+                await Task.Delay(500);
+
+            // Create a new auth session
+            CredentialsAuthSession authSession;
+            try
             {
-                RefreshLogin(username, password);
+                authSession = await steamClient.Authentication.BeginAuthSessionViaCredentialsAsync(new AuthSessionDetails
+                {
+                    Username = username,
+                    Password = password,
+                    IsPersistentSession = false,
+                    PlatformType = EAuthTokenPlatformType.k_EAuthTokenPlatformType_MobileApp,
+                    ClientOSType = EOSType.Android9,
+                    Authenticator = new UserFormAuthenticator(this.account),
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
                 return;
             }
 
-            var userLogin = new UserLogin(username, password);
-            LoginResult response = LoginResult.BadCredentials;
-
-            while ((response = userLogin.DoLogin()) != LoginResult.LoginOkay)
+            // Starting polling Steam for authentication response
+            AuthPollResult pollResponse;
+            try
             {
-                switch (response)
-                {
-                    case LoginResult.NeedEmail:
-                        InputForm emailForm = new InputForm("Enter the code sent to your email:");
-                        emailForm.ShowDialog();
-                        if (emailForm.Canceled)
-                        {
-                            this.Close();
-                            return;
-                        }
-
-                        userLogin.EmailCode = emailForm.txtBox.Text;
-                        break;
-
-                    case LoginResult.NeedCaptcha:
-                        CaptchaForm captchaForm = new CaptchaForm(userLogin.CaptchaGID);
-                        captchaForm.ShowDialog();
-                        if (captchaForm.Canceled)
-                        {
-                            this.Close();
-                            return;
-                        }
-
-                        userLogin.CaptchaText = captchaForm.CaptchaCode;
-                        break;
-
-                    case LoginResult.Need2FA:
-                        MessageBox.Show("This account already has a mobile authenticator linked to it.\nRemove the old authenticator from your Steam account before adding a new one.", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        this.Close();
-                        return;
-
-                    case LoginResult.BadRSA:
-                        MessageBox.Show("Error logging in: Steam returned \"BadRSA\".", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        this.Close();
-                        return;
-
-                    case LoginResult.BadCredentials:
-                        MessageBox.Show("Error logging in: Username or password was incorrect.", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        this.Close();
-                        return;
-
-                    case LoginResult.TooManyFailedLogins:
-                        MessageBox.Show("Error logging in: Too many failed logins, try again later.", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        this.Close();
-                        return;
-
-                    case LoginResult.GeneralFailure:
-                        MessageBox.Show("Error logging in: Steam returned \"GeneralFailure\".", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        this.Close();
-                        return;
-                }
+                pollResponse = await authSession.PollingWaitForResultAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+                return;
             }
 
-            //Login succeeded
+            // Build a SessionData object
+            SessionData sessionData = new SessionData()
+            {
+                SteamID = authSession.SteamID.ConvertToUInt64(),
+                AccessToken = pollResponse.AccessToken,
+                RefreshToken = pollResponse.RefreshToken,
+            };
 
-            SessionData session = userLogin.Session;
-            AuthenticatorLinker linker = new AuthenticatorLinker(session);
+            //Login succeeded
+            this.Session = sessionData;
+
+            // If we're only logging in for an account import, stop here
+            if (LoginReason == LoginType.Import)
+            {
+                this.Close();
+                return;
+            }
+
+            // If we're only logging in for a session refresh then save it and exit
+            if (LoginReason == LoginType.Refresh)
+            {
+                Manifest man = Manifest.GetManifest();
+                account.FullyEnrolled = true;
+                account.Session = sessionData;
+                HandleManifest(man, true);
+                return;
+            }
+
+            // Show a dialog to make sure they really want to add their authenticator
+            var result = MessageBox.Show("Steam account login succeeded. Press OK to continue adding SDA as your authenticator.", "Steam Login", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+            if (result == DialogResult.Cancel)
+            {
+                MessageBox.Show("Adding authenticator aborted.", "Steam Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ResetLoginButton();
+                return;
+            }
+
+            // Begin linking mobile authenticator
+            AuthenticatorLinker linker = new AuthenticatorLinker(sessionData);
 
             AuthenticatorLinker.LinkResult linkResponse = AuthenticatorLinker.LinkResult.GeneralFailure;
-
-            while ((linkResponse = linker.AddAuthenticator()) != AuthenticatorLinker.LinkResult.AwaitingFinalization)
+            while (linkResponse != AuthenticatorLinker.LinkResult.AwaitingFinalization)
             {
+                try
+                {
+                    linkResponse = await linker.AddAuthenticator();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error adding your authenticator: " + ex.Message, "Steam Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ResetLoginButton();
+                    return;
+                }
+
                 switch (linkResponse)
                 {
                     case AuthenticatorLinker.LinkResult.MustProvidePhoneNumber:
@@ -150,16 +194,21 @@ namespace Steam_Desktop_Authenticator
                         linker.PhoneNumber = phoneNumber;
                         break;
 
+                    case AuthenticatorLinker.LinkResult.FailureAddingPhone:
+                        MessageBox.Show("Failed to add your phone number. Please try again or use a different phone number.", "Steam Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        linker.PhoneNumber = null;
+                        break;
+
                     case AuthenticatorLinker.LinkResult.MustRemovePhoneNumber:
                         linker.PhoneNumber = null;
                         break;
 
                     case AuthenticatorLinker.LinkResult.MustConfirmEmail:
-                        MessageBox.Show("Please check your email, and click the link Steam sent you before continuing.");
+                        MessageBox.Show("Please check your email, and click the link Steam sent you before continuing.", "Steam Login");
                         break;
 
                     case AuthenticatorLinker.LinkResult.GeneralFailure:
-                        MessageBox.Show("Error adding your phone number. Steam returned \"GeneralFailure\".");
+                        MessageBox.Show("Error adding your phone number. Steam returned \"GeneralFailure\".", "Steam Login");
                         this.Close();
                         return;
                 }
@@ -229,7 +278,7 @@ namespace Steam_Desktop_Authenticator
                 }
 
                 string smsCode = smsCodeForm.txtBox.Text;
-                finalizeResponse = linker.FinalizeAddAuthenticator(smsCode);
+                finalizeResponse = await linker.FinalizeAddAuthenticator(smsCode);
 
                 switch (finalizeResponse)
                 {
@@ -254,68 +303,6 @@ namespace Steam_Desktop_Authenticator
             manifest.SaveAccount(linker.LinkedAccount, passKey != null, passKey);
             MessageBox.Show("Mobile authenticator successfully linked. Please write down your revocation code: " + linker.LinkedAccount.RevocationCode);
             this.Close();
-        }
-
-        /// <summary>
-        /// Handles logging in to refresh session data. i.e. changing steam password.
-        /// </summary>
-        /// <param name="username">Steam username</param>
-        /// <param name="password">Steam password</param>
-        private async void RefreshLogin(string username, string password)
-        {
-            long steamTime = await TimeAligner.GetSteamTimeAsync();
-            Manifest man = Manifest.GetManifest();
-
-            account.FullyEnrolled = true;
-
-            UserLogin mUserLogin = new UserLogin(username, password);
-            LoginResult response = LoginResult.BadCredentials;
-
-            while ((response = mUserLogin.DoLogin()) != LoginResult.LoginOkay)
-            {
-                switch (response)
-                {
-                    case LoginResult.NeedCaptcha:
-                        CaptchaForm captchaForm = new CaptchaForm(mUserLogin.CaptchaGID);
-                        captchaForm.ShowDialog();
-                        if (captchaForm.Canceled)
-                        {
-                            this.Close();
-                            return;
-                        }
-
-                        mUserLogin.CaptchaText = captchaForm.CaptchaCode;
-                        break;
-
-                    case LoginResult.Need2FA:
-                        mUserLogin.TwoFactorCode = account.GenerateSteamGuardCodeForTime(steamTime);
-                        break;
-
-                    case LoginResult.BadRSA:
-                        MessageBox.Show("Error logging in: Steam returned \"BadRSA\".", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        this.Close();
-                        return;
-
-                    case LoginResult.BadCredentials:
-                        MessageBox.Show("Error logging in: Username or password was incorrect.", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        this.Close();
-                        return;
-
-                    case LoginResult.TooManyFailedLogins:
-                        MessageBox.Show("Error logging in: Too many failed logins, try again later.", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        this.Close();
-                        return;
-
-                    case LoginResult.GeneralFailure:
-                        MessageBox.Show("Error logging in: Steam returned \"GeneralFailure\".", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        this.Close();
-                        return;
-                }
-            }
-
-            account.Session = mUserLogin.Session;
-
-            HandleManifest(man, true);
         }
 
         private void HandleManifest(Manifest man, bool IsRefreshing = false)
@@ -372,7 +359,8 @@ namespace Steam_Desktop_Authenticator
         public enum LoginType
         {
             Initial,
-            Refresh
+            Refresh,
+            Import
         }
     }
 }
