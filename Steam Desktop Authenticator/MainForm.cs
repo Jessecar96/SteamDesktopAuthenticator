@@ -133,19 +133,8 @@ namespace Steam_Desktop_Authenticator
             btnTradeConfirmations.Text = "Loading...";
             btnTradeConfirmations.Text = oText;
 
-            try
-            {
-                ConfirmationFormWeb confirms = new ConfirmationFormWeb(currentAccount);
-                confirms.Show();
-            }
-            catch (Exception)
-            {
-                DialogResult res = MessageBox.Show("You are missing a dependency required to view your trade confirmations.\nWould you like to install it now?", "Trade confirmations failed to open", MessageBoxButtons.YesNo);
-                if (res == DialogResult.Yes)
-                {
-                    new InstallRedistribForm(true).ShowDialog();
-                }
-            }
+            ConfirmationFormWeb confirms = new ConfirmationFormWeb(currentAccount);
+            confirms.Show();
         }
 
         private void btnManageEncryption_Click(object sender, EventArgs e)

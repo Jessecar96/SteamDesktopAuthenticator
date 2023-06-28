@@ -16,8 +16,6 @@ namespace Steam_Desktop_Authenticator
             InitializeComponent();
             this.steamAccount = steamAccount;
             this.Text = String.Format("Trade Confirmations - {0}", steamAccount.AccountName);
-
-            LoadData();
         }
         private async Task LoadData()
         {
@@ -131,6 +129,17 @@ namespace Steam_Desktop_Authenticator
 
 
         private async void btnRefresh_Click(object sender, EventArgs e)
+        {
+            this.btnRefresh.Enabled = false;
+            this.btnRefresh.Text = "Refreshing...";
+
+            await this.LoadData();
+
+            this.btnRefresh.Enabled = true;
+            this.btnRefresh.Text = "Refresh";
+        }
+
+        private async void ConfirmationFormWeb_Shown(object sender, EventArgs e)
         {
             this.btnRefresh.Enabled = false;
             this.btnRefresh.Text = "Refreshing...";
