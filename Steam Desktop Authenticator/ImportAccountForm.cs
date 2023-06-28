@@ -99,7 +99,7 @@ namespace Steam_Desktop_Authenticator
                             #region Import maFile
                             SteamGuardAccount maFile = JsonConvert.DeserializeObject<SteamGuardAccount>(fileContents);
 
-                            if (maFile.Session == null || maFile.Session.SteamID == 0 || maFile.Session.IsSessionExpired())
+                            if (maFile.Session == null || maFile.Session.SteamID == 0 || maFile.Session.IsAccessTokenExpired())
                             {
                                 // Have the user to relogin to steam to get a new session
                                 LoginForm loginForm = new LoginForm(LoginForm.LoginType.Import, maFile);
@@ -198,7 +198,7 @@ namespace Steam_Desktop_Authenticator
                                             string fileText = decryptedText;
 
                                             SteamGuardAccount maFile = JsonConvert.DeserializeObject<SteamGuardAccount>(fileText);
-                                            if (maFile.Session == null || maFile.Session.SteamID == 0 || maFile.Session.IsSessionExpired())
+                                            if (maFile.Session == null || maFile.Session.SteamID == 0 || maFile.Session.IsAccessTokenExpired())
                                             {
                                                 // Have the user to relogin to steam to get a new session
                                                 LoginForm loginForm = new LoginForm(LoginForm.LoginType.Import, maFile);

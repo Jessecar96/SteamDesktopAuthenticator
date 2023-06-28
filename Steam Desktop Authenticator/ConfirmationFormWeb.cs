@@ -21,11 +21,27 @@ namespace Steam_Desktop_Authenticator
         {
             this.splitContainer1.Panel2.Controls.Clear();
 
-            if (steamAccount.Session.IsSessionExpired())
+            // Check for a valid refresh token first
+            if (steamAccount.Session.IsRefreshTokenExpired())
             {
                 MessageBox.Show("Your session has expired. Use the login again button under the selected account menu.", "Trade Confirmations", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
                 return;
+            }
+
+            // Check for a valid access token, refresh it if needed
+            if (steamAccount.Session.IsAccessTokenExpired())
+            {
+                try
+                {
+                    await steamAccount.Session.RefreshAccessToken();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Steam Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.Close();
+                    return;
+                }
             }
 
             try
