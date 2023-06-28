@@ -102,7 +102,7 @@ namespace Steam_Desktop_Authenticator
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Steam Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
                 return;
             }
@@ -115,7 +115,7 @@ namespace Steam_Desktop_Authenticator
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Steam Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
                 return;
             }
@@ -204,11 +204,11 @@ namespace Steam_Desktop_Authenticator
                         break;
 
                     case AuthenticatorLinker.LinkResult.MustConfirmEmail:
-                        MessageBox.Show("Please check your email, and click the link Steam sent you before continuing.", "Steam Login");
+                        MessageBox.Show("Please check your email, and click the link Steam sent you before continuing.", "Steam Login", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         break;
 
                     case AuthenticatorLinker.LinkResult.GeneralFailure:
-                        MessageBox.Show("Error adding your phone number. Steam returned \"GeneralFailure\".", "Steam Login");
+                        MessageBox.Show("Error adding your authenticator.", "Steam Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         this.Close();
                         return;
                 }
@@ -325,7 +325,7 @@ namespace Steam_Desktop_Authenticator
                         passKeyValid = man.VerifyPasskey(passKey);
                         if (!passKeyValid)
                         {
-                            MessageBox.Show("That passkey is invalid. Please enter the same passkey you used for your other accounts.");
+                            MessageBox.Show("That passkey is invalid. Please enter the same passkey you used for your other accounts.", "Steam Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                     else
@@ -339,11 +339,11 @@ namespace Steam_Desktop_Authenticator
             man.SaveAccount(account, passKey != null, passKey);
             if (IsRefreshing)
             {
-                MessageBox.Show("Your login session was refreshed.");
+                MessageBox.Show("Your session was refreshed.", "Steam Login", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show("Mobile authenticator successfully linked. Please write down your revocation code: " + account.RevocationCode);
+                MessageBox.Show("Mobile authenticator successfully linked. Please write down your revocation code: " + account.RevocationCode, "Steam Login", MessageBoxButtons.OK);
             }
             this.Close();
         }
