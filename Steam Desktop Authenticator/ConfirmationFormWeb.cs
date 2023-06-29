@@ -64,10 +64,13 @@ namespace Steam_Desktop_Authenticator
                             e.Graphics.FillRectangle(brush, panel.ClientRectangle);
                         }
                     };
-
-                    PictureBox pictureBox = new PictureBox() { Width = 60, Height = 60, Location = new Point(20, 20), SizeMode = PictureBoxSizeMode.Zoom };
-                    pictureBox.Load(confirmation.Icon);
-                    panel.Controls.Add(pictureBox);
+                    
+                    if (!string.IsNullOrEmpty(confirmation.Icon))
+                    {
+                       PictureBox pictureBox = new PictureBox() { Width = 60, Height = 60, Location = new Point(20, 20), SizeMode = PictureBoxSizeMode.Zoom };
+                       pictureBox.Load(confirmation.Icon);
+                       panel.Controls.Add(pictureBox);
+                    }
 
                     Label nameLabel = new Label()
                     {
