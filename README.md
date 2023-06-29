@@ -29,7 +29,7 @@ IF you lost your `maFiles` OR lost your encryption key, go [here](https://store.
 If you did not follow the directions and did not write your revocation code down, you're well and truly screwed. The only option is beg to [Steam Support](https://support.steampowered.com/) and say you lost your mobile authenticator and the revocation code.
 
 ## Detailed setup instructions
-- Download & Install [.NET Framework 4.6.2](https://www.microsoft.com/net/download/dotnet-framework-runtime/net462) if you're using Windows 7. Windows 8 and above should do this automatically for you.
+- Download & Install [.NET Framework 4.7.2](https://www.microsoft.com/net/download/dotnet-framework-runtime/net472) if you're using Windows 7. Windows 8 and above should do this automatically for you.
 - Visit [the releases page](https://github.com/Jessecar96/SteamDesktopAuthenticator/releases) and download the latest .zip (not the source code one).
 - Extract the files somewhere very safe on your computer. If you lose the files you can lose access to your Steam account.
 - Run `Steam Desktop Authenticator.exe` and click the button to set up a new account.
