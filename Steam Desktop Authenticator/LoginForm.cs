@@ -197,7 +197,8 @@ namespace Steam_Desktop_Authenticator
 
                     case AuthenticatorLinker.LinkResult.AuthenticatorPresent:
                         MessageBox.Show("This account already has an authenticator linked. You must remove that authenticator to add SDA as your authenticator.", "Steam Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        break;
+                        this.Close();
+                        return;
 
                     case AuthenticatorLinker.LinkResult.FailureAddingPhone:
                         MessageBox.Show("Failed to add your phone number. Please try again or use a different phone number.", "Steam Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -212,13 +213,12 @@ namespace Steam_Desktop_Authenticator
                         MessageBox.Show("Please check your email, and click the link Steam sent you before continuing.", "Steam Login", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         break;
 
-                    default:
                     case AuthenticatorLinker.LinkResult.GeneralFailure:
                         MessageBox.Show("Error adding your authenticator.", "Steam Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         this.Close();
                         return;
                 }
-            }
+            } // End while loop checking for AwaitingFinalization
 
             Manifest manifest = Manifest.GetManifest();
             string passKey = null;
