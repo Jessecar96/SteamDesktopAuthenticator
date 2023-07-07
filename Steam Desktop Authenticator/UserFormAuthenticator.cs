@@ -36,9 +36,8 @@ namespace Steam_Desktop_Authenticator
 
             if (account == null)
             {
-                InputForm inputForm = new InputForm("Enter a Steam guard code from your current authenticator:");
-                inputForm.ShowDialog();
-                deviceCode = inputForm.Text;
+                MessageBox.Show("This account already has an authenticator linked. You must remove that authenticator to add SDA as your authenticator.", "Steam Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
             }
             else
             {
