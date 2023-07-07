@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using SteamAuth;
 using System.Drawing.Drawing2D;
+using System.Net;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -67,9 +68,21 @@ namespace Steam_Desktop_Authenticator
                     
                     if (!string.IsNullOrEmpty(confirmation.Icon))
                     {
-                       PictureBox pictureBox = new PictureBox() { Width = 60, Height = 60, Location = new Point(20, 20), SizeMode = PictureBoxSizeMode.Zoom };
-                       pictureBox.Load(confirmation.Icon);
-                       panel.Controls.Add(pictureBox);
+                        PictureBox pictureBox = new PictureBox() { Width = 60, Height = 60, Location = new Point(20, 20), SizeMode = PictureBoxSizeMode.Zoom };
+
+                        try
+                        {
+                            pictureBox.Load(confirmation.Icon);
+                        }
+                        catch(WebException) 
+                        {
+                            // loading images from cdn using https broken in Windows 7
+                            // so let's use http instead https
+                            string httpIcon = confirmation.Icon.Replace("https://", "http://");
+                            pictureBox.Load(httpIcon);
+                        }
+                        
+                        panel.Controls.Add(pictureBox);
                     }
 
                     Label nameLabel = new Label()
