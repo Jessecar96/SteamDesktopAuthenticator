@@ -178,21 +178,18 @@ namespace Steam_Desktop_Authenticator
                 switch (linkResponse)
                 {
                     case AuthenticatorLinker.LinkResult.MustProvidePhoneNumber:
-                        string phoneNumber = "";
-                        while (!PhoneNumberOkay(phoneNumber))
-                        {
-                            InputForm phoneNumberForm = new InputForm("Enter your phone number in the following format: +{cC} phoneNumber. EG, +1 123-456-7890");
-                            phoneNumberForm.txtBox.Text = "+1 ";
-                            phoneNumberForm.ShowDialog();
-                            if (phoneNumberForm.Canceled)
-                            {
-                                this.Close();
-                                return;
-                            }
 
-                            phoneNumber = FilterPhoneNumber(phoneNumberForm.txtBox.Text);
+                        // Show the phone input form
+                        PhoneInputForm phoneInputForm = new PhoneInputForm(account);
+                        phoneInputForm.ShowDialog();
+                        if (phoneInputForm.Canceled)
+                        {
+                            this.Close();
+                            return;
                         }
-                        linker.PhoneNumber = phoneNumber;
+
+                        linker.PhoneNumber = phoneInputForm.PhoneNumber;
+                        linker.PhoneCountryCode = phoneInputForm.CountryCode;
                         break;
 
                     case AuthenticatorLinker.LinkResult.AuthenticatorPresent:
