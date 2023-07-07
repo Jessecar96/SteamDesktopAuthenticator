@@ -32,8 +32,19 @@ namespace Steam_Desktop_Authenticator
                 await Task.Delay(30000);
             }
 
-            string deviceCode = await account.GenerateSteamGuardCodeAsync();
-            deviceCodesGenerated++;
+            string deviceCode;
+
+            if (account == null)
+            {
+                InputForm inputForm = new InputForm("Enter a Steam guard code from your current authenticator:");
+                inputForm.ShowDialog();
+                deviceCode = inputForm.Text;
+            }
+            else
+            {
+                deviceCode = await account.GenerateSteamGuardCodeAsync();
+                deviceCodesGenerated++;
+            }
 
             return deviceCode;
         }
