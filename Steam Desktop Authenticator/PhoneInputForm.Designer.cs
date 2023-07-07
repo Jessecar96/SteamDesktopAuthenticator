@@ -44,7 +44,7 @@
             this.txtCountryCode.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCountryCode.Location = new System.Drawing.Point(11, 98);
             this.txtCountryCode.Margin = new System.Windows.Forms.Padding(2);
-            this.txtCountryCode.Mask = "AA";
+            this.txtCountryCode.Mask = "AAAA";
             this.txtCountryCode.Name = "txtCountryCode";
             this.txtCountryCode.Size = new System.Drawing.Size(68, 33);
             this.txtCountryCode.TabIndex = 0;
@@ -72,7 +72,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(276, 17);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Two letter country code of the phone number:";
+            this.label2.Text = "Country code of the phone number:";
             // 
             // label3
             // 
