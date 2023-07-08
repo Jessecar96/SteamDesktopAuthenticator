@@ -50,6 +50,7 @@
             this.txtCountryCode.TabIndex = 0;
             this.txtCountryCode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCountryCode_KeyPress);
             this.txtCountryCode.Leave += new System.EventHandler(this.txtCountryCode_Leave);
+            this.txtCountryCode.TextChanged += new System.EventHandler(this.txtCountryCode_TextChanged);
             // 
             // label1
             // 
@@ -93,7 +94,7 @@
             this.txtPhoneNumber.Name = "txtPhoneNumber";
             this.txtPhoneNumber.Size = new System.Drawing.Size(198, 33);
             this.txtPhoneNumber.TabIndex = 4;
-            this.txtPhoneNumber.Text = "+1 ";
+            this.txtPhoneNumber.Text = "+";
             this.txtPhoneNumber.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPhoneNumber_KeyPress);
             // 
             // btnSubmit

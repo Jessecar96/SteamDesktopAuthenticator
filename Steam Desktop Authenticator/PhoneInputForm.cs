@@ -46,6 +46,14 @@ namespace Steam_Desktop_Authenticator
             }
         }
 
+        private void txtCountryCode_TextChanged(object sender, EventArgs e)
+        {
+            if (txtCountryCode.Focused)
+            {
+                txtPhoneNumber.Text = "+" + txtCountryCode.Text.Trim() + " ";
+            }
+        }
+
         private void txtCountryCode_KeyPress(object sender, KeyPressEventArgs e)
         {
             // Allow pasting
@@ -64,6 +72,7 @@ namespace Steam_Desktop_Authenticator
         {
             // Always uppercase
             txtCountryCode.Text = txtCountryCode.Text.ToUpper();
+            txtPhoneNumber.Text = "+" + txtCountryCode.Text.Trim() + " ";
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
