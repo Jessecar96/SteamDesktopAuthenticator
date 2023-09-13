@@ -124,9 +124,25 @@ namespace Steam_Desktop_Authenticator
             SessionData sessionData = new SessionData()
             {
                 SteamID = authSession.SteamID.ConvertToUInt64(),
-                AccessToken = pollResponse.AccessToken,
+                // As of 2023-09-12, Steam doesn't actually generate access tokens when you login anymore. It's just an empty string.
+                //AccessToken = pollResponse.AccessToken,
                 RefreshToken = pollResponse.RefreshToken,
             };
+
+            // Check for a valid access token, refresh it if needed
+            if (sessionData.IsAccessTokenExpired())
+            {
+                try
+                {
+                    await sessionData.RefreshAccessToken();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Steam Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.Close();
+                    return;
+                }
+            }
 
             //Login succeeded
             this.Session = sessionData;
