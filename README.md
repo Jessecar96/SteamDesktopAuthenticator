@@ -13,7 +13,7 @@
 <h3 align="center" style="margin-bottom:0">
   <a href="https://github.com/Jessecar96/SteamDesktopAuthenticator/releases/latest">Download here</a>
 </h3>
-<p align="center">Supports Windows 7 and up.</p>
+<p align="center">Supports Windows 10 and up.</p>
 <br>
 
 **Clicking "Download ZIP" will not work!** This project uses git submodules so you must use git to download it properly. Using [GitHub Desktop](https://desktop.github.com/) is an easy way to do that.
