@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using SteamAuth;
 using System.Drawing.Drawing2D;
+using System.Net;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -64,12 +65,30 @@ namespace Steam_Desktop_Authenticator
                             e.Graphics.FillRectangle(brush, panel.ClientRectangle);
                         }
                     };
-                    
+
                     if (!string.IsNullOrEmpty(confirmation.Icon))
                     {
-                       PictureBox pictureBox = new PictureBox() { Width = 60, Height = 60, Location = new Point(20, 20), SizeMode = PictureBoxSizeMode.Zoom };
-                       pictureBox.Load(confirmation.Icon);
-                       panel.Controls.Add(pictureBox);
+                        PictureBox pictureBox = new PictureBox() { Width = 60, Height = 60, Location = new Point(20, 20), SizeMode = PictureBoxSizeMode.Zoom };
+                        try
+                        {
+                            pictureBox.Load(confirmation.Icon);
+                        }
+                        catch (WebException ex)
+                        {
+                            if (ex.Status == WebExceptionStatus.ProtocolError)
+                            {
+                                if (ex.Response is HttpWebResponse response)
+                                {
+                                    Label exLabel = new Label() { Text = "Icon error code: " + (int)response.StatusCode, AutoSize = false, ForeColor = Color.Red, Width = 60, Height = 60, Location = new Point(20, 20), TextAlign = ContentAlignment.MiddleCenter };
+                                    panel.Controls.Add(exLabel);
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Failed to load profile icon: " + ex.Message);
+                        }
+                        panel.Controls.Add(pictureBox);
                     }
 
                     Label nameLabel = new Label()
