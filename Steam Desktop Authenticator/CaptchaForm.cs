@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SteamAuth;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -26,7 +27,7 @@ namespace Steam_Desktop_Authenticator
         public CaptchaForm(string GID)
         {
             this.CaptchaGID = GID;
-            this.CaptchaURL = "https://steamcommunity.com/public/captcha.php?gid=" + GID;
+            this.CaptchaURL = $"{APIEndpoints.COMMUNITY_BASE}/public/captcha.php?gid=" + GID;
             InitializeComponent();
             this.pictureBoxCaptcha.Load(CaptchaURL);
         }

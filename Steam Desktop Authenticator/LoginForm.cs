@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Steam_Desktop_Authenticator.Exceptions;
 using SteamAuth;
 using SteamKit2;
 using SteamKit2.Authentication;
@@ -77,7 +78,12 @@ namespace Steam_Desktop_Authenticator
             string password = txtPassword.Text;
 
             // Start a new SteamClient instance
-            SteamClient steamClient = new SteamClient();
+            SteamClient steamClient = new SteamClient(SteamConfiguration.Create(configurator =>
+            {
+                Manifest man = Manifest.GetManifest();
+                configurator.WithWebAPIBaseAddress(new Uri(man.WebApiAddress));
+                configurator.WithServerListProvider(new ServerListProvider());
+            }));
 
             // Connect to Steam
             steamClient.Connect();
@@ -109,9 +115,43 @@ namespace Steam_Desktop_Authenticator
 
             // Starting polling Steam for authentication response
             AuthPollResult pollResponse;
+
+            AuthenticatorLinker.LinkResult linkResponse = AuthenticatorLinker.LinkResult.GeneralFailure;
+
             try
             {
                 pollResponse = await authSession.PollingWaitForResultAsync();
+            }
+            catch (Exception ex) when (ex is LoginException loginException && loginException.MoveAuthenticator)
+            {
+                InputForm guardCodeForm = new InputForm("请输入Steam令牌验证码以登录你的Steam帐号");
+                while (true)
+                {
+                    try
+                    {
+                        guardCodeForm.ShowDialog();
+                        if (!guardCodeForm.Canceled)
+                        {
+                            string guardCode = guardCodeForm.txtBox.Text;
+
+                            await authSession.SendSteamGuardCodeAsync(guardCode, EAuthSessionGuardType.k_EAuthSessionGuardType_DeviceCode);
+                            pollResponse = await authSession.PollAuthSessionStatusAsync();
+                            linkResponse = AuthenticatorLinker.LinkResult.BeginMoveAuthenticator;
+                            break;
+                        }
+                    }
+                    catch (AuthenticationException authenticationException) when (authenticationException.Result == EResult.TwoFactorCodeMismatch)
+                    {
+                        guardCodeForm = new InputForm("令牌验证码错误，请重新输入");
+                        continue;
+                    }
+                    catch (Exception ex1)
+                    {
+                        MessageBox.Show(ex1.Message, "Steam Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    this.Close();
+                    return;
+                }
             }
             catch (Exception ex)
             {
@@ -149,161 +189,322 @@ namespace Steam_Desktop_Authenticator
                 return;
             }
 
-            // Show a dialog to make sure they really want to add their authenticator
-            var result = MessageBox.Show("Steam account login succeeded. Press OK to continue adding SDA as your authenticator.", "Steam Login", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
-            if (result == DialogResult.Cancel)
-            {
-                MessageBox.Show("Adding authenticator aborted.", "Steam Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                ResetLoginButton();
-                return;
-            }
-
             // Begin linking mobile authenticator
             AuthenticatorLinker linker = new AuthenticatorLinker(sessionData);
 
-            AuthenticatorLinker.LinkResult linkResponse = AuthenticatorLinker.LinkResult.GeneralFailure;
-            while (linkResponse != AuthenticatorLinker.LinkResult.AwaitingFinalization)
+            if (linkResponse == AuthenticatorLinker.LinkResult.BeginMoveAuthenticator)
             {
-                try
+                InputForm smsCodeForm;
+
+                while (linkResponse != AuthenticatorLinker.LinkResult.AwaitingFinalizeMoveAuthenticator)
                 {
-                    linkResponse = await linker.AddAuthenticator();
+                    try
+                    {
+                        linkResponse = await linker.BeginMoveAuthenticatorAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("移动令牌失败: " + ex.Message, "移动令牌", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        ResetLoginButton();
+                        return;
+                    }
+
+                    switch (linkResponse)
+                    {
+                        case AuthenticatorLinker.LinkResult.MustProvidePhoneNumber:
+                            MessageBox.Show("你的Steam帐号未绑定手机号，移动令牌之前需要为你绑定手机号", "移动令牌", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                            PhoneInputForm phoneInputForm = new PhoneInputForm(account);
+                            phoneInputForm.ShowDialog();
+                            if (phoneInputForm.Canceled)
+                            {
+                                this.Close();
+                                return;
+                            }
+
+                            linker.PhoneNumber = phoneInputForm.PhoneNumber;
+                            linker.PhoneCountryCode = phoneInputForm.CountryCode;
+                            break;
+
+                        case AuthenticatorLinker.LinkResult.MustConfirmEmail:
+                            MessageBox.Show("请进行邮箱确认，并在继续之前单击Steam发送给您的链接。", "移动令牌", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            break;
+
+                        case AuthenticatorLinker.LinkResult.AwaitingFinalizationAddPhone:
+                            smsCodeForm = new InputForm($"你正在为你的Steam帐号添加手机号,请输入手机短信验证码");
+                            while (true)
+                            {
+                                smsCodeForm.ShowDialog();
+                                if (!smsCodeForm.Canceled)
+                                {
+                                    string smsCode = smsCodeForm.txtBox.Text;
+
+                                    var finalizeMoveAuthenticator = await linker.VerifyAccountPhoneWithCodeAsync(smsCode);
+                                    if (finalizeMoveAuthenticator == ErrorCodes.OK)
+                                    {
+                                        break;
+                                    }
+
+                                    switch (finalizeMoveAuthenticator)
+                                    {
+                                        case ErrorCodes.NoMatch:
+                                        case ErrorCodes.SMSCodeFailed:
+                                            smsCodeForm = new InputForm("验证码错误，请重新输入");
+                                            continue;
+                                    }
+                                }
+
+                                MessageBox.Show($"添加手机号失败", "移动令牌", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                this.Close();
+                                return;
+                            }
+                            break;
+
+                        case AuthenticatorLinker.LinkResult.AddPhoneError:
+                            MessageBox.Show($"添加手机号失败", "移动令牌", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            this.Close();
+                            return;
+
+                        case AuthenticatorLinker.LinkResult.SendSmsCodeError:
+                            MessageBox.Show($"发送短信验证码失败" +
+                                $"{Environment.NewLine}" +
+                                $"请确保你的手机号没有被Steam限制," +
+                                $"{Environment.NewLine}" +
+                                $"并且你发送验证码的次数没有超过Steam限制", "移动令牌", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            this.Close();
+                            return;
+
+                        case AuthenticatorLinker.LinkResult.MoveAuthenticatorFail:
+                            MessageBox.Show($"移动令牌失败", "移动令牌", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            this.Close();
+                            return;
+                    }
                 }
-                catch (Exception ex)
+
+                smsCodeForm = new InputForm($"你正在移动你的Steam令牌验证器,验证短信已发送到你Steam帐号绑定的手机号码,请输入手机短信验证码" +
+                    $"{Environment.NewLine}" +
+                    $"移动令牌后你在48小时内产生的交易报价将被Steam暂挂" +
+                    $"{System.Environment.NewLine}" +
+                    $"但是你可以正常进行报价交易");
+                while (true)
                 {
-                    MessageBox.Show("Error adding your authenticator: " + ex.Message, "Steam Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    ResetLoginButton();
+                    try
+                    {
+                        smsCodeForm.ShowDialog();
+                        if (!smsCodeForm.Canceled)
+                        {
+                            string smsCode = smsCodeForm.txtBox.Text;
+
+                            var finalizeMoveAuthenticator = await linker.FinalizeMoveAuthenticatorAsync(smsCode);
+                            if (finalizeMoveAuthenticator == ErrorCodes.OK)
+                            {
+                                break;
+                            }
+
+                            switch (finalizeMoveAuthenticator)
+                            {
+                                case ErrorCodes.NoMatch:
+                                case ErrorCodes.SMSCodeFailed:
+                                    smsCodeForm = new InputForm("验证码错误，请重新输入");
+                                    continue;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "移动令牌", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    this.Close();
                     return;
                 }
 
-                switch (linkResponse)
+                Manifest manifest = Manifest.GetManifest();
+                string passKey = null;
+                if (manifest.Entries.Count == 0)
                 {
-                    case AuthenticatorLinker.LinkResult.MustProvidePhoneNumber:
-
-                        // Show the phone input form
-                        PhoneInputForm phoneInputForm = new PhoneInputForm(account);
-                        phoneInputForm.ShowDialog();
-                        if (phoneInputForm.Canceled)
+                    passKey = manifest.PromptSetupPassKey("Please enter an encryption passkey. Leave blank or hit cancel to not encrypt (VERY INSECURE).");
+                }
+                else if (manifest.Entries.Count > 0 && manifest.Encrypted)
+                {
+                    bool passKeyValid = false;
+                    while (!passKeyValid)
+                    {
+                        InputForm passKeyForm = new InputForm("Please enter your current encryption passkey.");
+                        passKeyForm.ShowDialog();
+                        if (!passKeyForm.Canceled)
+                        {
+                            passKey = passKeyForm.txtBox.Text;
+                            passKeyValid = manifest.VerifyPasskey(passKey);
+                            if (!passKeyValid)
+                            {
+                                MessageBox.Show("That passkey is invalid. Please enter the same passkey you used for your other accounts.");
+                            }
+                        }
+                        else
                         {
                             this.Close();
                             return;
                         }
-
-                        linker.PhoneNumber = phoneInputForm.PhoneNumber;
-                        linker.PhoneCountryCode = phoneInputForm.CountryCode;
-                        break;
-
-                    case AuthenticatorLinker.LinkResult.AuthenticatorPresent:
-                        MessageBox.Show("This account already has an authenticator linked. You must remove that authenticator to add SDA as your authenticator.", "Steam Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        this.Close();
-                        return;
-
-                    case AuthenticatorLinker.LinkResult.FailureAddingPhone:
-                        MessageBox.Show("Failed to add your phone number. Please try again or use a different phone number.", "Steam Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        linker.PhoneNumber = null;
-                        break;
-
-                    case AuthenticatorLinker.LinkResult.MustRemovePhoneNumber:
-                        linker.PhoneNumber = null;
-                        break;
-
-                    case AuthenticatorLinker.LinkResult.MustConfirmEmail:
-                        MessageBox.Show("Please check your email, and click the link Steam sent you before continuing.", "Steam Login", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        break;
-
-                    case AuthenticatorLinker.LinkResult.GeneralFailure:
-                        MessageBox.Show("Error adding your authenticator.", "Steam Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        this.Close();
-                        return;
+                    }
                 }
-            } // End while loop checking for AwaitingFinalization
 
-            Manifest manifest = Manifest.GetManifest();
-            string passKey = null;
-            if (manifest.Entries.Count == 0)
-            {
-                passKey = manifest.PromptSetupPassKey("Please enter an encryption passkey. Leave blank or hit cancel to not encrypt (VERY INSECURE).");
+                manifest.SaveAccount(linker.LinkedAccount, passKey != null, passKey);
             }
-            else if (manifest.Entries.Count > 0 && manifest.Encrypted)
+            else
             {
-                bool passKeyValid = false;
-                while (!passKeyValid)
+                // Show a dialog to make sure they really want to add their authenticator
+                var result = MessageBox.Show("Steam account login succeeded. Press OK to continue adding SDA as your authenticator.", "Steam Login", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+                if (result == DialogResult.Cancel)
                 {
-                    InputForm passKeyForm = new InputForm("Please enter your current encryption passkey.");
-                    passKeyForm.ShowDialog();
-                    if (!passKeyForm.Canceled)
+                    MessageBox.Show("Adding authenticator aborted.", "Steam Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ResetLoginButton();
+                    return;
+                }
+
+                while (linkResponse != AuthenticatorLinker.LinkResult.AwaitingFinalization)
+                {
+                    try
                     {
-                        passKey = passKeyForm.txtBox.Text;
-                        passKeyValid = manifest.VerifyPasskey(passKey);
-                        if (!passKeyValid)
+                        linkResponse = await linker.AddAuthenticator();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error adding your authenticator: " + ex.Message, "Steam Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        ResetLoginButton();
+                        return;
+                    }
+
+                    switch (linkResponse)
+                    {
+                        case AuthenticatorLinker.LinkResult.MustProvidePhoneNumber:
+
+                            // Show the phone input form
+                            PhoneInputForm phoneInputForm = new PhoneInputForm(account);
+                            phoneInputForm.ShowDialog();
+                            if (phoneInputForm.Canceled)
+                            {
+                                this.Close();
+                                return;
+                            }
+
+                            linker.PhoneNumber = phoneInputForm.PhoneNumber;
+                            linker.PhoneCountryCode = phoneInputForm.CountryCode;
+                            break;
+
+                        case AuthenticatorLinker.LinkResult.AuthenticatorPresent:
+                            MessageBox.Show("This account already has an authenticator linked. You must remove that authenticator to add SDA as your authenticator.", "Steam Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            this.Close();
+                            return;
+
+                        case AuthenticatorLinker.LinkResult.FailureAddingPhone:
+                            MessageBox.Show("Failed to add your phone number. Please try again or use a different phone number.", "Steam Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            linker.PhoneNumber = null;
+                            break;
+
+                        case AuthenticatorLinker.LinkResult.MustRemovePhoneNumber:
+                            linker.PhoneNumber = null;
+                            break;
+
+                        case AuthenticatorLinker.LinkResult.MustConfirmEmail:
+                            MessageBox.Show("Please check your email, and click the link Steam sent you before continuing.", "Steam Login", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            break;
+
+                        case AuthenticatorLinker.LinkResult.GeneralFailure:
+                            MessageBox.Show("Error adding your authenticator.", "Steam Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            this.Close();
+                            return;
+                    }
+                } // End while loop checking for AwaitingFinalization
+
+                Manifest manifest = Manifest.GetManifest();
+                string passKey = null;
+                if (manifest.Entries.Count == 0)
+                {
+                    passKey = manifest.PromptSetupPassKey("Please enter an encryption passkey. Leave blank or hit cancel to not encrypt (VERY INSECURE).");
+                }
+                else if (manifest.Entries.Count > 0 && manifest.Encrypted)
+                {
+                    bool passKeyValid = false;
+                    while (!passKeyValid)
+                    {
+                        InputForm passKeyForm = new InputForm("Please enter your current encryption passkey.");
+                        passKeyForm.ShowDialog();
+                        if (!passKeyForm.Canceled)
                         {
-                            MessageBox.Show("That passkey is invalid. Please enter the same passkey you used for your other accounts.");
+                            passKey = passKeyForm.txtBox.Text;
+                            passKeyValid = manifest.VerifyPasskey(passKey);
+                            if (!passKeyValid)
+                            {
+                                MessageBox.Show("That passkey is invalid. Please enter the same passkey you used for your other accounts.");
+                            }
+                        }
+                        else
+                        {
+                            this.Close();
+                            return;
                         }
                     }
-                    else
+                }
+
+                //Save the file immediately; losing this would be bad.
+                if (!manifest.SaveAccount(linker.LinkedAccount, passKey != null, passKey))
+                {
+                    manifest.RemoveAccount(linker.LinkedAccount);
+                    MessageBox.Show("Unable to save mobile authenticator file. The mobile authenticator has not been linked.");
+                    this.Close();
+                    return;
+                }
+
+                MessageBox.Show("The Mobile Authenticator has not yet been linked. Before finalizing the authenticator, please write down your revocation code: " + linker.LinkedAccount.RevocationCode);
+
+                AuthenticatorLinker.FinalizeResult finalizeResponse = AuthenticatorLinker.FinalizeResult.GeneralFailure;
+                while (finalizeResponse != AuthenticatorLinker.FinalizeResult.Success)
+                {
+                    InputForm smsCodeForm = new InputForm("Please input the SMS code sent to your phone.");
+                    smsCodeForm.ShowDialog();
+                    if (smsCodeForm.Canceled)
                     {
+                        manifest.RemoveAccount(linker.LinkedAccount);
                         this.Close();
                         return;
                     }
-                }
-            }
 
-            //Save the file immediately; losing this would be bad.
-            if (!manifest.SaveAccount(linker.LinkedAccount, passKey != null, passKey))
-            {
-                manifest.RemoveAccount(linker.LinkedAccount);
-                MessageBox.Show("Unable to save mobile authenticator file. The mobile authenticator has not been linked.");
-                this.Close();
-                return;
-            }
-
-            MessageBox.Show("The Mobile Authenticator has not yet been linked. Before finalizing the authenticator, please write down your revocation code: " + linker.LinkedAccount.RevocationCode);
-
-            AuthenticatorLinker.FinalizeResult finalizeResponse = AuthenticatorLinker.FinalizeResult.GeneralFailure;
-            while (finalizeResponse != AuthenticatorLinker.FinalizeResult.Success)
-            {
-                InputForm smsCodeForm = new InputForm("Please input the SMS code sent to your phone.");
-                smsCodeForm.ShowDialog();
-                if (smsCodeForm.Canceled)
-                {
-                    manifest.RemoveAccount(linker.LinkedAccount);
-                    this.Close();
-                    return;
-                }
-
-                InputForm confirmRevocationCode = new InputForm("Please enter your revocation code to ensure you've saved it.");
-                confirmRevocationCode.ShowDialog();
-                if (confirmRevocationCode.txtBox.Text.ToUpper() != linker.LinkedAccount.RevocationCode)
-                {
-                    MessageBox.Show("Revocation code incorrect; the authenticator has not been linked.");
-                    manifest.RemoveAccount(linker.LinkedAccount);
-                    this.Close();
-                    return;
-                }
-
-                string smsCode = smsCodeForm.txtBox.Text;
-                finalizeResponse = await linker.FinalizeAddAuthenticator(smsCode);
-
-                switch (finalizeResponse)
-                {
-                    case AuthenticatorLinker.FinalizeResult.BadSMSCode:
-                        continue;
-
-                    case AuthenticatorLinker.FinalizeResult.UnableToGenerateCorrectCodes:
-                        MessageBox.Show("Unable to generate the proper codes to finalize this authenticator. The authenticator should not have been linked. In the off-chance it was, please write down your revocation code, as this is the last chance to see it: " + linker.LinkedAccount.RevocationCode);
+                    InputForm confirmRevocationCode = new InputForm("Please enter your revocation code to ensure you've saved it.");
+                    confirmRevocationCode.ShowDialog();
+                    if (confirmRevocationCode.txtBox.Text.ToUpper() != linker.LinkedAccount.RevocationCode)
+                    {
+                        MessageBox.Show("Revocation code incorrect; the authenticator has not been linked.");
                         manifest.RemoveAccount(linker.LinkedAccount);
                         this.Close();
                         return;
+                    }
 
-                    case AuthenticatorLinker.FinalizeResult.GeneralFailure:
-                        MessageBox.Show("Unable to finalize this authenticator. The authenticator should not have been linked. In the off-chance it was, please write down your revocation code, as this is the last chance to see it: " + linker.LinkedAccount.RevocationCode);
-                        manifest.RemoveAccount(linker.LinkedAccount);
-                        this.Close();
-                        return;
+                    string smsCode = smsCodeForm.txtBox.Text;
+                    finalizeResponse = await linker.FinalizeAddAuthenticator(smsCode);
+
+                    switch (finalizeResponse)
+                    {
+                        case AuthenticatorLinker.FinalizeResult.BadSMSCode:
+                            continue;
+
+                        case AuthenticatorLinker.FinalizeResult.UnableToGenerateCorrectCodes:
+                            MessageBox.Show("Unable to generate the proper codes to finalize this authenticator. The authenticator should not have been linked. In the off-chance it was, please write down your revocation code, as this is the last chance to see it: " + linker.LinkedAccount.RevocationCode);
+                            manifest.RemoveAccount(linker.LinkedAccount);
+                            this.Close();
+                            return;
+
+                        case AuthenticatorLinker.FinalizeResult.GeneralFailure:
+                            MessageBox.Show("Unable to finalize this authenticator. The authenticator should not have been linked. In the off-chance it was, please write down your revocation code, as this is the last chance to see it: " + linker.LinkedAccount.RevocationCode);
+                            manifest.RemoveAccount(linker.LinkedAccount);
+                            this.Close();
+                            return;
+                    }
                 }
+
+                //Linked, finally. Re-save with FullyEnrolled property.
+                manifest.SaveAccount(linker.LinkedAccount, passKey != null, passKey);
             }
 
-            //Linked, finally. Re-save with FullyEnrolled property.
-            manifest.SaveAccount(linker.LinkedAccount, passKey != null, passKey);
             MessageBox.Show("Mobile authenticator successfully linked. Please write down your revocation code: " + linker.LinkedAccount.RevocationCode);
             this.Close();
         }

@@ -36,6 +36,10 @@
             this.chkCheckAll = new System.Windows.Forms.CheckBox();
             this.chkConfirmMarket = new System.Windows.Forms.CheckBox();
             this.chkConfirmTrades = new System.Windows.Forms.CheckBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.webAPIAddress = new System.Windows.Forms.TextBox();
+            this.communityAddress = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.numPeriodicInterval)).BeginInit();
             this.SuspendLayout();
             // 
@@ -55,9 +59,9 @@
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSave.Location = new System.Drawing.Point(12, 152);
+            this.btnSave.Location = new System.Drawing.Point(12, 237);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(224, 38);
+            this.btnSave.Size = new System.Drawing.Size(352, 38);
             this.btnSave.TabIndex = 1;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -121,11 +125,49 @@
             this.chkConfirmTrades.UseVisualStyleBackColor = true;
             this.chkConfirmTrades.CheckedChanged += new System.EventHandler(this.chkConfirmTrades_CheckedChanged);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(9, 164);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(91, 13);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "WebAPI Address";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(9, 196);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(109, 13);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Community Address";
+            // 
+            // webAPIAddress
+            // 
+            this.webAPIAddress.Location = new System.Drawing.Point(125, 161);
+            this.webAPIAddress.Name = "webAPIAddress";
+            this.webAPIAddress.Size = new System.Drawing.Size(238, 22);
+            this.webAPIAddress.TabIndex = 9;
+            this.webAPIAddress.Text = "https://api.steampowered.com";
+            // 
+            // communityAddress
+            // 
+            this.communityAddress.Location = new System.Drawing.Point(125, 193);
+            this.communityAddress.Name = "communityAddress";
+            this.communityAddress.Size = new System.Drawing.Size(238, 22);
+            this.communityAddress.TabIndex = 10;
+            this.communityAddress.Text = "https://steamcommunity.com";
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(244, 202);
+            this.ClientSize = new System.Drawing.Size(372, 287);
+            this.Controls.Add(this.communityAddress);
+            this.Controls.Add(this.webAPIAddress);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.chkConfirmTrades);
             this.Controls.Add(this.chkConfirmMarket);
             this.Controls.Add(this.chkCheckAll);
@@ -155,5 +197,9 @@
         private System.Windows.Forms.CheckBox chkCheckAll;
         private System.Windows.Forms.CheckBox chkConfirmMarket;
         private System.Windows.Forms.CheckBox chkConfirmTrades;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox webAPIAddress;
+        private System.Windows.Forms.TextBox communityAddress;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SteamAuth;
+using System;
 using System.Windows.Forms;
 
 namespace Steam_Desktop_Authenticator
@@ -20,6 +21,8 @@ namespace Steam_Desktop_Authenticator
             chkCheckAll.Checked = manifest.CheckAllAccounts;
             chkConfirmMarket.Checked = manifest.AutoConfirmMarketTransactions;
             chkConfirmTrades.Checked = manifest.AutoConfirmTrades;
+            webAPIAddress.Text = manifest.WebApiAddress;
+            communityAddress.Text = manifest.CommunityAddress;
 
             SetControlsEnabledState(chkPeriodicChecking.Checked);
 
@@ -49,7 +52,12 @@ namespace Steam_Desktop_Authenticator
             manifest.CheckAllAccounts = chkCheckAll.Checked;
             manifest.AutoConfirmMarketTransactions = chkConfirmMarket.Checked;
             manifest.AutoConfirmTrades = chkConfirmTrades.Checked;
+            manifest.WebApiAddress = webAPIAddress.Text;
+            manifest.CommunityAddress = communityAddress.Text;
             manifest.Save();
+
+            APIEndpoints.SetEndpoints(webAPIAddress.Text, communityAddress.Text);
+
             this.Close();
         }
 

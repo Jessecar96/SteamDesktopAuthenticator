@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using System.Diagnostics;
 using CommandLine;
+using SteamAuth;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -73,6 +74,8 @@ namespace Steam_Desktop_Authenticator
                     return;
                 }
             }
+
+            APIEndpoints.SetEndpoints(man.WebApiAddress, man.CommunityAddress);
 
             if (man.FirstRun)
             {

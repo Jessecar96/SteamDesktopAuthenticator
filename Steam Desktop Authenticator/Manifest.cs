@@ -36,6 +36,12 @@ namespace Steam_Desktop_Authenticator
         [JsonProperty("auto_confirm_trades")]
         public bool AutoConfirmTrades { get; set; } = false;
 
+        [JsonProperty("webapi_address")]
+        public string WebApiAddress { get; set; } = "https://api.steampowered.com";
+
+        [JsonProperty("community_address")]
+        public string CommunityAddress { get; set; } = "https://steamcommunity.com";
+
         private static Manifest _manifest { get; set; }
 
         public static string GetExecutableDir()

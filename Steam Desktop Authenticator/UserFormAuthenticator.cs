@@ -1,4 +1,5 @@
-﻿using SteamAuth;
+﻿using Steam_Desktop_Authenticator.Exceptions;
+using SteamAuth;
 using SteamKit2.Authentication;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -36,7 +37,18 @@ namespace Steam_Desktop_Authenticator
 
             if (account == null)
             {
-                MessageBox.Show("This account already has an authenticator linked. You must remove that authenticator to add SDA as your authenticator.", "Steam Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show("This account already has an authenticator linked. You must remove that authenticator to add SDA as your authenticator.", "Steam Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                var moveAuthenticator = MessageBox.Show($"你的帐号已绑定Steam手机令牌，是否要将令牌移动到此设备？" +
+                     $"{System.Environment.NewLine}" +
+                     $"移动令牌后你在48小时内产生的交易报价将被Steam暂挂" +
+                     $"{System.Environment.NewLine}" +
+                     $"但是你可以正常进行报价交易", "Steam Login", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (moveAuthenticator == DialogResult.Yes)
+                {
+                    throw new LoginException() { MoveAuthenticator = true };
+                }
+
                 return null;
             }
             else

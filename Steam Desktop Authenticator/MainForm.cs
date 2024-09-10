@@ -9,6 +9,8 @@ using Newtonsoft.Json;
 using System.Threading;
 using System.Drawing;
 using System.Linq;
+using Newtonsoft.Json.Linq;
+using System.Text;
 
 namespace Steam_Desktop_Authenticator
 {
@@ -659,10 +661,11 @@ namespace Steam_Desktop_Authenticator
         {
             if (updateClient != null) return;
             updateClient = new WebClient();
+            updateClient.Encoding = Encoding.UTF8;
             updateClient.DownloadStringCompleted += UpdateClient_DownloadStringCompleted;
             updateClient.Headers.Add("Content-Type", "application/json");
             updateClient.Headers.Add("User-Agent", "Steam Desktop Authenticator");
-            updateClient.DownloadStringAsync(new Uri("https://api.github.com/repos/Jessecar96/SteamDesktopAuthenticator/releases/latest"));
+            updateClient.DownloadStringAsync(new Uri("https://api.github.com/repos/tsxlts/SteamDesktopAuthenticator/releases/latest"));
         }
 
         private void compareVersions()
@@ -693,10 +696,17 @@ namespace Steam_Desktop_Authenticator
         {
             try
             {
-                dynamic resultObject = JsonConvert.DeserializeObject(e.Result);
-                newVersion = new Version(resultObject.tag_name.Value);
+                var resultObject = JsonConvert.DeserializeObject<JObject>(e.Result);
+                if (!(resultObject?.TryGetValue("tag_name", out var tag_name) ?? false))
+                {
+                    return;
+                }
+
+                var match = Regex.Match(tag_name.Value<string>(), @"[\d.]+");
+                var newVersion = new Version(match.Value);
+
                 currentVersion = new Version(Application.ProductVersion);
-                updateUrl = resultObject.assets.First.browser_download_url.Value;
+                updateUrl = resultObject.Value<JArray>("assets").FirstOrDefault()?.Value<string>("browser_download_url");
                 compareVersions();
             }
             catch (Exception)
