@@ -64,12 +64,19 @@ namespace Steam_Desktop_Authenticator
                             e.Graphics.FillRectangle(brush, panel.ClientRectangle);
                         }
                     };
-                    
+
                     if (!string.IsNullOrEmpty(confirmation.Icon))
                     {
-                       PictureBox pictureBox = new PictureBox() { Width = 60, Height = 60, Location = new Point(20, 20), SizeMode = PictureBoxSizeMode.Zoom };
-                       pictureBox.Load(confirmation.Icon);
-                       panel.Controls.Add(pictureBox);
+                        PictureBox pictureBox = new PictureBox() { Width = 60, Height = 60, Location = new Point(20, 20), SizeMode = PictureBoxSizeMode.Zoom };
+                        try
+                        {
+                            pictureBox.Load(confirmation.Icon);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Failed to load avatar: " + ex.Message);
+                        }
+                        panel.Controls.Add(pictureBox);
                     }
 
                     Label nameLabel = new Label()
