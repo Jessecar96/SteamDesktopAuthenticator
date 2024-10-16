@@ -628,7 +628,7 @@ namespace Steam_Desktop_Authenticator
             }
             else
             {
-                return f.Contains(txtAccSearch.Text);
+                return f.Contains(txtAccSearch.Text.ToLower());
             }
         }
 
